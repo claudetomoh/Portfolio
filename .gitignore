@@ -7,3 +7,4 @@ future-craft-me-main/
 # OS files
 .DS_Store
 Thumbs.db
+.vercel

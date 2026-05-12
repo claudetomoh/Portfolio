@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavScroll();
     initFormValidation();
     initThemeToggle();
+    initMobileMenu();
 });
 
 // ===================================
@@ -295,27 +296,30 @@ function initNavScroll() {
 }
 
 // ===================================
-// FORM VALIDATION
+// FORM VALIDATION & SUBMISSION
 // ===================================
 function initFormValidation() {
-    const form = document.querySelector('.contact-form');
+    const form = document.getElementById('contactForm');
+    const formStatus = document.getElementById('formStatus');
 
     if (!form) return;
 
-    form.addEventListener('submit', async(e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const message = formData.get('message');
 
         // Validation
-        if (!data.name || !data.email || !data.message) {
-            showNotification('Please fill in all required fields.', 'error');
+        if (!name || !email || !message) {
+            showFormStatus('Please fill in all required fields.', 'error');
             return;
         }
 
-        if (!isValidEmail(data.email)) {
-            showNotification('Please enter a valid email address.', 'error');
+        if (!isValidEmail(email)) {
+            showFormStatus('Please enter a valid email address.', 'error');
             return;
         }
 
@@ -325,16 +329,29 @@ function initFormValidation() {
         button.innerHTML = '<span class="btn-text">Sending...</span>';
         button.disabled = true;
 
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            // Submit to Formspree
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
 
-        // Success
-        showNotification('Thank you! Your message has been sent.', 'success');
-        form.reset();
-
-        // Reset button
-        button.innerHTML = originalText;
-        button.disabled = false;
+            if (response.ok) {
+                showFormStatus('✅ Thank you! Your message has been sent successfully.', 'success');
+                form.reset();
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            showFormStatus('❌ Oops! Something went wrong. Please try emailing directly.', 'error');
+        } finally {
+            // Reset button
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
     });
 }
 
@@ -343,11 +360,19 @@ function isValidEmail(email) {
     return re.test(email);
 }
 
-function showNotification(message, type = 'info') {
-    const existing = document.querySelector('.notification');
-    if (existing) existing.remove();
+function showFormStatus(message, type = 'info') {
+    const formStatus = document.getElementById('formStatus');
+    if (!formStatus) return;
 
-    const notification = document.createElement('div');
+    formStatus.textContent = message;
+    formStatus.className = `form-status ${type}`;
+    formStatus.style.display = 'block';
+
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        formStatus.style.display = 'none';
+    }, 5000);
+}
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
 
@@ -448,40 +473,59 @@ if (prefersReducedMotion) {
 // ===================================
 function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
-    if (!themeToggle) {
-        console.log('Theme toggle button not found');
-        return;
-    }
+    if (!themeToggle) return;
 
-    // Check for saved theme preference or default to 'dark'
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    console.log('Current theme:', currentTheme);
+    // Check for saved theme or default to 'dark'
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
 
-    // Apply the theme on load
-    if (currentTheme === 'light') {
-        document.body.classList.add('light-mode');
-    }
-
-    // Toggle theme on button click
     themeToggle.addEventListener('click', () => {
-        console.log('Theme toggle clicked!');
-        document.body.classList.toggle('light-mode');
-
-        // Save the preference
-        const theme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
-        localStorage.setItem('theme', theme);
-        console.log('Theme changed to:', theme);
-
-        // Add a subtle animation to the button
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Animate button
         themeToggle.style.transform = 'rotate(360deg)';
         setTimeout(() => {
             themeToggle.style.transform = 'rotate(0deg)';
         }, 300);
     });
 
-    // Smooth transition for theme toggle
     themeToggle.style.transition = 'transform 0.3s ease';
-    console.log('Theme toggle initialized successfully');
+}
+
+// ===================================
+// MOBILE MENU
+// ===================================
+function initMobileMenu() {
+    const menuToggle = document.getElementById('mobileMenuToggle');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (!menuToggle || !navMenu) return;
+
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking on a link
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-container')) {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
+    });
 }
 
 
