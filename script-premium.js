@@ -112,7 +112,7 @@ function initHeroAnimations() {
 // SCROLL-BASED REVEAL ANIMATIONS
 // ===================================
 function initScrollReveal() {
-    const revealElements = document.querySelectorAll('.project-card, .skill-category, .research-item, .leadership-item, .testimonial, .link-card, .pillar-card, .catalog-card, .internship-item, .detailed-project-card');
+    const revealElements = document.querySelectorAll('.project-card, .skill-category, .research-item, .leadership-item, .testimonial, .link-card, .pillar-card, .catalog-card, .internship-item, .detailed-project-card, .metric-showcase, .building-post, .learning-card, .testimonial-card, [data-animate]');
 
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -304,7 +304,7 @@ function initFormValidation() {
 
     if (!form) return;
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async(e) => {
         e.preventDefault();
 
         const formData = new FormData(form);
@@ -373,31 +373,31 @@ function showFormStatus(message, type = 'info') {
         formStatus.style.display = 'none';
     }, 5000);
 }
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
+notification.className = `notification notification-${type}`;
+notification.textContent = message;
 
-    Object.assign(notification.style, {
-        position: 'fixed',
-        top: '100px',
-        right: '20px',
-        padding: '1rem 1.5rem',
-        backgroundColor: type === 'error' ? '#FF4757' : type === 'success' ? '#00D9FF' : '#0A0E27',
-        color: type === 'success' || type === 'error' ? '#0A0E27' : 'white',
-        borderRadius: '4px',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-        zIndex: '10000',
-        fontFamily: 'Space Grotesk, sans-serif',
-        fontSize: '0.9375rem',
-        fontWeight: '600',
-        maxWidth: '400px',
-        animation: 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-        cursor: 'pointer'
-    });
+Object.assign(notification.style, {
+    position: 'fixed',
+    top: '100px',
+    right: '20px',
+    padding: '1rem 1.5rem',
+    backgroundColor: type === 'error' ? '#FF4757' : type === 'success' ? '#00D9FF' : '#0A0E27',
+    color: type === 'success' || type === 'error' ? '#0A0E27' : 'white',
+    borderRadius: '4px',
+    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+    zIndex: '10000',
+    fontFamily: 'Space Grotesk, sans-serif',
+    fontSize: '0.9375rem',
+    fontWeight: '600',
+    maxWidth: '400px',
+    animation: 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+    cursor: 'pointer'
+});
 
-    document.body.appendChild(notification);
+document.body.appendChild(notification);
 
-    notification.addEventListener('click', () => notification.remove());
-    setTimeout(() => notification.remove(), 5000);
+notification.addEventListener('click', () => notification.remove());
+setTimeout(() => notification.remove(), 5000);
 }
 
 // ===================================
@@ -482,10 +482,10 @@ function initThemeToggle() {
     themeToggle.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
+
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
-        
+
         // Animate button
         themeToggle.style.transform = 'rotate(360deg)';
         setTimeout(() => {
@@ -502,7 +502,7 @@ function initThemeToggle() {
 function initMobileMenu() {
     const menuToggle = document.getElementById('mobileMenuToggle');
     const navMenu = document.querySelector('.nav-menu');
-    
+
     if (!menuToggle || !navMenu) return;
 
     menuToggle.addEventListener('click', () => {

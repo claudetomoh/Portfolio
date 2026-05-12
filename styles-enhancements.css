@@ -3,6 +3,15 @@
    Building in Public, Testimonials, Learning, Enhanced Contact Form
    =================================== */
 
+/* Ensure elements are visible by default */
+.metric-showcase,
+.building-post,
+.learning-card,
+.testimonial-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Navigation Enhancements */
 .nav-actions {
     display: flex;
