@@ -459,8 +459,9 @@ section::before {
 }
 
 .nav.scrolled .nav-container {
-    background: hsl(230 30% 12% / 0.55);
+    background: hsl(230 30% 12% / 0.75);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-color: hsl(210 40% 98% / 0.1);
     box-shadow: var(--shadow-card);
 }
