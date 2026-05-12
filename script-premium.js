@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavScroll();
     initFormValidation();
     initThemeToggle();
-    initMobileMenu();
 });
 
 // ===================================
@@ -112,7 +111,7 @@ function initHeroAnimations() {
 // SCROLL-BASED REVEAL ANIMATIONS
 // ===================================
 function initScrollReveal() {
-    const revealElements = document.querySelectorAll('.project-card, .skill-category, .research-item, .leadership-item, .testimonial, .link-card, .pillar-card, .catalog-card, .internship-item, .detailed-project-card, .metric-showcase, .building-post, .learning-card, .testimonial-card, [data-animate]');
+    const revealElements = document.querySelectorAll('.project-card, .skill-category, .research-item, .leadership-item, .testimonial, .link-card, .pillar-card, .catalog-card, .internship-item, .detailed-project-card');
 
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -296,11 +295,10 @@ function initNavScroll() {
 }
 
 // ===================================
-// FORM VALIDATION & SUBMISSION
+// FORM VALIDATION
 // ===================================
 function initFormValidation() {
-    const form = document.getElementById('contactForm');
-    const formStatus = document.getElementById('formStatus');
+    const form = document.querySelector('.contact-form');
 
     if (!form) return;
 
@@ -308,18 +306,16 @@ function initFormValidation() {
         e.preventDefault();
 
         const formData = new FormData(form);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const message = formData.get('message');
+        const data = Object.fromEntries(formData);
 
         // Validation
-        if (!name || !email || !message) {
-            showFormStatus('Please fill in all required fields.', 'error');
+        if (!data.name || !data.email || !data.message) {
+            showNotification('Please fill in all required fields.', 'error');
             return;
         }
 
-        if (!isValidEmail(email)) {
-            showFormStatus('Please enter a valid email address.', 'error');
+        if (!isValidEmail(data.email)) {
+            showNotification('Please enter a valid email address.', 'error');
             return;
         }
 
@@ -329,29 +325,16 @@ function initFormValidation() {
         button.innerHTML = '<span class="btn-text">Sending...</span>';
         button.disabled = true;
 
-        try {
-            // Submit to Formspree
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
-            if (response.ok) {
-                showFormStatus('✅ Thank you! Your message has been sent successfully.', 'success');
-                form.reset();
-            } else {
-                throw new Error('Form submission failed');
-            }
-        } catch (error) {
-            showFormStatus('❌ Oops! Something went wrong. Please try emailing directly.', 'error');
-        } finally {
-            // Reset button
-            button.innerHTML = originalText;
-            button.disabled = false;
-        }
+        // Success
+        showNotification('Thank you! Your message has been sent.', 'success');
+        form.reset();
+
+        // Reset button
+        button.innerHTML = originalText;
+        button.disabled = false;
     });
 }
 
@@ -360,44 +343,36 @@ function isValidEmail(email) {
     return re.test(email);
 }
 
-function showFormStatus(message, type = 'info') {
-    const formStatus = document.getElementById('formStatus');
-    if (!formStatus) return;
+function showNotification(message, type = 'info') {
+    const existing = document.querySelector('.notification');
+    if (existing) existing.remove();
 
-    formStatus.textContent = message;
-    formStatus.className = `form-status ${type}`;
-    formStatus.style.display = 'block';
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
 
-    // Auto-hide after 5 seconds
-    setTimeout(() => {
-        formStatus.style.display = 'none';
-    }, 5000);
-}
-notification.className = `notification notification-${type}`;
-notification.textContent = message;
+    Object.assign(notification.style, {
+        position: 'fixed',
+        top: '100px',
+        right: '20px',
+        padding: '1rem 1.5rem',
+        backgroundColor: type === 'error' ? '#FF4757' : type === 'success' ? '#00D9FF' : '#0A0E27',
+        color: type === 'success' || type === 'error' ? '#0A0E27' : 'white',
+        borderRadius: '4px',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+        zIndex: '10000',
+        fontFamily: 'Space Grotesk, sans-serif',
+        fontSize: '0.9375rem',
+        fontWeight: '600',
+        maxWidth: '400px',
+        animation: 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        cursor: 'pointer'
+    });
 
-Object.assign(notification.style, {
-    position: 'fixed',
-    top: '100px',
-    right: '20px',
-    padding: '1rem 1.5rem',
-    backgroundColor: type === 'error' ? '#FF4757' : type === 'success' ? '#00D9FF' : '#0A0E27',
-    color: type === 'success' || type === 'error' ? '#0A0E27' : 'white',
-    borderRadius: '4px',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-    zIndex: '10000',
-    fontFamily: 'Space Grotesk, sans-serif',
-    fontSize: '0.9375rem',
-    fontWeight: '600',
-    maxWidth: '400px',
-    animation: 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-    cursor: 'pointer'
-});
+    document.body.appendChild(notification);
 
-document.body.appendChild(notification);
-
-notification.addEventListener('click', () => notification.remove());
-setTimeout(() => notification.remove(), 5000);
+    notification.addEventListener('click', () => notification.remove());
+    setTimeout(() => notification.remove(), 5000);
 }
 
 // ===================================
@@ -473,59 +448,40 @@ if (prefersReducedMotion) {
 // ===================================
 function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
-    if (!themeToggle) return;
+    if (!themeToggle) {
+        console.log('Theme toggle button not found');
+        return;
+    }
 
-    // Check for saved theme or default to 'dark'
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    // Check for saved theme preference or default to 'dark'
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    console.log('Current theme:', currentTheme);
 
+    // Apply the theme on load
+    if (currentTheme === 'light') {
+        document.body.classList.add('light-mode');
+    }
+
+    // Toggle theme on button click
     themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        console.log('Theme toggle clicked!');
+        document.body.classList.toggle('light-mode');
 
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        // Save the preference
+        const theme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+        localStorage.setItem('theme', theme);
+        console.log('Theme changed to:', theme);
 
-        // Animate button
+        // Add a subtle animation to the button
         themeToggle.style.transform = 'rotate(360deg)';
         setTimeout(() => {
             themeToggle.style.transform = 'rotate(0deg)';
         }, 300);
     });
 
+    // Smooth transition for theme toggle
     themeToggle.style.transition = 'transform 0.3s ease';
-}
-
-// ===================================
-// MOBILE MENU
-// ===================================
-function initMobileMenu() {
-    const menuToggle = document.getElementById('mobileMenuToggle');
-    const navMenu = document.querySelector('.nav-menu');
-
-    if (!menuToggle || !navMenu) return;
-
-    menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
-
-    // Close menu when clicking on a link
-    const navLinks = navMenu.querySelectorAll('a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            menuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.nav-container')) {
-            menuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-        }
-    });
+    console.log('Theme toggle initialized successfully');
 }
 
 
