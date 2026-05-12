@@ -1,0 +1,9 @@
+# Exclude the future-craft-me-main folder
+future-craft-me-main/
+
+# Word temporary files
+~$*.docx
+
+# OS files
+.DS_Store
+Thumbs.db
