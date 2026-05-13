@@ -61,4 +61,4 @@ For inquiries, reach out through the contact form on the website.
 
 ## License
 
-© 2026 Tomoh Claude Ikfingeh. All rights reserved.
+© 2026 Claude Tomoh. All rights reserved.
