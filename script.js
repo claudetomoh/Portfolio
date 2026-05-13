@@ -48,10 +48,18 @@ function initNavScroll() {
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
 
-        // Add shadow on scroll
-        if (currentScroll > 100) {
-            nav.style.boxShadow = '0 2px 12px rgba(0, 0, 0, 0.08)';
+        // Add glassmorphism blur effect on scroll
+        if (currentScroll > 50) {
+            nav.classList.add('scrolled');
+            nav.style.backdropFilter = 'blur(12px)';
+            nav.style.webkitBackdropFilter = 'blur(12px)';
+            nav.style.background = 'rgba(10, 15, 30, 0.8)';
+            nav.style.boxShadow = '0 2px 20px rgba(0, 212, 255, 0.1)';
         } else {
+            nav.classList.remove('scrolled');
+            nav.style.backdropFilter = 'none';
+            nav.style.webkitBackdropFilter = 'none';
+            nav.style.background = 'transparent';
             nav.style.boxShadow = 'none';
         }
 
