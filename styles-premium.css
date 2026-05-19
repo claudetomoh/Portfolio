@@ -145,8 +145,7 @@ ul {
     left: 0;
     pointer-events: none;
     z-index: 10000;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, opacity 0.2s ease;
+    will-change: transform;
     box-shadow: var(--shadow-glow-cyan);
 }
 
@@ -160,8 +159,8 @@ ul {
     left: 0;
     pointer-events: none;
     z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease;
+    will-change: transform;
+    transition: width 0.2s ease, height 0.2s ease;
 }
 
 body.cursor-hover .cursor-outline {
@@ -441,8 +440,12 @@ section::before {
 }
 
 .nav.scrolled {
-    background: transparent;
-    box-shadow: none;
+    background: rgba(10, 15, 30, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .nav-container {
@@ -459,11 +462,9 @@ section::before {
 }
 
 .nav.scrolled .nav-container {
-    background: hsl(230 30% 12% / 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-color: hsl(210 40% 98% / 0.1);
-    box-shadow: var(--shadow-card);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
 }
 
 .nav-logo {
@@ -851,14 +852,15 @@ section::before {
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .hero-profile-container {
         width: 200px;
         height: 200px;
     }
     .hero-metrics {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
     .hero-metrics-wrapper {
         padding-top: 1.5rem;

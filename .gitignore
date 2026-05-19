@@ -4,6 +4,10 @@ future-craft-me-main/
 # Word temporary files
 ~$*.docx
 
+# Node.js dependencies
+node_modules/
+package-lock.json
+
 # OS files
 .DS_Store
 Thumbs.db

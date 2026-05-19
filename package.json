@@ -1,0 +1,24 @@
+{
+  "name": "my_portfolio",
+  "version": "1.0.0",
+  "description": "My personal portfolio website showcasing my work at the intersection of technology, AI, research, and social impact.",
+  "main": "script-premium.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claudetomoh/Portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/claudetomoh/Portfolio/issues"
+  },
+  "homepage": "https://github.com/claudetomoh/Portfolio#readme",
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  }
+}

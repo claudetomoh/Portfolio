@@ -225,8 +225,15 @@ section {
 }
 
 @media (max-width: 768px) {
+    .ecosystem-connectors,
+    [class*="connector"],
+    .ecosystem-visualization svg line {
+        display: none;
+    }
     .ecosystem-nodes {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
     .ecosystem-node::before {
         display: none;
@@ -535,7 +542,7 @@ section {
     border-radius: 20px;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 768px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }

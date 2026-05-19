@@ -32,11 +32,16 @@ function initCustomCursor() {
         dotY = 0;
     let outlineX = 0,
         outlineY = 0;
+    let rafId = null;
 
-    // Track mouse position
+    // Track mouse position with throttling
     window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            rafId = null;
+        });
     });
 
     // Smooth cursor follow
@@ -49,8 +54,8 @@ function initCustomCursor() {
         outlineX += (mouseX - outlineX) * 0.15;
         outlineY += (mouseY - outlineY) * 0.15;
 
-        cursorDot.style.transform = `translate(${dotX}px, ${dotY}px)`;
-        cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px)`;
+        cursorDot.style.transform = `translate(${dotX - 4}px, ${dotY - 4}px)`;
+        cursorOutline.style.transform = `translate(${outlineX - 20}px, ${outlineY - 20}px)`;
 
         requestAnimationFrame(animateCursor);
     }
@@ -285,7 +290,7 @@ function initNavScroll() {
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
 
-        if (currentScroll > 100) {
+        if (currentScroll > 50) {
             nav.classList.add('scrolled');
         } else {
             nav.classList.remove('scrolled');
