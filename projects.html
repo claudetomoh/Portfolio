@@ -26,6 +26,13 @@
     <meta name="theme-color" content="#0a0f1e">
     <link rel="canonical" href="https://claudetomoh.vercel.app/projects.html">
 
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
     <title>Projects | Claude Tomoh Ikfingeh</title>
     <link rel="stylesheet" href="/styles-premium.css">
     <link rel="stylesheet" href="/styles-additional.css">
@@ -42,6 +49,12 @@
     <!-- Optimized Font Loading: defer non-critical fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet"></noscript>
+
+    <!-- Vercel Analytics & Web Vitals -->
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="https://cdn.vercel-insights.com/v1/script.debug.js"></script>
 </head>
 
 <body>
@@ -226,6 +239,73 @@
                                 <div class="component-box">Sentry (Monitoring)</div>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <!-- Visual Data Flow Diagram -->
+                <section class="architecture-section">
+                    <h4 class="case-study-heading">
+                        Request Flow & Data Architecture
+                    </h4>
+                    <div class="mermaid-container" style="background: #0f172a; padding: 2rem; border-radius: 12px; margin: 1.5rem 0;">
+                        <pre class="mermaid">
+graph TB
+    subgraph "Client Layer"
+        A[Browser/Mobile]
+    end
+    
+    subgraph "Edge Network - Vercel"
+        B[CDN Cache]
+        C[Next.js Server]
+    end
+    
+    subgraph "API Layer"
+        D[tRPC Routes]
+        E[Auth Middleware]
+        F[Validation - Zod]
+    end
+    
+    subgraph "Caching Layer"
+        G[Redis - Upstash]
+    end
+    
+    subgraph "Data Layer"
+        H[Prisma ORM]
+        I[(PostgreSQL - Neon)]
+    end
+    
+    subgraph "External Services"
+        J[Sentry Monitoring]
+        K[Cloudflare CDN]
+    end
+    
+    A -->|HTTPS Request| B
+    B -->|Cache Miss| C
+    C --> D
+    D --> E
+    E --> F
+    F -->|Check Cache| G
+    G -->|Cache Hit| F
+    G -->|Cache Miss| H
+    H --> I
+    I -->|Data| H
+    H -->|Store Cache| G
+    H -->|Response| F
+    F -->|JSON| C
+    C -->|HTML/JSON| B
+    B -->|Response| A
+    
+    C -.->|Error Logs| J
+    B -.->|Static Assets| K
+    
+    style A fill:#3b82f6,stroke:#2563eb,stroke-width:2px,color:#fff
+    style I fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style G fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    style C fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff
+                        </pre>
+                    </div>
+                    <div class="diagram-caption" style="text-align: center; color: #94a3b8; font-size: 0.9rem; margin-top: 1rem;">
+                        Complete request lifecycle from client to database and back. Redis caching reduces database load by 78%.
                     </div>
                 </section>
 
@@ -976,6 +1056,57 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Conversation Flow Diagram -->
+                <section class="architecture-section">
+                    <h4 class="case-study-heading">
+                        Conversation Processing Pipeline
+                    </h4>
+                    <div class="mermaid-container" style="background: #0f172a; padding: 2rem; border-radius: 12px; margin: 1.5rem 0;">
+                        <pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant Streamlit
+    participant Cache as Redis Cache
+    participant DF as Dialogflow NLU
+    participant GPT as GPT-3.5 Turbo
+    participant State as Session State
+    
+    User->>Streamlit: Send Message
+    Streamlit->>Cache: Check Cached Response
+    
+    alt Cache Hit
+        Cache-->>Streamlit: Return Cached Answer
+        Streamlit-->>User: Display Response (100ms)
+    else Cache Miss
+        Streamlit->>State: Load Conversation History
+        State-->>Streamlit: Context (last 5 turns)
+        
+        Streamlit->>DF: Detect Intent + Entities
+        DF-->>Streamlit: Intent (92% accuracy)
+        
+        alt High Confidence Intent
+            Streamlit->>GPT: Generate Response
+            Note over GPT: temperature=0.7<br/>max_tokens=150<br/>context_window=5
+            GPT-->>Streamlit: Contextual Answer
+        else Low Confidence
+            Streamlit->>GPT: Clarification Request
+            GPT-->>Streamlit: Clarifying Question
+        end
+        
+        Streamlit->>Cache: Store Response (5min TTL)
+        Streamlit->>State: Update Conversation
+        Streamlit-->>User: Display Response (1.8s avg)
+    end
+    
+    Note over Streamlit,State: 40% cost reduction via caching<br/>50+ concurrent conversations
+                        </pre>
+                    </div>
+                    <div class="diagram-caption" style="text-align: center; color: #94a3b8; font-size: 0.9rem; margin-top: 1rem;">
+                        End-to-end message processing with intelligent caching and context management. Average response time: 1.8 seconds.
+                    </div>
+                </section>
+
             </article>
         </div>
     </section>
@@ -1046,7 +1177,12 @@
         </div>
     </footer>
 
-    <script src="/script-premium.js\" defer></script>
+    <!-- Mermaid for Architecture Diagrams -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { primaryColor: '#3b82f6', primaryTextColor: '#e2e8f0', primaryBorderColor: '#1e293b', lineColor:
+        '#475569', secondaryColor: '#0f172a', tertiaryColor: '#1e293b', background: '#0a0f1e', mainBkg: '#0f172a', secondBkg: '#1e293b', textColor: '#e2e8f0', fontSize: '14px' } });
+    </script>
+    <script src="/script-premium.js" defer></script>
 </body>
 
 </html>
