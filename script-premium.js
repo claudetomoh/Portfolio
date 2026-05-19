@@ -290,10 +290,19 @@ function initNavScroll() {
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
 
-        if (currentScroll > 50) {
+        if (currentScroll > 60) {
             nav.classList.add('scrolled');
+            // Enhanced scroll effect with backdrop blur
+            nav.style.background = 'rgba(10,15,30,0.95)';
+            nav.style.backdropFilter = 'blur(12px)';
+            nav.style.webkitBackdropFilter = 'blur(12px)';
+            nav.style.borderBottom = '1px solid rgba(0,212,255,0.1)';
         } else {
             nav.classList.remove('scrolled');
+            nav.style.background = 'transparent';
+            nav.style.backdropFilter = 'none';
+            nav.style.webkitBackdropFilter = 'none';
+            nav.style.borderBottom = 'none';
         }
 
         lastScroll = currentScroll;
