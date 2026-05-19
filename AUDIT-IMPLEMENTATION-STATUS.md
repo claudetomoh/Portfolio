@@ -65,11 +65,16 @@ This document tracks the implementation status of all recommendations from the T
 - [x] **Audit implementation tracking** - Created comprehensive status document
 - [x] **Technical evidence validation** - All ML projects now have quantifiable metrics
 
+### Image Optimization
+- [x] **WebP conversion** - Converted claude.jpg (69.6% size reduction) and spotify-churn-screenshot.png (63% reduction) to WebP format
+- [x] **Browser fallback** - Implemented <picture> element with WebP and fallback support
+- [x] **Performance gain** - Reduced total image payload by ~200KB across portfolio
+
 ## 🔄 RECOMMENDATIONS TO CONSIDER (Optional Improvements)
 
 ### Performance Optimizations
 - [x] **Lazy loading for below-fold images** - All images already have loading="lazy" except hero (intentionally eager)
-- [ ] **Image compression** - Convert remaining PNG images to WebP format under 150kb (spotify-churn-screenshot.png)
+- [x] **Image compression** - ✅ COMPLETED: Converted claude.jpg (187KB → 57KB, 69.6% smaller) and spotify-churn-screenshot.png (119KB → 44KB, 63% smaller) to WebP with <picture> fallback
 - [x] **Mobile cursor hiding** - Already optimized with RAF throttling and GPU transforms
 
 ### Content Refinements
@@ -80,6 +85,7 @@ This document tracks the implementation status of all recommendations from the T
 - [x] **Model metrics** - COMPLETED: Added 87.3% accuracy, 0.83 F1-score, <500ms latency, 92% intent recognition
 - [x] **Architecture details** - COMPLETED: Added hyperparameters, feature engineering, Redis caching, GPT config
 - [x] **Performance benchmarks** - COMPLETED: Added response times, cost optimization, scalability metrics
+- [x] **Image optimization** - COMPLETED: Converted key images to WebP (69.6% and 63% size reduction)
 - [ ] **Architecture diagrams** - Visual system diagrams (optional future addition using Excalidraw/draw.io)
 - [ ] **Code snippets** - Technically interesting implementations (optional, Rise for Impact already has deep technical details)
 
@@ -128,6 +134,7 @@ The portfolio now implements ALL critical, high-priority, and medium-priority re
 ✅ ML model performance metrics added (9/9)
 ✅ Architecture and implementation details enhanced
 ✅ Technical depth with quantifiable evidence throughout
+✅ Image optimization with WebP conversion (69.6% and 63% size reduction)
 
 ### Implementation Summary:
 - **Spotify Churn Model**: 87.3% accuracy, 0.83 F1-score, <500ms latency, 15+ features, hyperparameters specified
@@ -135,12 +142,12 @@ The portfolio now implements ALL critical, high-priority, and medium-priority re
 - **About Section**: Specific metrics integrated (87.3%, 92%), expanded technical stack
 - **Experience Page**: Quantifiable performance metrics added to all ML projects
 - **Hero Description**: Changed to evidence-based positioning with specific numbers
+- **Image Optimization**: Converted key images to WebP format (~200KB payload reduction)
 
 ## 🚀 NEXT STEPS (Optional Future Enhancements)
 
-1. **Optional: Convert PNG to WebP** - spotify-churn-screenshot.png could be converted for marginal performance gain
-2. **Optional: Architecture diagrams** - Visual system diagrams using Excalidraw or draw.io
-3. **Optional: Custom domain email** - When ready (current Gmail acceptable for students)
+1. **Optional: Architecture diagrams** - Visual system diagrams using Excalidraw or draw.io for project case studies
+2. **Optional: Custom domain email** - When ready (current Gmail acceptable for students)
 
 ## 📝 NOTES
 
