@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroAnimations();
     initScrollReveal();
     initSmoothScroll();
-    initParticles();
+    // initParticles(); // Disabled for cleaner, calmer design
     initNavScroll();
     initFormValidation();
     initThemeToggle();
