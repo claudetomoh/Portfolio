@@ -1123,10 +1123,6 @@ section::before {
     .hero-actions .btn {
         min-width: 220px;
     }
-    .hero-metrics {
-        grid-template-columns: 1fr;
-        max-width: 320px;
-    }
 }
 
 .scroll-indicator {
@@ -1469,13 +1465,13 @@ section::before {
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     body {
         cursor: auto;
     }
     .cursor-dot,
     .cursor-outline {
-        display: none;
+        display: none !important;
     }
     /* Show mobile menu toggle */
     .mobile-menu-toggle {
