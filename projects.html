@@ -14,12 +14,21 @@
     <link rel="stylesheet" href="/styles-techstack.css">
     <link rel="stylesheet" href="/styles-premium-sections.css">
     <link rel="stylesheet" href="/styles-case-study.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+    <!-- Optimized Font Loading: defer non-critical fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet"></noscript>
 </head>
 
 <body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Scroll Progress Indicator -->
     <div class="scroll-progress"></div>
 
@@ -31,7 +40,7 @@
     <nav class="nav">
         <div class="nav-container">
             <a href="/" class="nav-logo">Claude.</a>
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="nav-menu" role="navigation">
                 <li><a href="/#about">About</a></li>
                 <li><a href="/#pillars">Skills</a></li>
                 <li><a href="/projects.html">Projects</a></li>
@@ -39,10 +48,10 @@
                 <li><a href="/lab.html">Research</a></li>
                 <li><a href="/contact.html" class="nav-cta">Contact</a></li>
             </ul>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </button>
         </div>
     </nav>
@@ -61,7 +70,8 @@
             <!-- Rise for Impact Platform -->
             <article class="premium-project-card" data-animate="fade-up">
                 <div class="project-screenshot" style="margin-bottom: 2rem;">
-                    <img src="/images/rise-for-impact-screenshot.webp" alt="Rise for Impact Platform - From Aspiration to Access" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" width="1878" height="935">
+                    <img src="/images/rise-for-impact-screenshot.webp" alt="Rise for Impact Platform - From Aspiration to Access" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" fetchpriority="high" decoding="async" loading="eager" width="1878"
+                        height="935">
                 </div>
                 <div class="project-showcase-header">
                     <div class="project-category-badge">Social Impact × Technology</div>
@@ -556,7 +566,7 @@
                     <div class="workflow-preview">
                         <div class="workflow-card">
                             <div class="workflow-image">
-                                <img src="/images/rise-fellowship-flow.webp" alt="Fellowship Application Workflow" loading="lazy">
+                                <img src="/images/rise-fellowship-flow.webp" alt="Fellowship Application Workflow" loading="lazy" decoding="async">
                             </div>
                             <div class="workflow-content">
                                 <div class="workflow-label">Core Feature</div>
@@ -568,7 +578,7 @@
                         </div>
                         <div class="workflow-card">
                             <div class="workflow-image">
-                                <img src="/images/rise-mentor-matching.webp" alt="Mentor Matching System" loading="lazy">
+                                <img src="/images/rise-mentor-matching.webp" alt="Mentor Matching System" loading="lazy" decoding="async">
                             </div>
                             <div class="workflow-content">
                                 <div class="workflow-label">Smart Feature</div>
@@ -580,7 +590,7 @@
                         </div>
                         <div class="workflow-card">
                             <div class="workflow-image">
-                                <img src="/images/rise-admin-dashboard.webp" alt="Admin Dashboard" loading="lazy">
+                                <img src="/images/rise-admin-dashboard.webp" alt="Admin Dashboard" loading="lazy" decoding="async">
                             </div>
                             <div class="workflow-content">
                                 <div class="workflow-label">Admin Tools</div>
@@ -598,7 +608,7 @@
             <!-- AgriLink Ghana -->
             <article class="premium-project-card" data-animate="fade-up">
                 <div class="project-screenshot" style="margin-bottom: 2rem;">
-                    <img src="/images/agrilink-screenshot.webp" alt="AgriLink Ghana - Farm-to-Market Platform" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" width="1917" height="921">
+                    <img src="/images/agrilink-screenshot.webp" alt="AgriLink Ghana - Farm-to-Market Platform" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" decoding="async" width="1917" height="921">
                 </div>
                 <div class="project-showcase-header">
                     <div class="project-status">Live Demo · CS415 Project · 2026</div>
@@ -693,7 +703,7 @@
             <!-- Smart Tutor Platform -->
             <article class="premium-project-card" data-animate="fade-up">
                 <div class="project-screenshot" style="margin-bottom: 2rem;">
-                    <img src="/images/smart-tutor-screenshot.webp" alt="Smart Tutor Platform - AI-Powered Tutor Matching System" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" width="1224" height="653">
+                    <img src="/images/smart-tutor-screenshot.webp" alt="Smart Tutor Platform - AI-Powered Tutor Matching System" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" decoding="async" width="1224" height="653">
                     <p style="text-align: center; color: rgba(255,255,255,0.5); font-size: 0.875rem; margin-top: 1rem;">
                         💡 <strong>Screenshot Needed:</strong> AI tutor matching interface, student dashboard, or progress tracking view
                     </p>
@@ -790,7 +800,7 @@
             <!-- Spotify Churn Predictor -->
             <article class="premium-project-card" data-animate="fade-up">
                 <div class="project-screenshot" style="margin-bottom: 2rem;">
-                    <img src="/images/spotify-churn-screenshot.png" alt="Spotify Churn Prediction System - ML Model Dashboard" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" width="1898" height="948">
+                    <img src="/images/spotify-churn-screenshot.png" alt="Spotify Churn Prediction System - ML Model Dashboard" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" decoding="async" width="1898" height="948">
                     <p style="text-align: center; color: rgba(255,255,255,0.5); font-size: 0.875rem; margin-top: 1rem;">
                         💡 <strong>Screenshot Needed:</strong> Streamlit dashboard showing churn predictions, model metrics, or data visualizations
                     </p>
@@ -871,7 +881,7 @@
                     <div class="project-status">Production · 2025</div>
                 </div>
                 <div class="project-screenshot" style="margin-bottom: 2rem;">
-                    <img src="/images/ai-chatbot-screenshot.webp" alt="AI Customer Support Chatbot - Conversational Interface" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" width="1822" height="880">
+                    <img src="/images/ai-chatbot-screenshot.webp" alt="AI Customer Support Chatbot - Conversational Interface" style="width: 100%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" loading="lazy" decoding="async" width="1822" height="880">
                     <p style="text-align: center; color: rgba(255,255,255,0.5); font-size: 0.875rem; margin-top: 1rem;">
                         💡 <strong>Screenshot Needed:</strong> Chatbot conversation interface, admin dashboard, or analytics view
                     </p>
@@ -1015,7 +1025,7 @@
         </div>
     </footer>
 
-    <script src="/script-premium.js"></script>
+    <script src="/script-premium.js\" defer></script>
 </body>
 
 </html>
