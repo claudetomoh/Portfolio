@@ -663,8 +663,10 @@
 
 @media (max-width: 640px) {
     .case-study-heading {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         line-height: 1.3;
+        margin-bottom: 0.75rem;
+        word-wrap: break-word;
     }
     .github-stats-grid {
         grid-template-columns: 1fr;
@@ -695,12 +697,32 @@
     .layer-components {
         gap: 0.5rem;
     }
+    h2 {
+        font-size: 1.6rem;
+        line-height: 1.3;
+        margin-bottom: 0.75rem;
+    }
+    h3 {
+        font-size: 1.3rem;
+        line-height: 1.35;
+        margin-bottom: 0.65rem;
+    }
+    h4 {
+        font-size: 1.15rem;
+        line-height: 1.4;
+    }
+    p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
 }
 
 @media (max-width: 480px) {
     .case-study-heading {
-        font-size: 1.35rem;
-        line-height: 1.25;
+        font-size: 1.25rem;
+        line-height: 1.3;
+        margin-bottom: 0.65rem;
+        word-wrap: break-word;
     }
     .decision-card,
     .infra-card,
@@ -711,21 +733,27 @@
     .workflow-title,
     .decision-title,
     .infra-title {
-        font-size: 1.1rem;
-        line-height: 1.3;
+        font-size: 1.05rem;
+        line-height: 1.35;
+        margin-bottom: 0.5rem;
     }
     .workflow-description,
     .decision-description {
-        font-size: 0.9rem;
-        line-height: 1.6;
+        font-size: 0.88rem;
+        line-height: 1.7;
     }
-    .architecture-diagram {
-        padding: 0.75rem;
-    }
-    .component-box {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.6rem;
-        white-space: normal;
-        text-align: center;
-    }
+}
+
+.architecture-diagram {
+    padding: 0.75rem;
+}
+
+.component-box {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    white-space: normal;
+    text-align: center;
+}
+
+
 }
