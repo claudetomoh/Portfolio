@@ -2247,3 +2247,55 @@ section {
 [data-animate][data-delay="600"].animated {
     transition-delay: 0.6s;
 }
+
+
+/* ===================================
+   MOBILE-FIRST PROGRESSIVE ENHANCEMENT (PREMIUM SECTIONS)
+   Base: 320px-640px (Mobile) - Overrides desktop-first rules above
+   Progressive: 641px+ (Tablet), 969px+ (Desktop)
+   =================================== */
+
+
+/* TABLET AND UP (641px+) */
+
+@media (min-width: 641px) {
+    /* Ecosystem nodes: 2 columns */
+    .ecosystem-nodes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    /* Premium grids: 2 columns */
+    .premium-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    /* Section cards: expanded padding */
+    .section-card,
+    .premium-card {
+        padding: 2rem;
+    }
+}
+
+
+/* DESKTOP (969px+) */
+
+@media (min-width: 969px) {
+    /* Ecosystem nodes: 3-4 columns */
+    .ecosystem-nodes {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    /* Premium grids: 3 columns */
+    .premium-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    /* Footer: multi-column */
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .footer-links-column {
+        text-align: left;
+    }
+    /* Desktop card styling */
+    .section-card,
+    .premium-card {
+        padding: var(--space-xl);
+    }
+}

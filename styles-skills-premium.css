@@ -140,3 +140,36 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ===================================
+   MOBILE-FIRST PROGRESSIVE ENHANCEMENT (SKILLS PREMIUM)
+   Base: 320px-640px (Mobile) - Single column default
+   Progressive: 641px+ (Tablet), 969px+ (Desktop)
+   =================================== */
+
+
+/* TABLET AND UP (641px+) */
+
+@media (min-width: 641px) {
+    .about-pillars-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    .skills-icon-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* DESKTOP (969px+) */
+
+@media (min-width: 969px) {
+    .about-pillars-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    .skills-icon-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

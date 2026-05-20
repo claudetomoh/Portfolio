@@ -67,3 +67,33 @@
         padding: 1.5rem;
     }
 }
+
+
+/* ===================================
+   MOBILE-FIRST PROGRESSIVE ENHANCEMENT (TECH STACK)
+   Base: 320px-640px (Mobile) - Single column default
+   Progressive: 641px+ (Tablet), 969px+ (Desktop)
+   =================================== */
+
+
+/* TABLET AND UP (641px+) */
+
+@media (min-width: 641px) {
+    .tech-stack-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.75rem;
+    }
+}
+
+
+/* DESKTOP (969px+) */
+
+@media (min-width: 969px) {
+    .tech-stack-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    .tech-category {
+        padding: 2rem;
+    }
+}
