@@ -678,17 +678,19 @@
         grid-template-columns: 1fr;
     }
     .architecture-diagram {
-        padding: 1rem;
+        padding: 0.75rem 0.5rem;
     }
     .decision-card,
     .infra-card,
     .workflow-card {
-        padding: 1.25rem;
+        padding: 1rem 0.75rem;
         width: 100%;
+        border-left: none;
+        border-right: none;
     }
     .workflow-content,
     .decision-content {
-        padding: 1.25rem;
+        padding: 1rem 0.75rem;
     }
     .component-box {
         font-size: 0.85rem;
@@ -727,8 +729,10 @@
     .decision-card,
     .infra-card,
     .workflow-card {
-        padding: 1rem;
+        padding: 0.85rem 0.65rem;
         margin: 0;
+        border-left: none;
+        border-right: none;
     }
     .workflow-title,
     .decision-title,

@@ -1780,7 +1780,7 @@ section {
         [class*="-grid"]:not(.stats-grid):not(.language-bar),
         [class*="-row"] {
             grid-template-columns: 1fr !important;
-            gap: 1rem;
+            gap: 0.75rem;
         }
         /* Typography mobile fixes */
         h2:not(.stats-title):not(.languages-title),
@@ -1809,23 +1809,28 @@ section {
         [class*="card"]:not(.github-stats-card):not(.github-languages-card):not(.repo-card),
         [class*="item"]:not(.language-item):not(.stat-box),
         [class*="box"]:not(.stat-box):not(.component-box) {
-            padding: 1.25rem;
+            padding: 1rem 0.75rem;
             width: 100%;
+            border-left: none;
+            border-right: none;
         }
     }
     @media (max-width: 480px) {
         /* Ultra-compact cards */
         .ecosystem-node {
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 0.85rem 0.65rem;
+            border-radius: 10px;
+            border-left: none;
+            border-right: none;
         }
         .node-title {
-            font-size: 1rem;
-            line-height: 1.3;
+            font-size: 0.95rem;
+            line-height: 1.35;
+            margin-bottom: 0.5rem;
         }
         .node-desc {
             font-size: 0.85rem;
-            line-height: 1.5;
+            line-height: 1.7;
         }
         .node-svg {
             width: 40px;
@@ -1833,7 +1838,7 @@ section {
             margin-bottom: 12px;
         }
         .center-node {
-            padding: 1.25rem 1.5rem;
+            padding: 1.15rem 1.35rem;
         }
         .node-icon {
             font-size: 36px;
@@ -1845,8 +1850,10 @@ section {
         [class*="card"]:not(.github-stats-card):not(.github-languages-card):not(.repo-card),
         [class*="item"]:not(.language-item):not(.stat-box),
         [class*="box"]:not(.stat-box):not(.component-box) {
-            padding: 1rem;
+            padding: 0.85rem 0.65rem;
             border-radius: 10px;
+            border-left: none;
+            border-right: none;
         }
         /* Typography ultra-compact */
         h2:not(.stats-title):not(.languages-title),
@@ -1877,7 +1884,7 @@ section {
         button:not([class*="nav"]),
         a.button {
             width: 100%;
-            padding: 0.75rem 1.5rem;
+            padding: 0.7rem 1.25rem;
             font-size: 0.88rem;
         }
     }
