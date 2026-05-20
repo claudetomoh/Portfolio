@@ -117,7 +117,7 @@
 .engineering-decisions {
     margin-top: var(--space-xl);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--space-lg);
 }
 
@@ -181,7 +181,7 @@
 
 .infrastructure-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: var(--space-md);
     margin-top: var(--space-lg);
 }
@@ -503,7 +503,7 @@
 
 .workflow-preview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--space-lg);
     margin-top: var(--space-lg);
 }
@@ -647,9 +647,11 @@
     }
     .architecture-diagram {
         min-height: auto;
+        padding: var(--space-md);
     }
     .engineering-decisions {
         grid-template-columns: 1fr;
+        gap: var(--space-md);
     }
     .infrastructure-grid {
         grid-template-columns: 1fr;
@@ -668,5 +670,17 @@
     }
     .outcomes-detailed {
         grid-template-columns: 1fr;
+    }
+    .architecture-diagram {
+        padding: var(--space-sm);
+    }
+    .decision-card,
+    .infra-card,
+    .workflow-card {
+        padding: var(--space-md);
+    }
+    .component-box {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
     }
 }
