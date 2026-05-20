@@ -2382,3 +2382,139 @@
                                 align-items: flex-start;
                             }
                         }
+
+
+/* ========================================
+   MOBILE-FIRST ENHANCEMENTS FOR CARDS
+   ======================================== */
+
+@media (max-width: 640px) {
+    /* Project Cards - Full Width */
+    .project-card {
+        padding: 1.5rem;
+        width: 100%;
+        margin: 0;
+    }
+    
+    .project-title {
+        font-size: 1.2rem;
+        line-height: 1.3;
+    }
+    
+    .project-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    /* Skills & Leadership Cards */
+    .skill-card,
+    .leadership-card {
+        padding: 1.25rem;
+        width: 100%;
+    }
+    
+    .skill-title,
+    .leadership-title {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    
+    /* Featured Grid */
+    .featured-grid {
+        gap: 1rem;
+    }
+    
+    .featured-item {
+        padding: 1.25rem;
+        width: 100%;
+    }
+    
+    /* Contact Methods */
+    .contact-method {
+        padding: 1rem;
+        width: 100%;
+        min-width: 100% !important;
+        flex: 1 1 100%;
+    }
+    
+    /* Hero Metrics */
+    .hero-metrics {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .metric-item {
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    /* All grids single column */
+    .skills-grid,
+    .leadership-grid,
+    .featured-grid,
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Ultra-compact mobile */
+    .project-card,
+    .skill-card,
+    .leadership-card,
+    .featured-item {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+    
+    .project-title {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    
+    .project-description,
+    .skill-description,
+    .leadership-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .hero-heading {
+        font-size: clamp(1.75rem, 8vw, 2.5rem) !important;
+        line-height: 1.2;
+    }
+    
+    .hero-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .hero-actions .btn {
+        width: 100%;
+        min-width: 100%;
+    }
+    
+    .contact-method {
+        padding: 0.85rem;
+        font-size: 0.9rem;
+        min-width: 100% !important;
+    }
+    
+    .metric-item {
+        padding: 0.75rem;
+    }
+    
+    .metric-value {
+        font-size: 1.5rem;
+    }
+    
+    .metric-label {
+        font-size: 0.75rem;
+    }
+}

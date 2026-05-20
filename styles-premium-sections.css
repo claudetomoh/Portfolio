@@ -40,6 +40,30 @@ section {
     section {
         padding: 60px 0;
     }
+    .container {
+        padding: 0 1.25rem;
+    }
+    .section-title {
+        font-size: 1.75rem;
+        line-height: 1.25;
+    }
+}
+
+@media (max-width: 480px) {
+    section {
+        padding: 40px 0;
+    }
+    .container {
+        padding: 0 1rem;
+    }
+    .section-title {
+        font-size: 1.5rem;
+        line-height: 1.25;
+    }
+    .section-intro {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
 }
 
 
@@ -1727,6 +1751,119 @@ section {
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(139, 92, 246, 0.2)) !important;
+    /* ========================================
+   ADDITIONAL MOBILE-FIRST ENHANCEMENTS
+   ======================================== */
+    @media (max-width: 640px) {
+        /* Ecosystem Nodes - Full Width Mobile */
+        .ecosystem-nodes {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .ecosystem-node {
+            padding: 1.25rem;
+            width: 100%;
+        }
+        .node-title {
+            font-size: 1.1rem;
+            line-height: 1.3;
+        }
+        .node-desc {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .center-node {
+            padding: 1.5rem 2rem;
+            min-width: auto;
+        }
+        /* All card-based sections */
+        [class*="-grid"]:not(.stats-grid):not(.language-bar),
+        [class*="-row"] {
+            grid-template-columns: 1fr !important;
+            gap: 1rem;
+        }
+        /* Typography mobile fixes */
+        h2:not(.stats-title):not(.languages-title),
+        .heading-2,
+        .large-heading {
+            font-size: 1.75rem;
+            line-height: 1.25;
+            word-wrap: break-word;
+        }
+        h3,
+        .heading-3 {
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+        /* Card padding for better readability */
+        [class*="card"]:not(.github-stats-card):not(.github-languages-card):not(.repo-card),
+        [class*="item"]:not(.language-item):not(.stat-box),
+        [class*="box"]:not(.stat-box):not(.component-box) {
+            padding: 1.25rem;
+            width: 100%;
+        }
+    }
+    @media (max-width: 480px) {
+        /* Ultra-compact cards */
+        .ecosystem-node {
+            padding: 1rem;
+            border-radius: 12px;
+        }
+        .node-title {
+            font-size: 1rem;
+            line-height: 1.3;
+        }
+        .node-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        .node-svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 12px;
+        }
+        .center-node {
+            padding: 1.25rem 1.5rem;
+        }
+        .node-icon {
+            font-size: 36px;
+        }
+        .node-label {
+            font-size: 14px;
+        }
+        /* All cards compact */
+        [class*="card"]:not(.github-stats-card):not(.github-languages-card):not(.repo-card),
+        [class*="item"]:not(.language-item):not(.stat-box),
+        [class*="box"]:not(.stat-box):not(.component-box) {
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        /* Typography ultra-compact */
+        h2:not(.stats-title):not(.languages-title),
+        .heading-2,
+        .large-heading {
+            font-size: 1.5rem;
+            line-height: 1.25;
+        }
+        h3,
+        .heading-3 {
+            font-size: 1.1rem;
+            line-height: 1.3;
+        }
+        p,
+        .body-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        /* Buttons full-width on small mobile */
+        .btn:not(.repo-link),
+        button:not([class*="nav"]),
+        a.button {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+        }
+    }
     border-radius: 16px !important;
     padding: 0 !important;
     margin: 0 !important;
