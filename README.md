@@ -1,63 +1,50 @@
-# Portfolio
+# claudetomoh.vercel.app
 
-My personal portfolio website showcasing my work at the intersection of technology, AI, research, and social impact.
+Personal site for Claude Tomoh — software engineer, Computer Science at Ashesi University.
 
-## About
+Live: <https://claudetomoh.vercel.app>
 
-This portfolio highlights my professional journey, selected projects, research work, and community leadership. Built with clean HTML, CSS, and JavaScript - no frameworks needed.
+## Stack
 
-## Structure
-
-The portfolio includes:
-- Hero section with professional overview
-- About section with background and experience
-- Skills overview across technical and strategic areas
-- Selected projects with impact details
-- Research and publications
-- Leadership and speaking engagements
-- Contact form
-
-## Tech Stack
-
-- HTML5
-- CSS3 (custom properties for theming)
-- Vanilla JavaScript
-- Responsive design (mobile-first)
-
-## File Structure
+Static HTML, one stylesheet, one script. No framework, no build step, no runtime
+dependencies. Deployed on Vercel from `main`.
 
 ```
-Portfolio/
-├── index.html
-├── styles.css
-├── styles-*.css (additional styling)
-├── script.js
-├── script-premium.js
-├── images/
-└── README.md
+index.html            Home — hero, about, stack, work, experience, journal, contact
+work.html             /work — project case studies
+experience.html       /experience — roles grouped by type
+styles/site.css       Design system: tokens, themes, components, sections
+scripts/site.js       Theme, navigation, reveals, ticker, hero field
+assets/               Public CV
+images/               Photography and project screenshots
+vercel.json           Clean URLs, redirects, cache and security headers
 ```
 
-## Local Development
+## Design system
 
-Run a local server to preview:
+Instrument Serif for display, Inter for UI, JetBrains Mono for technical
+metadata. A single accent, retuned per theme. Two radii. Light and dark are
+designed separately rather than inverted, and follow `prefers-color-scheme`
+until the visitor picks one.
+
+Motion runs in three tiers — micro (160ms), standard (420ms), signature (900ms)
+— on one easing pair, and is fully disabled under `prefers-reduced-motion`.
+
+## Running locally
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000` in your browser.
+Then open <http://localhost:8000>. There is nothing to install or build.
 
-## Deployment
-
-This portfolio can be deployed to:
-- GitHub Pages
-- Netlify
-- Vercel
-- Any static hosting service
+Note that `vercel.json` handles clean URLs and redirects in production, so
+`/work` and `/experience` resolve there but need the `.html` extension when
+served by a plain static server.
 
 ## Contact
 
-For inquiries, reach out through the contact form on the website.
+<claudetomo20@gmail.com>
 
 ## License
 

@@ -577,11 +577,10 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     color: var(--text-faint);
     margin-bottom: var(--s-5);
 }
-.hero__disciplines span:not(:last-child)::after {
-    content: '·';
-    margin-left: var(--s-3);
-    opacity: 0.6;
-}
+/* Separators are real characters in the markup, marked aria-hidden. A CSS
+   ::after was previously the only separator, which made the line extract as
+   "SoftwareProductAI/ML" for screen readers and text scrapers. */
+.hero__disciplines .sep { opacity: 0.5; }
 
 /* Portrait — editorial crop, not a headshot in a rounded box.
    The frame is asymmetric: square top-left, softened bottom-right, and it
@@ -815,6 +814,44 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
 .schematic__layer span { color: var(--text-muted); }
 .schematic__arrow { color: var(--text-faint); text-align: center; line-height: 1; }
 
+/* Case study — long-form technical writing. A mono subhead in a narrow rail,
+   prose beside it, so a reviewer can scan for the section they care about. */
+.cs { display: grid; gap: 0; margin-top: var(--s-7); }
+.cs__block {
+    display: grid;
+    gap: var(--s-2);
+    padding-block: var(--s-5);
+    border-top: 1px solid var(--rule);
+}
+@media (min-width: 52rem) {
+    .cs__block { grid-template-columns: 11rem minmax(0, 1fr); gap: var(--s-6); }
+}
+.cs__block > * { min-width: 0; }
+.cs__h { color: var(--text-faint); padding-top: 0.2rem; }
+.cs__body { max-width: var(--measure); }
+.cs__body p + p,
+.cs__body ul + p,
+.cs__body p + ul { margin-top: var(--s-3); }
+.cs__body li {
+    position: relative;
+    padding-left: var(--s-5);
+    margin-top: var(--s-2);
+}
+.cs__body li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.72em;
+    width: 10px; height: 1px;
+    background: var(--rule-strong);
+}
+.cs__body code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    background: var(--accent-wash);
+    padding: 0.1em 0.35em;
+    border-radius: var(--r-sm);
+}
+
 /* ── 12. TIMELINE ──────────────────────────────────────────────────────── */
 
 .tl { display: grid; }
@@ -846,11 +883,34 @@ a.tl__item:hover .tl__role { color: var(--accent); }
    publishable entries are omitted from the markup entirely — no empty states.
    Source of truth: content/journal.json */
 
-/* Streams with no publishable entries render nothing at all — no chips, no
-   empty states, no "coming soon". Adding an entry to content/journal.json is
-   all that is needed for a stream to appear.
+/* Stream index. A stream with no entries shows a rule and a quiet state
+   rather than a "coming soon" card. Source of truth: content/journal.json */
+.streams { display: grid; margin-bottom: var(--s-8); }
+.stream {
+    display: grid;
+    gap: var(--s-1);
+    padding-block: var(--s-4);
+    border-top: 1px solid var(--rule);
+    align-items: baseline;
+}
+.streams .stream:last-child { border-bottom: 1px solid var(--rule); }
+@media (min-width: 40rem) {
+    .stream { grid-template-columns: 12rem minmax(0, 1fr) auto; gap: var(--s-5); }
+}
+.stream > * { min-width: 0; }
+.stream__name { color: var(--text); }
+.stream__what { color: var(--text-muted); font-size: var(--t-sm); }
+.stream__state {
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.stream--live .stream__state { color: var(--accent); }
 
-   Publication index — typography and whitespace, not cards */
+/* Publication index — typography and whitespace, not cards */
 
 .pubs { display: grid; }
 .pub {

@@ -1,24 +1,19 @@
 {
-  "name": "my_portfolio",
-  "version": "1.0.0",
-  "description": "My personal portfolio website showcasing my work at the intersection of technology, AI, research, and social impact.",
-  "main": "script-premium.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "name": "claude-tomoh-portfolio",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Personal site for Claude Tomoh — software engineer. Static HTML, one stylesheet, one script, no build step.",
+  "homepage": "https://claudetomoh.vercel.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/claudetomoh/Portfolio.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/claudetomoh/Portfolio/issues"
   },
-  "homepage": "https://github.com/claudetomoh/Portfolio#readme",
-  "devDependencies": {
-    "sharp": "^0.34.5"
+  "author": "Claude Tomoh <claudetomo20@gmail.com>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "python -m http.server 8000"
   }
 }

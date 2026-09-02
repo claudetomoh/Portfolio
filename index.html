@@ -79,7 +79,7 @@
             <nav class="nav__links" aria-label="Sections" data-spy>
                 <a href="#about">About</a>
                 <a href="#work">Work</a>
-                <a href="#experience">Experience</a>
+                <a href="/experience">Experience</a>
                 <a href="#journal">Journal</a>
                 <a href="#contact">Contact</a>
             </nav>
@@ -105,7 +105,7 @@
         <div class="nav__sheet" id="nav-sheet" data-sheet>
             <a href="#about">About</a>
             <a href="#work">Work</a>
-            <a href="#experience">Experience</a>
+            <a href="/experience">Experience</a>
             <a href="#journal">Journal</a>
             <a href="#contact">Contact</a>
             <div class="nav__sheet-foot mono">
@@ -136,7 +136,11 @@
                     </h1>
 
                     <p class="mono hero__disciplines">
-                        <span>Software</span><span>Product</span><span>AI&#8202;/&#8202;ML</span>
+                        <span>Software</span>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <span>Product</span>
+                        <span class="sep" aria-hidden="true">·</span>
+                        <span>AI&#8202;/&#8202;ML</span>
                     </p>
 
                     <div class="rule-draw"></div>
@@ -188,7 +192,7 @@
             <div class="wrap">
                 <div class="s-head">
                     <p class="mono s-head__eyebrow">01 — About</p>
-                    <h2 class="display s-head__title">Building for places the default tooling ignores.</h2>
+                    <h2 class="display s-head__title">Software shaped by real-world constraints.</h2>
                 </div>
 
                 <div class="about__grid">
@@ -197,7 +201,7 @@
                             <p class="lede">I'm a Computer Science student at Ashesi University and a Mastercard Foundation Scholar. I build full-stack web applications, mobile platforms, and machine learning systems.</p>
                             <p>Most of my recent work has been on <strong>Mboa Health</strong>, a Flutter health application for Cameroon. It covers health records, a clinic locator, reminders, an emergency portal, and a rule-based symptom checker, on a PHP backend with 88 automated tests across the app and API. It is still in development and has not been deployed.</p>
                             <p>I also founded <strong>Rise for Impact</strong> and lead the team behind it. It runs youth programmes in Cameroon, Ghana, Nigeria and Rwanda, and I built the platform it runs on. Before that I spent a summer as an AI &amp; Machine Learning intern at Future Interns, working on sales forecasting with Prophet, churn prediction with XGBoost, and a Dialogflow and OpenAI conversational agent.</p>
-                            <p>A lot of what I build is aimed at users on slow connections and cheap Android phones. That constraint shapes the engineering more than anything else.</p>
+                            <p>Most of what I build targets lower-end Android devices on constrained networks. That shapes the engineering more than any framework choice does — it decides payload budgets, offline behaviour, and which features are worth their weight.</p>
                         </div>
 
                         <dl class="about__facts" data-reveal data-delay="2">
@@ -243,48 +247,52 @@
                     <h2 class="display s-head__title">What I reach for.</h2>
                 </div>
 
+                <p class="lede" style="margin-bottom: var(--s-6)">
+                    Weighted toward what I have actually shipped with, not everything I have opened once.
+                </p>
+
                 <div class="stack" data-reveal>
                     <div class="stack__row">
-                        <p class="mono stack__label">Languages</p>
-                        <div class="ticker">
-                            <div class="ticker__track" data-ticker data-speed="2.4">
-                                <span class="tag">Python</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">Dart</span><span class="tag">Java</span><span class="tag">PHP</span><span class="tag">SQL</span><span class="tag">C++</span><span class="tag">R</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stack__row">
-                        <p class="mono stack__label">Frontend</p>
-                        <div class="ticker ticker--rev">
-                            <div class="ticker__track" data-ticker data-speed="3.4">
-                                <span class="tag">React</span><span class="tag">Flutter</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Responsive design</span><span class="tag">Component architecture</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stack__row">
-                        <p class="mono stack__label">Backend &amp; data</p>
-                        <div class="ticker">
-                            <div class="ticker__track" data-ticker data-speed="3.0">
-                                <span class="tag">Node.js</span><span class="tag">REST APIs</span><span class="tag">PHP</span><span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">Authentication</span><span class="tag">RBAC</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stack__row">
-                        <p class="mono stack__label">AI &amp; ML</p>
-                        <div class="ticker ticker--rev">
-                            <div class="ticker__track" data-ticker data-speed="2.8">
-                                <span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Prophet</span><span class="tag">NLP</span><span class="tag">OpenAI API</span><span class="tag">Dialogflow</span><span class="tag">Streamlit</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stack__row">
-                        <p class="mono stack__label">Tools</p>
+                        <p class="mono stack__label">Core</p>
                         <div class="ticker">
                             <div class="ticker__track" data-ticker data-speed="3.2">
-                                <span class="tag">Git</span><span class="tag">GitHub Actions</span><span class="tag">Vercel</span><span class="tag">Power BI</span><span class="tag">Google Colab</span><span class="tag">VS Code</span>
+                                <span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">Dart</span><span class="tag">PHP</span><span class="tag">SQL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stack__row">
+                        <p class="mono stack__label">Product</p>
+                        <div class="ticker ticker--rev">
+                            <div class="ticker__track" data-ticker data-speed="3.4">
+                                <span class="tag">React</span><span class="tag">Flutter</span><span class="tag">REST APIs</span><span class="tag">Responsive UI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stack__row">
+                        <p class="mono stack__label">Backend</p>
+                        <div class="ticker">
+                            <div class="ticker__track" data-ticker data-speed="3.0">
+                                <span class="tag">Node.js</span><span class="tag">PHP</span><span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">Authentication</span><span class="tag">RBAC</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stack__row">
+                        <p class="mono stack__label">Machine learning</p>
+                        <div class="ticker ticker--rev">
+                            <div class="ticker__track" data-ticker data-speed="3.2">
+                                <span class="tag">scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Prophet</span><span class="tag">NLP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stack__row">
+                        <p class="mono stack__label">Engineering</p>
+                        <div class="ticker">
+                            <div class="ticker__track" data-ticker data-speed="3.0">
+                                <span class="tag">Git</span><span class="tag">GitHub Actions</span><span class="tag">CI/CD</span><span class="tag">Testing</span><span class="tag">Vercel</span>
                             </div>
                         </div>
                     </div>
@@ -326,7 +334,7 @@
                             </div>
 
                             <div class="proj__actions">
-                                <a class="link link--always mono" href="/projects.html#mboa-health">Read the case study →</a>
+                                <a class="link link--always mono" href="/work#mboa-health">Read the case study →</a>
                             </div>
                         </div>
 
@@ -438,7 +446,7 @@
                 </div>
 
                 <p style="margin-top: var(--s-8)">
-                    <a class="link link--always mono" href="/projects.html">All projects, including coursework and experiments →</a>
+                    <a class="link link--always mono" href="/work">All projects, including coursework and experiments →</a>
                 </p>
             </div>
         </section>
@@ -521,7 +529,35 @@
             <div class="wrap">
                 <div class="s-head">
                     <p class="mono s-head__eyebrow">05 — Journal</p>
-                    <h2 class="display s-head__title">Research, and notes from the work.</h2>
+                    <h2 class="display s-head__title">How I think about the work.</h2>
+                </div>
+
+                <p class="lede" style="margin-bottom: var(--s-6)">
+                    Four streams. Research is the one with something in it so far; the rest fill in as
+                    there is something worth writing down.
+                </p>
+
+                <div class="streams" data-reveal>
+                    <div class="stream stream--live">
+                        <p class="mono stream__name">Research</p>
+                        <p class="stream__what">Formal research output.</p>
+                        <p class="stream__state">1 entry</p>
+                    </div>
+                    <div class="stream">
+                        <p class="mono stream__name">Field notes</p>
+                        <p class="stream__what">Short, dated notes from places and events — why I was there and what I took from it.</p>
+                        <p class="stream__state">Not yet written</p>
+                    </div>
+                    <div class="stream">
+                        <p class="mono stream__name">Engineering notes</p>
+                        <p class="stream__what">Decisions, trade-offs and things that broke.</p>
+                        <p class="stream__state">Not yet written</p>
+                    </div>
+                    <div class="stream">
+                        <p class="mono stream__name">Vlogs</p>
+                        <p class="stream__what">Selected video, where it says something writing cannot.</p>
+                        <p class="stream__state">Not yet recorded</p>
+                    </div>
                 </div>
 
                 <div class="pubs">

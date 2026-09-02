@@ -8,7 +8,7 @@
     <meta name="author" content="Claude Tomoh">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://claudetomoh.vercel.app/projects.html">
+    <meta property="og:url" content="https://claudetomoh.vercel.app/work">
     <meta property="og:title" content="Work — Claude Tomoh">
     <meta property="og:description" content="Selected engineering work — a Flutter health platform, a youth programme platform, an agricultural marketplace, and machine learning projects.">
     <meta property="og:image" content="https://claudetomoh.vercel.app/images/rise-for-impact-screenshot.webp">
@@ -20,7 +20,7 @@
 
     <meta name="theme-color" content="#FAF9F7" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0E0E0D" media="(prefers-color-scheme: dark)">
-    <link rel="canonical" href="https://claudetomoh.vercel.app/projects.html">
+    <link rel="canonical" href="https://claudetomoh.vercel.app/work">
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
@@ -60,7 +60,7 @@
 
             <nav class="nav__links" aria-label="Sections">
                 <a href="/#about">About</a>
-                <a href="/projects.html" aria-current="page">Work</a>
+                <a href="/work" aria-current="page">Work</a>
                 <a href="/#experience">Experience</a>
                 <a href="/#journal">Journal</a>
                 <a href="/#contact">Contact</a>
@@ -84,7 +84,7 @@
 
         <div class="nav__sheet" id="nav-sheet" data-sheet>
             <a href="/#about">About</a>
-            <a href="/projects.html">Work</a>
+            <a href="/work">Work</a>
             <a href="/#experience">Experience</a>
             <a href="/#journal">Journal</a>
             <a href="/#contact">Contact</a>
@@ -106,8 +106,7 @@
                 </h1>
                 <div class="rule-draw"></div>
                 <p class="lede" style="margin-top: var(--s-6)">
-                    Status labels here mean what they say. Nothing is called production unless it has real users,
-                    and coursework is labelled coursework.
+                    Each project carries its real status — what is deployed, what is in development, and what was built for a course.
                 </p>
             </div>
         </section>
@@ -124,16 +123,6 @@
                     <div class="proj__info">
                         <div class="prose">
                             <p class="lede">A health application for Cameroon, built for the phones and networks people actually have.</p>
-
-                            <p><strong>Problem.</strong> Getting to a clinic often means not knowing which one is open, how far it is, or what to do first. Paper records go missing between visits. In an emergency there is no fast way to reach the right contact.</p>
-
-                            <p><strong>My role.</strong> Technical build across the Flutter client and the PHP API.</p>
-
-                            <p><strong>Approach.</strong> A feature-first module layout — auth, profile, records, reminders, notifications, clinic locator, emergency — each owning its own state through Provider. A custom design system called Clinical Sanctuary defines the palette, an 8pt spacing grid, and tonal surface elevation instead of drop shadows, because shadows read badly on cheap LCD panels.</p>
-
-                            <p><strong>Testing.</strong> 88 automated tests: 72 in Flutter and 16 on the PHP API. CI runs lint and the full suite, and blocks a merge on either failing. The repository also carries an architecture document, a deployment runbook and a risk register.</p>
-
-                            <p><strong>On the symptom checker.</strong> It is a rule-based expert system over a decision tree. It is not a model, and it is not AI. Calling it that would misrepresent both the engineering and the clinical risk.</p>
                         </div>
 
                         <div class="proj__meta">
@@ -157,11 +146,129 @@
                             <div class="schematic__layer"><b>Verified by</b><span>72 Flutter tests</span><span>16 API tests</span><span>CI lint + test gate</span></div>
                         </div>
 
-                        <div class="prose" style="margin-top: var(--s-5)">
-                            <p class="muted" style="font-size: var(--t-sm)">
-                                <strong>Planned, not built:</strong> a QR emergency health passport, AI health companion mapping,
-                                and a further privacy and security pass. None of these exist yet.
-                            </p>
+                    </div>
+                </div>
+
+                <div class="cs">
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Problem</p>
+                        <div class="cs__body">
+                            <p>Getting to a clinic often means not knowing which one is open, how far it is, or what to do first. Paper records go missing between visits, so each consultation starts from nothing. In an emergency there is no fast path to the right contact.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Context</p>
+                        <div class="cs__body">
+                            <p>A mobile health application for Cameroon. The audience is general public rather than clinicians, which sets the bar for how much the app is allowed to assert about someone's health.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Constraints</p>
+                        <div class="cs__body">
+                            <ul>
+                                <li>Lower-end Android devices, so the minimum supported API level is 21 and payload weight is a real budget rather than a nice-to-have.</li>
+                                <li>Intermittent connectivity, so anything that assumes a live request will fail in the field.</li>
+                                <li>Health data, which changes what is acceptable to log, cache and retain.</li>
+                                <li>A single engineer, so anything clever has to be maintainable by one person months later.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">My role</p>
+                        <div class="cs__body">
+                            <p>Technical build across the Flutter client and the PHP API — architecture, implementation, the design system, the test suite, and the CI setup.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Architecture</p>
+                        <div class="cs__body">
+                            <p>Feature-first module layout rather than layer-first. Auth, profile, health records, reminders, notifications, clinic locator and emergency each own their own state through <code>Provider</code>, with <code>go_router</code> handling navigation between them.</p>
+                            <p>Behind that, three domains — auth, profile and health records — sit behind a repository abstraction with typed API models, so the call sites do not know or care whether data came from the network or a local store.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Key decisions</p>
+                        <div class="cs__body">
+                            <ul>
+                                <li><strong>Rule-based triage, not a model.</strong> A decision tree over documented symptom paths. Every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said. A classifier would have been easier to build and impossible to defend.</li>
+                                <li><strong>Repository abstraction before the offline work.</strong> Introduced while the app was still online-only, specifically so the offline layer can slot in underneath without rewriting the feature modules.</li>
+                                <li><strong>Tonal elevation instead of drop shadows.</strong> The design system uses surface tone to express depth because soft shadows band badly on low-cost LCD panels.</li>
+                                <li><strong>Build-time API base URL.</strong> Environments are a build flag, not a runtime toggle, so a debug endpoint cannot ship in a release build.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Implementation</p>
+                        <div class="cs__body">
+                            <p>Flutter and Dart on the client, PHP on the server, REST between them with JWT for session handling. A custom design system — <em>Clinical Sanctuary</em> — fixes the palette, an 8pt spacing grid, and the type scale, so screens stay consistent without a component library.</p>
+                            <p>Built and working in the codebase: authentication, profile management, health records, reminders, notifications, clinic locator, emergency contacts, the emergency portal, and the rule-based symptom checker.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Testing</p>
+                        <div class="cs__body">
+                            <p>88 automated tests — 72 in Flutter, 16 on the PHP API. CI runs lint and the full suite and blocks a merge if either fails, so the gate is enforced rather than aspirational.</p>
+                            <p>The repository also carries an architecture document, a deployment runbook and a risk register, which matters more than it sounds: the runbook is what makes the deployment reproducible by someone who is not me.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Security</p>
+                        <div class="cs__body">
+                            <ul>
+                                <li>Server-side login rate limiting, so throttling cannot be bypassed by talking to the API directly.</li>
+                                <li>JWT revocation, so a compromised session can be ended server-side rather than waiting for expiry.</li>
+                                <li>Password reset backed by a proper token table.</li>
+                                <li>Secrets moved out of source and into build configuration.</li>
+                                <li>Bounded queries — health records and reminders are capped rather than unbounded — so a large account cannot degrade the API for everyone else.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Trade-offs</p>
+                        <div class="cs__body">
+                            <ul>
+                                <li>Rule-based triage is narrower than a model and has to be extended by hand. That is the cost of being able to explain it.</li>
+                                <li>A hand-rolled design system means no ecosystem of ready components, in exchange for control over rendering on cheap panels.</li>
+                                <li>PHP was the pragmatic server choice for the environment rather than the interesting one; the repository abstraction is partly insurance against that decision.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Status</p>
+                        <div class="cs__body">
+                            <p>In development. The feature set above is implemented in the codebase, but the application has not been deployed and is not in front of patients. A migration-readiness review for moving the backend to Laravel returned <em>not yet</em>, with three gates still outstanding.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Not built</p>
+                        <div class="cs__body">
+                            <p>Scoped but deliberately not implemented: a QR emergency health passport, AI health companion mapping, and a further privacy and security pass. None of these exist yet, and the app does not behave as though they do.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Next</p>
+                        <div class="cs__body">
+                            <p>Clear the three migration gates, add crash reporting and structured logging, then move to a real HTTPS deployment with scheduled database backups — in that order, because there is no point collecting crash data from an environment that is not yet reproducible.</p>
+                        </div>
+                    </div>
+
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">Lessons</p>
+                        <div class="cs__body">
+                            <p>The abstraction I am most glad about is the one I added before I needed it. The one I underestimated is documentation: the runbook and risk register took an afternoon each and are the only reason the deployment path is legible now.</p>
+                            <p>The harder lesson was scope. Health software makes it very easy to promise interpretation, and most of the engineering discipline here went into deciding what the app is <em>not</em> allowed to claim.</p>
                         </div>
                     </div>
                 </div>
@@ -180,14 +287,43 @@
                     <div class="proj__info">
                         <div class="prose">
                             <p class="lede">Founder and Team Lead of a youth initiative — and the person who builds its software.</p>
+                        </div>
 
-                            <p><strong>What it is.</strong> A youth initiative running programmes in Cameroon, Ghana, Nigeria and Rwanda. I founded it in April 2025 and lead the team.</p>
+                        <div class="cs" style="margin-top: var(--s-5)">
+                            <div class="cs__block">
+                                <p class="mono cs__h">Dual role</p>
+                                <div class="cs__body">
+                                    <p>I founded Rise for Impact in April 2025 and lead the team. I am also the only engineer on it, which means the roadmap and the implementation are decided by the same person — useful for speed, and something I have had to actively guard against when the convenient technical answer is not the right programme answer.</p>
+                                </div>
+                            </div>
 
-                            <p><strong>What I built.</strong> The public site and the application behind it, from schema through API to interface. A content area so programme staff can publish without a developer. Fellowship application handling, from submission through review. An admin view for tracking programmes across the four countries. The deployment pipeline, GitHub to Vercel, with preview builds per branch.</p>
+                            <div class="cs__block">
+                                <p class="mono cs__h">Operations</p>
+                                <div class="cs__body">
+                                    <p>Programmes run in Cameroon, Ghana, Nigeria and Rwanda. The organisation publishes 500+ young people engaged across those programmes — programme reach, not platform accounts.</p>
+                                    <p>The people running it day to day are volunteers, not operators. That single fact drove most of the build: anything that required a developer to change was treated as a design failure.</p>
+                                </div>
+                            </div>
 
-                            <p><strong>Constraints.</strong> Most people arrive on mid-range Android phones over mobile data, so page weight and round trips mattered more than anything else. Programme staff are volunteers, not operators — anything that needed a deploy to change was a design failure.</p>
+                            <div class="cs__block">
+                                <p class="mono cs__h">Built</p>
+                                <div class="cs__body">
+                                    <ul>
+                                        <li>The public site and the application behind it, from schema through API to interface.</li>
+                                        <li>A content area programme staff publish through directly, without a deploy.</li>
+                                        <li>Fellowship application handling, from submission through review.</li>
+                                        <li>Admin tooling for tracking programmes across the four countries.</li>
+                                        <li>The deployment pipeline — GitHub to Vercel, with a preview build per branch so changes are reviewable before they are live.</li>
+                                    </ul>
+                                </div>
+                            </div>
 
-                            <p><strong>Reach.</strong> The organisation publishes 500+ young people engaged across its programmes. That is programme reach, not a platform user count, and the two should not be confused.</p>
+                            <div class="cs__block">
+                                <p class="mono cs__h">Constraints</p>
+                                <div class="cs__body">
+                                    <p>Most people arrive on mid-range Android devices over mobile data. Page weight and round trips mattered more than framework choice, and the content model was kept flat specifically to avoid the request waterfalls a nested one would have created.</p>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="proj__meta">
@@ -225,7 +361,7 @@
                         <div class="prose">
                             <p class="lede">An agricultural marketplace on a PHP MVC framework I wrote rather than installed.</p>
                             <p>Connects farmers, buyers and transport providers across four role-based portals — produce listings, price bidding, delivery tracking and an analytics view. Built for CS415, a software engineering course, with the full engineering process documented alongside the code.</p>
-                            <p>The interesting part is the framework underneath: a front controller, a routing layer, and the design patterns wired by hand. It is coursework, and labelling it anything else would be dishonest — but the test suite runs if you clone it, which is more than most portfolio projects can say.</p>
+                            <p>The interesting part is the framework underneath: a front controller, a routing layer, and the design patterns wired by hand. Coursework, with a test suite that runs on a fresh clone.</p>
                         </div>
 
                         <div class="proj__meta">
