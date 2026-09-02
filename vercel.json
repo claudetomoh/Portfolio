@@ -7,7 +7,9 @@
     { "source": "/lab", "destination": "/work", "permanent": true },
     { "source": "/lab.html", "destination": "/work", "permanent": true },
     { "source": "/contact", "destination": "/#contact", "permanent": true },
-    { "source": "/contact.html", "destination": "/#contact", "permanent": true }
+    { "source": "/contact.html", "destination": "/#contact", "permanent": true },
+    { "source": "/journal", "destination": "/#journal", "permanent": true },
+    { "source": "/about", "destination": "/#about", "permanent": true }
   ],
   "headers": [
     {
