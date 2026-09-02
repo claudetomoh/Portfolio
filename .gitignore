@@ -11,3 +11,29 @@ package-lock.json
 # OS files
 .DS_Store
 Thumbs.db
+
+# Internal content source-of-truth and audit records.
+# Deliberately NOT published: this repository is public, and these files
+# contain the credibility-audit narrative and a note about an unremediated
+# credential issue in another repository. Kept local until reviewed.
+content/
+
+# Working documents and process artifacts
+COMPREHENSIVE-PORTFOLIO-AUDIT-REPORT.md
+MOBILE-TESTING-CHECKLIST.md
+*-COMPLETE.md
+PERFORMANCE-AUDIT.md
+AUDIT-IMPLEMENTATION-STATUS.md
+TECHNICAL-CASE-STUDY-TEMPLATE.md
+audit_readable.txt
+audit_text.txt
+temp_docx_extract/
+*.docx
+*.zip
+
+# Backup files
+*.backup
+
+# Source CV supplied for integration. The published copy lives at
+# assets/Claude_Tomoh_Software_Engineer_CV.pdf
+Claude_Tomoh__CV_.pdf

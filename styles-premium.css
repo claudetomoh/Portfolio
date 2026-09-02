@@ -2671,3 +2671,33 @@
                                 justify-content: flex-start;
                             }
                         }
+/* ===================================
+   PHASE 3.1 — ACCESSIBILITY HEADING FIX
+   Subpages were promoted from <h2> to <h1> so each document has exactly one
+   top-level heading. Bare h1 renders larger than h2, so these rules pin the
+   promoted headings to the previous h2 sizing. Visual output is unchanged.
+   =================================== */
+
+h1.section-title,
+h1.contact-title {
+    font-size: clamp(1.5rem, 4vw, 4rem);
+    font-weight: 700;
+    color: var(--foreground);
+    line-height: 1.3;
+}
+
+@media (max-width: 640px) {
+    h1.section-title,
+    h1.contact-title {
+        font-size: 1.4rem;
+        line-height: 1.3;
+        margin-bottom: 0.65rem;
+    }
+}
+
+@media (min-width: 969px) {
+    h1.section-title,
+    h1.contact-title {
+        font-size: 2.75rem;
+    }
+}

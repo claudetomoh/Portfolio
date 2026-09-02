@@ -10,11 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroAnimations();
     initScrollReveal();
     initSmoothScroll();
-    // initParticles(); // Disabled for cleaner, calmer design
     initNavScroll();
-    initFormValidation();
-    initThemeToggle();
     initMobileMenu();
+    initActiveNav();
 });
 
 // ===================================
@@ -173,114 +171,6 @@ function initSmoothScroll() {
 }
 
 // ===================================
-// PARTICLE CANVAS ANIMATION
-// ===================================
-function initParticles() {
-    const canvas = document.getElementById('hero-canvas');
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouseX = 0;
-    let mouseY = 0;
-
-    // Set canvas size
-    function setCanvasSize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    setCanvasSize();
-    window.addEventListener('resize', setCanvasSize);
-
-    // Track mouse
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    // Particle class
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.size = Math.random() * 2 + 1;
-            this.opacity = Math.random() * 0.5 + 0.2;
-        }
-
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-
-            // Mouse interaction
-            const dx = mouseX - this.x;
-            const dy = mouseY - this.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < 150) {
-                const force = (150 - distance) / 150;
-                this.x -= dx * force * 0.03;
-                this.y -= dy * force * 0.03;
-            }
-
-            // Wrap around edges
-            if (this.x < 0) this.x = canvas.width;
-            if (this.x > canvas.width) this.x = 0;
-            if (this.y < 0) this.y = canvas.height;
-            if (this.y > canvas.height) this.y = 0;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 217, 255, ${this.opacity})`;
-            ctx.fill();
-        }
-    }
-
-    // Create particles
-    for (let i = 0; i < 80; i++) {
-        particles.push(new Particle());
-    }
-
-    // Animation loop
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Draw connections
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < 120) {
-                    const opacity = (120 - distance) / 120 * 0.2;
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(0, 217, 255, ${opacity})`;
-                    ctx.lineWidth = 1;
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
-            }
-        }
-
-        // Update and draw particles
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
-        });
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-}
-
-// ===================================
 // NAVIGATION SCROLL EFFECTS
 // ===================================
 function initNavScroll() {
@@ -318,109 +208,48 @@ function initMobileMenu() {
 
     if (!menuToggle || !navMenu) return;
 
-    // Toggle menu on button click
+    // Keep aria-expanded in sync with the visual state
+    const setOpen = (open) => {
+        menuToggle.classList.toggle('active', open);
+        navMenu.classList.toggle('active', open);
+        menuToggle.setAttribute('aria-expanded', String(open));
+    };
+
+    setOpen(false);
+
     menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
+        setOpen(!navMenu.classList.contains('active'));
     });
 
     // Close menu when clicking on a link
-    const navLinks = navMenu.querySelectorAll('a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            menuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => setOpen(false));
     });
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.nav-container')) {
-            menuToggle.classList.remove('active');
-            navMenu.classList.remove('active');
+        if (!e.target.closest('.nav-container')) setOpen(false);
+    });
+
+    // Close on Escape and return focus to the toggle
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+            setOpen(false);
+            menuToggle.focus();
         }
     });
 }
 
 // ===================================
-// FORM VALIDATION
+// ACTIVE NAV STATE
 // ===================================
-function initFormValidation() {
-    const form = document.querySelector('.contact-form');
-
-    if (!form) return;
-
-    form.addEventListener('submit', async(e) => {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-
-        // Validation
-        if (!data.name || !data.email || !data.message) {
-            showNotification('Please fill in all required fields.', 'error');
-            return;
-        }
-
-        if (!isValidEmail(data.email)) {
-            showNotification('Please enter a valid email address.', 'error');
-            return;
-        }
-
-        // Submit
-        const button = form.querySelector('button[type="submit"]');
-        const originalText = button.innerHTML;
-        button.innerHTML = '<span class="btn-text">Sending...</span>';
-        button.disabled = true;
-
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Success
-        showNotification('Thank you! Your message has been sent.', 'success');
-        form.reset();
-
-        // Reset button
-        button.innerHTML = originalText;
-        button.disabled = false;
+function initActiveNav() {
+    const path = window.location.pathname.replace(/\/index\.html$/, '/') || '/';
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('/#')) return;
+        if (href === path) link.setAttribute('aria-current', 'page');
     });
-}
-
-function isValidEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-function showNotification(message, type = 'info') {
-    const existing = document.querySelector('.notification');
-    if (existing) existing.remove();
-
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-
-    Object.assign(notification.style, {
-        position: 'fixed',
-        top: '100px',
-        right: '20px',
-        padding: '1rem 1.5rem',
-        backgroundColor: type === 'error' ? '#FF4757' : type === 'success' ? '#00D9FF' : '#0A0E27',
-        color: type === 'success' || type === 'error' ? '#0A0E27' : 'white',
-        borderRadius: '4px',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-        zIndex: '10000',
-        fontFamily: 'Space Grotesk, sans-serif',
-        fontSize: '0.9375rem',
-        fontWeight: '600',
-        maxWidth: '400px',
-        animation: 'slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-        cursor: 'pointer'
-    });
-
-    document.body.appendChild(notification);
-
-    notification.addEventListener('click', () => notification.remove());
-    setTimeout(() => notification.remove(), 5000);
 }
 
 // ===================================
@@ -491,49 +320,7 @@ if (prefersReducedMotion) {
 }
 
 
-// ===================================
-// THEME TOGGLE
-// ===================================
-function initThemeToggle() {
-    const themeToggle = document.getElementById('themeToggle');
-    if (!themeToggle) {
-        console.log('Theme toggle button not found');
-        return;
-    }
 
-    // Check for saved theme preference or default to 'dark'
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    console.log('Current theme:', currentTheme);
-
-    // Apply the theme on load
-    if (currentTheme === 'light') {
-        document.body.classList.add('light-mode');
-    }
-
-    // Toggle theme on button click
-    themeToggle.addEventListener('click', () => {
-        console.log('Theme toggle clicked!');
-        document.body.classList.toggle('light-mode');
-
-        // Save the preference
-        const theme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
-        localStorage.setItem('theme', theme);
-        console.log('Theme changed to:', theme);
-
-        // Add a subtle animation to the button
-        themeToggle.style.transform = 'rotate(360deg)';
-        setTimeout(() => {
-            themeToggle.style.transform = 'rotate(0deg)';
-        }, 300);
-    });
-
-    // Smooth transition for theme toggle
-    themeToggle.style.transition = 'transform 0.3s ease';
-    console.log('Theme toggle initialized successfully');
-}
-
-
-console.log('%cÔ£¿ Premium Portfolio Loaded', 'color: #00D9FF; font-size: 16px; font-weight: 700; text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);');
 
 // ===================================
 // PREMIUM SECTIONS SCROLL ANIMATIONS

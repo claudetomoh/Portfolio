@@ -1,0 +1,929 @@
+/* ==========================================================================
+   Claude Tomoh — design system
+   Phase 3.2. Replaces the previous 6-file, 7,485-line chain.
+
+   Layers:  tokens → reset → type → layout → motion → components → sections
+   Themes:  deliberate light and dark palettes, not an inversion.
+   Accent:  one hue (rust), retuned per theme for contrast.
+   ========================================================================== */
+
+/* ── 1. TOKENS ─────────────────────────────────────────────────────────── */
+
+:root {
+    /* Neutrals — light theme is the default definition */
+    --bg:            #FAF9F7;
+    --bg-sunken:     #F2F0EC;
+    --surface:       #FFFFFF;
+    --text:          #14130F;
+    --text-muted:    #6A665E;
+    --text-faint:    #949087;
+    --rule:          #E3DFD8;
+    --rule-strong:   #CFC9C0;
+
+    /* Single accent */
+    --accent:        #B4441F;
+    --accent-hover:  #93341440;
+    --accent-wash:   #B4441F14;
+
+    /* Selection */
+    --select-bg:     #14130F;
+    --select-fg:     #FAF9F7;
+
+    /* Type */
+    --font-display:  'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+    --font-sans:     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    /* Modular scale — 1.25, fluid on the display tier only */
+    --t-micro: 0.6875rem;
+    --t-xs:    0.8125rem;
+    --t-sm:    0.9375rem;
+    --t-base:  1.0625rem;
+    --t-lg:    1.25rem;
+    --t-xl:    1.5rem;
+    --t-2xl:   clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+    --t-3xl:   clamp(2.25rem, 1.6rem + 3vw, 4rem);
+    --t-4xl:   clamp(2.75rem, 1.5rem + 6vw, 7rem);
+
+    /* Space — 4px base */
+    --s-1: 0.25rem;  --s-2: 0.5rem;   --s-3: 0.75rem;  --s-4: 1rem;
+    --s-5: 1.5rem;   --s-6: 2rem;     --s-7: 3rem;     --s-8: 4rem;
+    --s-9: 6rem;     --s-10: 8rem;    --s-11: 12rem;
+
+    /* Section rhythm varies by importance, deliberately */
+    --section-y:      clamp(4.5rem, 3rem + 7vw, 9rem);
+    --section-y-lead: clamp(6rem, 4rem + 9vw, 12rem);
+
+    /* Layout */
+    --page-max:    76rem;
+    --measure:     62ch;
+    --gutter:      clamp(1.25rem, 0.5rem + 3vw, 4rem);
+
+    /* Two radii. That is all. */
+    --r-sm: 2px;
+    --r-md: 5px;
+
+    /* Canvas ink for the hero field, read by scripts/site.js */
+    --field-ink: 20, 19, 15;
+
+    /* Motion — three tiers, consistent easing */
+    --dur-micro: 160ms;
+    --dur-std:   420ms;
+    --dur-sig:   900ms;
+    --ease:      cubic-bezier(0.22, 0.61, 0.24, 1);
+    --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    --bg:            #0E0E0D;
+    --bg-sunken:     #000000;
+    --surface:       #161615;
+    --text:          #F1EFEA;
+    --text-muted:    #8E8A81;
+    --text-faint:    #6A665E;
+    --rule:          #262523;
+    --rule-strong:   #35332F;
+
+    --accent:        #F0784A;
+    --accent-hover:  #FF8C5C;
+    --accent-wash:   #F0784A1A;
+
+    --select-bg:     #F1EFEA;
+    --select-fg:     #0E0E0D;
+    --field-ink: 241, 239, 234;
+
+    color-scheme: dark;
+}
+
+/* System preference on first visit, before any explicit choice */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg:            #0E0E0D;
+        --bg-sunken:     #000000;
+        --surface:       #161615;
+        --text:          #F1EFEA;
+        --text-muted:    #8E8A81;
+        --text-faint:    #6A665E;
+        --rule:          #262523;
+        --rule-strong:   #35332F;
+
+        --accent:        #F0784A;
+        --accent-hover:  #FF8C5C;
+        --accent-wash:   #F0784A1A;
+
+        --select-bg:     #F1EFEA;
+        --select-fg:     #0E0E0D;
+        --field-ink: 241, 239, 234;
+
+        color-scheme: dark;
+    }
+}
+
+/* ── 2. RESET ──────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--t-base);
+    line-height: 1.6;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'cv11' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    /* Theme crossfade. Kept off transform/opacity so it never fights motion. */
+    transition: background-color var(--dur-std) var(--ease),
+                color var(--dur-std) var(--ease);
+}
+
+img, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; padding: 0; }
+
+::selection { background: var(--select-bg); color: var(--select-fg); }
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--r-sm);
+}
+
+/* ── 3. TYPE ───────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
+
+.display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+}
+
+.mono {
+    font-family: var(--font-mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.lede { font-size: var(--t-lg); line-height: 1.55; color: var(--text-muted); max-width: var(--measure); }
+.prose { max-width: var(--measure); }
+.prose p + p { margin-top: var(--s-4); }
+.prose strong { font-weight: 600; color: var(--text); }
+.muted { color: var(--text-muted); }
+
+/* ── 4. LAYOUT ─────────────────────────────────────────────────────────── */
+
+.wrap {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+.section { padding-block: var(--section-y); }
+.section--lead { padding-block: var(--section-y-lead); }
+.section--sunken { background: var(--bg-sunken); }
+.section + .section { border-top: 1px solid var(--rule); }
+
+/* Section head: mono eyebrow in a narrow rail, title beside it */
+.s-head {
+    display: grid;
+    gap: var(--s-3);
+    margin-bottom: var(--s-7);
+}
+.s-head__eyebrow { color: var(--text-faint); }
+.s-head__title { font-size: var(--t-2xl); }
+
+@media (min-width: 60rem) {
+    .s-head {
+        grid-template-columns: 12rem 1fr;
+        gap: var(--s-6);
+        align-items: baseline;
+    }
+    .s-head__eyebrow { padding-top: 0.6rem; }
+}
+
+.skip-link {
+    position: absolute;
+    left: var(--s-4);
+    top: -4rem;
+    z-index: 200;
+    background: var(--text);
+    color: var(--bg);
+    padding: var(--s-3) var(--s-5);
+    border-radius: var(--r-md);
+    transition: top var(--dur-micro) var(--ease);
+}
+.skip-link:focus { top: var(--s-4); }
+
+/* ── 5. MOTION SYSTEM ──────────────────────────────────────────────────── */
+
+/* STANDARD: section reveal. Elements are visible by default and only hidden
+   once JS confirms it will animate them — no content is gated on JS. */
+.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--dur-std) var(--ease-out),
+                transform var(--dur-std) var(--ease-out);
+}
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+.js [data-reveal][data-delay="1"] { transition-delay: 70ms; }
+.js [data-reveal][data-delay="2"] { transition-delay: 140ms; }
+.js [data-reveal][data-delay="3"] { transition-delay: 210ms; }
+
+/* SIGNATURE: line mask. Used only in the hero. */
+.line-mask { display: block; overflow: hidden; }
+.line-mask > span {
+    display: block;
+    transform: translateY(105%);
+    transition: transform var(--dur-sig) var(--ease-out);
+}
+.js .is-ready .line-mask > span { transform: none; }
+.line-mask:nth-of-type(2) > span { transition-delay: 90ms; }
+.line-mask:nth-of-type(3) > span { transition-delay: 180ms; }
+
+/* SIGNATURE: image reveal mask */
+.js .media[data-reveal] img { transform: scale(1.06); transition: transform var(--dur-sig) var(--ease-out); }
+.js .media[data-reveal].is-in img { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+    }
+    .js [data-reveal] { opacity: 1; transform: none; }
+    .line-mask > span { transform: none; }
+    .js .media[data-reveal] img { transform: none; }
+    .ticker__track { animation: none !important; transform: none !important; }
+}
+
+/* ── 6. COMPONENTS ─────────────────────────────────────────────────────── */
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 0.8rem 1.4rem;
+    border-radius: var(--r-md);
+    font-size: var(--t-sm);
+    font-weight: 500;
+    border: 1px solid transparent;
+    min-height: 44px;
+    transition: background-color var(--dur-micro) var(--ease),
+                border-color var(--dur-micro) var(--ease),
+                color var(--dur-micro) var(--ease),
+                transform var(--dur-micro) var(--ease);
+}
+.btn--primary { background: var(--text); color: var(--bg); }
+.btn--primary:hover { background: var(--accent); }
+.btn--ghost { border-color: var(--rule-strong); color: var(--text); }
+.btn--ghost:hover { border-color: var(--text); background: var(--accent-wash); }
+.btn:active { transform: translateY(1px); }
+.btn__arrow { transition: transform var(--dur-micro) var(--ease); }
+.btn:hover .btn__arrow { transform: translateX(3px); }
+
+/* Inline link with a rule that grows from the left */
+.link {
+    position: relative;
+    display: inline-block;
+    color: var(--text);
+    padding-bottom: 1px;
+}
+.link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 1px;
+    background: currentColor;
+    transform: scaleX(var(--sx, 0));
+    transform-origin: left;
+    transition: transform var(--dur-micro) var(--ease);
+}
+.link:hover { color: var(--accent); }
+.link:hover::after { --sx: 1; }
+.link--always::after { --sx: 1; }
+
+/* Status dot + label — subtle metadata, not a badge */
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--text-muted);
+}
+.status::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-faint);
+    flex: none;
+}
+.status--live::before { background: #3F9142; }
+:root[data-theme="dark"] .status--live::before { background: #5CC062; }
+.status--dev::before { background: var(--accent); }
+
+/* Tag — one chip style, technologies only */
+.tag {
+    font-family: var(--font-mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+    padding: 0.28rem 0.5rem;
+    white-space: nowrap;
+    transition: border-color var(--dur-micro) var(--ease), color var(--dur-micro) var(--ease);
+}
+.tag-row { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.tag-row:hover .tag { color: var(--text-faint); }
+.tag-row .tag:hover { color: var(--text); border-color: var(--rule-strong); }
+
+/* ── 7. NAV ────────────────────────────────────────────────────────────── */
+
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur-std) var(--ease),
+                background-color var(--dur-std) var(--ease);
+}
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+    .nav { background: var(--bg); }
+}
+.nav.is-stuck { border-bottom-color: var(--rule); }
+
+.nav__inner {
+    position: relative;
+    z-index: 1; /* keeps the brand and burger above the open sheet */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    min-height: 4.5rem;
+    transition: min-height var(--dur-std) var(--ease);
+}
+.nav.is-stuck .nav__inner { min-height: 3.75rem; }
+
+.nav__brand { font-family: var(--font-display); font-size: var(--t-lg); letter-spacing: -0.01em; }
+.nav__brand:hover { color: var(--accent); }
+
+.nav__links { display: none; align-items: center; gap: var(--s-5); }
+.nav__links a {
+    font-size: var(--t-sm);
+    color: var(--text-muted);
+    position: relative;
+    padding-block: 0.25rem;
+    transition: color var(--dur-micro) var(--ease);
+}
+.nav__links a:hover { color: var(--text); }
+.nav__links a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 100%; height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-micro) var(--ease);
+}
+.nav__links a[aria-current="page"],
+.nav__links a.is-active { color: var(--text); }
+.nav__links a[aria-current="page"]::after,
+.nav__links a.is-active::after { transform: scaleX(1); }
+
+.nav__end { display: flex; align-items: center; gap: var(--s-2); }
+
+.icon-btn {
+    width: 44px; height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--r-md);
+    color: var(--text-muted);
+    transition: color var(--dur-micro) var(--ease), background-color var(--dur-micro) var(--ease);
+}
+.icon-btn:hover { color: var(--text); background: var(--accent-wash); }
+.icon-btn svg { width: 18px; height: 18px; }
+
+/* Theme toggle: sun and moon crossfade in place */
+.theme-t__icon { position: relative; width: 18px; height: 18px; }
+.theme-t__icon svg {
+    position: absolute; inset: 0;
+    transition: opacity var(--dur-std) var(--ease), transform var(--dur-std) var(--ease);
+}
+.theme-t__sun  { opacity: 0; transform: rotate(-60deg) scale(0.7); }
+.theme-t__moon { opacity: 1; transform: none; }
+:root[data-theme="dark"] .theme-t__sun  { opacity: 1; transform: none; }
+:root[data-theme="dark"] .theme-t__moon { opacity: 0; transform: rotate(60deg) scale(0.7); }
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-t__sun  { opacity: 1; transform: none; }
+    :root:not([data-theme="light"]) .theme-t__moon { opacity: 0; transform: rotate(60deg) scale(0.7); }
+}
+
+/* Mobile menu — full-height sheet, staggered items. Not a dropdown. */
+.nav__burger { display: grid; }
+.nav__burger span {
+    display: block;
+    width: 20px; height: 1.5px;
+    background: currentColor;
+    transition: transform var(--dur-std) var(--ease), opacity var(--dur-micro) var(--ease);
+}
+.nav__burger span + span { margin-top: 5px; }
+.nav.is-open .nav__burger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav.is-open .nav__burger span:nth-child(2) { opacity: 0; }
+.nav.is-open .nav__burger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.nav__sheet {
+    position: fixed;
+    /* inset:0 rather than a fixed top offset, so no strip of page shows
+       through when the nav compacts on scroll */
+    inset: 0;
+    background: var(--bg);
+    padding: 6rem var(--gutter) var(--s-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity var(--dur-std) var(--ease),
+                transform var(--dur-std) var(--ease),
+                visibility 0s linear var(--dur-std);
+}
+.nav.is-open .nav__sheet {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+}
+.nav__sheet a {
+    font-family: var(--font-display);
+    font-size: var(--t-2xl);
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity var(--dur-std) var(--ease-out), transform var(--dur-std) var(--ease-out);
+}
+.nav.is-open .nav__sheet a { opacity: 1; transform: none; }
+.nav.is-open .nav__sheet a:nth-child(1) { transition-delay: 60ms; }
+.nav.is-open .nav__sheet a:nth-child(2) { transition-delay: 110ms; }
+.nav.is-open .nav__sheet a:nth-child(3) { transition-delay: 160ms; }
+.nav.is-open .nav__sheet a:nth-child(4) { transition-delay: 210ms; }
+.nav.is-open .nav__sheet a:nth-child(5) { transition-delay: 260ms; }
+.nav__sheet-foot { margin-top: auto; display: flex; gap: var(--s-5); color: var(--text-muted); }
+
+@media (min-width: 56rem) {
+    .nav__links { display: flex; }
+    .nav__burger { display: none; }
+    .nav__sheet { display: none; }
+}
+
+/* ── 8. HERO ───────────────────────────────────────────────────────────── */
+
+.hero {
+    position: relative;
+    isolation: isolate;
+    padding-block: clamp(2rem, 1rem + 5vw, 5rem) var(--section-y);
+    overflow: hidden;
+}
+
+/* Interactive technical field — a dot lattice that wakes near the cursor.
+   Barely visible at rest by design. Painted by scripts/site.js; the CSS
+   fallback below stands in when JS or motion is unavailable. */
+.field {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease) 200ms;
+}
+.field.is-lit { opacity: 1; }
+
+/* Static lattice for no-JS, touch and reduced-motion */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image: radial-gradient(circle at 1px 1px, var(--rule-strong) 1px, transparent 0);
+    background-size: 34px 34px;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 60% 35%, #000 20%, transparent 78%);
+    mask-image: radial-gradient(ellipse 80% 60% at 60% 35%, #000 20%, transparent 78%);
+}
+.js .hero.has-field::before { opacity: 0; transition: opacity var(--dur-std) var(--ease); }
+
+.hero__grid { display: grid; gap: var(--s-6); }
+.hero__grid > * { min-width: 0; }
+
+@media (min-width: 60rem) {
+    .hero__grid {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        gap: var(--s-8);
+        align-items: center;
+    }
+}
+
+.hero__label {
+    color: var(--accent);
+    margin-bottom: var(--s-5);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+}
+.hero__label::after {
+    content: '';
+    height: 1px;
+    width: 3rem;
+    background: currentColor;
+    opacity: 0.45;
+}
+
+.hero__title {
+    font-size: var(--t-4xl);
+    margin-bottom: var(--s-5);
+    letter-spacing: -0.025em;
+}
+.hero__title em { font-style: italic; color: var(--text-muted); }
+
+/* Discipline line — the three things, small, under the headline */
+.hero__disciplines {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-3);
+    color: var(--text-faint);
+    margin-bottom: var(--s-5);
+}
+.hero__disciplines span:not(:last-child)::after {
+    content: '·';
+    margin-left: var(--s-3);
+    opacity: 0.6;
+}
+
+/* Portrait — editorial crop, not a headshot in a rounded box.
+   The frame is asymmetric: square top-left, softened bottom-right, and it
+   breaks the gutter slightly on wide screens. */
+.hero__portrait {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--r-sm) var(--r-sm) 4rem var(--r-sm);
+    background: var(--bg-sunken);
+    aspect-ratio: 5 / 4;
+    will-change: transform;
+}
+@media (min-width: 60rem) {
+    .hero__portrait {
+        aspect-ratio: 4 / 5;
+        margin-right: calc(var(--gutter) * -0.5);
+    }
+}
+/* <picture> is inline by default, which would stop the img resolving height:100% */
+.hero__portrait picture { display: block; width: 100%; height: 100%; }
+.hero__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Square source, cropped high so the face sits on the upper third */
+    object-position: 50% 22%;
+    filter: saturate(0.9) contrast(1.03);
+    transform: scale(1.08);
+    transition: transform var(--dur-sig) var(--ease-out), filter var(--dur-std) var(--ease);
+}
+.js .is-ready .hero__portrait img { transform: scale(1); }
+.hero__portrait:hover img { filter: saturate(1); }
+
+/* Cursor-responsive drift. Values are written by JS as custom properties so
+   the compositor does the work and no layout is ever read on a pointer move. */
+.hero__portrait__inner {
+    position: absolute;
+    inset: -2%;
+    transform: translate3d(calc(var(--px, 0) * 10px), calc(var(--py, 0) * 10px), 0);
+    transition: transform 600ms var(--ease);
+}
+
+/* Hairline caption pinned to the frame */
+.hero__portrait figcaption {
+    position: absolute;
+    left: var(--s-4);
+    bottom: var(--s-4);
+    color: #fff;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+    mix-blend-mode: normal;
+}
+
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+
+/* Metadata rail beneath the hero text */
+.hero__rail {
+    display: grid;
+    gap: var(--s-4);
+    padding-top: var(--s-5);
+    margin-top: var(--s-5);
+    border-top: 1px solid var(--rule);
+}
+@media (min-width: 40rem) {
+    .hero__rail { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-5); }
+}
+.hero__stat { display: grid; gap: 0.15rem; }
+.hero__stat dt { color: var(--text-faint); font-family: var(--font-mono); font-size: var(--t-micro); letter-spacing: 0.08em; text-transform: uppercase; }
+.hero__stat dd { font-size: var(--t-sm); }
+
+/* Hairline that draws itself in */
+.rule-draw {
+    height: 1px;
+    background: var(--rule);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-sig) var(--ease-out) 200ms;
+}
+.js .is-ready .rule-draw { transform: scaleX(1); }
+
+/* ── 9. ABOUT ──────────────────────────────────────────────────────────── */
+
+.about__grid { display: grid; gap: var(--s-7); }
+@media (min-width: 60rem) {
+    .about__grid { grid-template-columns: minmax(0, 1fr) 19rem; gap: var(--s-8); align-items: start; }
+    /* Story first in the source, panel to the side visually */
+    .about__panel { position: sticky; top: 7rem; }
+}
+.about__grid > * { min-width: 0; }
+
+/* "Currently" — the small human details. Every line traces to content/. */
+.now {
+    border-top: 2px solid var(--text);
+    padding-top: var(--s-4);
+}
+.now__label { color: var(--text-faint); margin-bottom: var(--s-4); }
+.now__item { padding-block: var(--s-3); border-bottom: 1px solid var(--rule); }
+.now__item:last-child { border-bottom: 0; }
+.now__k {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+.now__v { font-size: var(--t-sm); line-height: 1.5; }
+
+.about__facts {
+    margin-top: var(--s-6);
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+}
+.about__fact {
+    display: grid;
+    gap: var(--s-1);
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--rule);
+    font-size: var(--t-sm);
+}
+@media (min-width: 34rem) {
+    .about__fact { grid-template-columns: 8.5rem minmax(0, 1fr); gap: var(--s-4); }
+}
+.about__fact dt { color: var(--text-faint); font-family: var(--font-mono); font-size: var(--t-micro); letter-spacing: 0.08em; text-transform: uppercase; padding-top: 0.25rem; }
+
+/* ── 10. SKILLS — technical ticker ─────────────────────────────────────── */
+
+.stack { display: grid; gap: var(--s-5); }
+
+.stack__row { display: grid; gap: var(--s-3); }
+/* minmax(0,1fr) is load-bearing: the ticker track is width:max-content, and an
+   `auto` minimum would let it push the grid wider than the viewport. */
+@media (min-width: 48rem) {
+    .stack__row { grid-template-columns: 9rem minmax(0, 1fr); gap: var(--s-5); align-items: center; }
+}
+.stack__row > * { min-width: 0; }
+
+.stack__label { color: var(--text-faint); }
+
+.ticker {
+    position: relative;
+    overflow: hidden;
+    /* Fade the edges so items enter and leave rather than being cut */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.ticker__track {
+    display: flex;
+    gap: var(--s-2);
+    width: max-content;
+    animation: ticker var(--speed, 42s) linear infinite;
+    animation-play-state: running;
+}
+.ticker:hover .ticker__track,
+.ticker:focus-within .ticker__track { animation-play-state: paused; }
+.ticker--rev .ticker__track { animation-direction: reverse; }
+
+@keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* Items dim as a group on hover so the hovered one reads as selected */
+.ticker:hover .tag { color: var(--text-faint); border-color: var(--rule); }
+.ticker .tag:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ── 11. WORK ──────────────────────────────────────────────────────────── */
+
+.work { display: grid; gap: var(--s-10); }
+
+.proj { display: grid; gap: var(--s-5); }
+.proj > * { min-width: 0; }
+@media (min-width: 64rem) {
+    .proj { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: var(--s-8); align-items: start; }
+    .proj--flip .proj__media { order: -1; }
+    /* Metadata column tracks the visual on tall projects */
+    .proj__info { position: sticky; top: 7rem; }
+}
+
+.proj__num {
+    color: var(--text-faint);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-bottom: var(--s-4);
+}
+.proj__num::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.proj__title { font-size: var(--t-2xl); margin-bottom: var(--s-2); }
+.proj__sub { color: var(--text-muted); margin-bottom: var(--s-4); }
+.proj__meta { margin-top: var(--s-5); display: grid; gap: var(--s-3); }
+.proj__actions { margin-top: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-5); }
+
+.media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-md);
+    border: 1px solid var(--rule);
+    background: var(--bg-sunken);
+}
+.media img { width: 100%; transition: transform var(--dur-sig) var(--ease-out); }
+.media:hover img { transform: scale(1.02); }
+
+/* Fallback visual for projects with no screenshot — built from real data,
+   never a fabricated UI mock. */
+.schematic {
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    background: var(--bg-sunken);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-md);
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+}
+.schematic__layer {
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+    padding: var(--s-3) var(--s-4);
+    background: var(--surface);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    transition: border-color var(--dur-micro) var(--ease), transform var(--dur-micro) var(--ease);
+}
+.schematic__layer:hover { border-color: var(--accent); transform: translateX(3px); }
+.schematic__layer b { font-weight: 500; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--t-micro); width: 100%; }
+.schematic__layer span { color: var(--text-muted); }
+.schematic__arrow { color: var(--text-faint); text-align: center; line-height: 1; }
+
+/* ── 12. TIMELINE ──────────────────────────────────────────────────────── */
+
+.tl { display: grid; }
+.tl__item {
+    display: grid;
+    gap: var(--s-2);
+    padding-block: var(--s-5);
+    border-top: 1px solid var(--rule);
+    transition: background-color var(--dur-std) var(--ease);
+}
+@media (min-width: 48rem) {
+    .tl__item {
+        grid-template-columns: 9rem minmax(0, 1fr) auto;
+        gap: var(--s-5);
+        align-items: baseline;
+    }
+}
+.tl__item > * { min-width: 0; }
+/* Timeline rows are links on the work page; keep the hover affordance honest */
+a.tl__item:hover .tl__role { color: var(--accent); }
+.tl__item:hover { background: var(--accent-wash); }
+.tl__when { color: var(--text-faint); }
+.tl__role { font-size: var(--t-lg); }
+.tl__org { color: var(--text-muted); font-size: var(--t-sm); }
+.tl__note { color: var(--text-muted); font-size: var(--t-sm); margin-top: var(--s-2); max-width: var(--measure); }
+
+/* ── 13. JOURNAL ───────────────────────────────────────────────────────────
+   Four streams: field notes, writing, research, vlogs. Streams with no
+   publishable entries are omitted from the markup entirely — no empty states.
+   Source of truth: content/journal.json */
+
+/* Streams with no publishable entries render nothing at all — no chips, no
+   empty states, no "coming soon". Adding an entry to content/journal.json is
+   all that is needed for a stream to appear.
+
+   Publication index — typography and whitespace, not cards */
+
+.pubs { display: grid; }
+.pub {
+    display: grid;
+    gap: var(--s-2);
+    padding-block: var(--s-5);
+    border-top: 1px solid var(--rule);
+}
+@media (min-width: 48rem) {
+    .pub { grid-template-columns: 6rem minmax(0, 1fr) 14rem; gap: var(--s-5); align-items: baseline; }
+}
+.pub > * { min-width: 0; }
+.pub__year { color: var(--text-faint); }
+.pub__title { font-family: var(--font-display); font-size: var(--t-xl); }
+.pub__where { color: var(--text-muted); font-size: var(--t-sm); }
+
+/* ── 14. CONTACT ───────────────────────────────────────────────────────── */
+
+.contact { text-align: left; }
+.contact__q {
+    font-family: var(--font-display);
+    font-size: var(--t-3xl);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--s-6);
+    max-width: 18ch;
+}
+.contact__channels {
+    display: grid;
+    gap: 0;
+    margin-top: var(--s-7);
+    border-top: 1px solid var(--rule);
+}
+.contact__ch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--rule);
+    transition: padding-left var(--dur-std) var(--ease), color var(--dur-micro) var(--ease);
+}
+.contact__ch:hover { padding-left: var(--s-3); color: var(--accent); }
+.contact__ch span:last-child { color: var(--text-faint); font-family: var(--font-mono); font-size: var(--t-xs); }
+.contact__ch:hover span:last-child { color: var(--accent); }
+
+/* ── 15. FOOTER ────────────────────────────────────────────────────────── */
+
+.foot {
+    border-top: 1px solid var(--rule);
+    padding-block: var(--s-7);
+    color: var(--text-muted);
+    font-size: var(--t-sm);
+}
+.foot__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4) var(--s-6);
+    align-items: baseline;
+    justify-content: space-between;
+}
+.foot__links { display: flex; flex-wrap: wrap; gap: var(--s-5); }
+
+/* ── 16. UTILITIES ─────────────────────────────────────────────────────── */
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+.stack-sm { display: grid; gap: var(--s-3); }
+.stack-md { display: grid; gap: var(--s-5); }
