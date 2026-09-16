@@ -14,8 +14,7 @@ Thumbs.db
 
 # Content layer (Phase 2B split).
 #
-# content/public/ IS tracked. It holds only publishable facts and is the
-# single source of truth for what the site renders.
+# content/public/ IS tracked. It holds only content the build renders.
 #
 # content/_private/ is NEVER tracked. It holds internal records that are
 # not publishable. This repository is public.

@@ -892,11 +892,10 @@ a.tl__item:hover .tl__role { color: var(--accent); }
 
 /* ── 13. JOURNAL ───────────────────────────────────────────────────────────
    Four streams: field notes, writing, research, vlogs. Streams with no
-   publishable entries are omitted from the markup entirely — no empty states.
-   Source of truth: content/journal.json */
+   publishable entries are omitted from the markup entirely — no empty states. */
 
 /* Stream index. A stream with no entries shows a rule and a quiet state
-   rather than a "coming soon" card. Source of truth: content/journal.json */
+   rather than a "coming soon" card. */
 .streams { display: grid; margin-bottom: var(--s-8); }
 .stream {
     display: grid;
