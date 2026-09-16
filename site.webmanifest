@@ -1,7 +1,7 @@
 {
-    "name": "Claude Tomoh Ikfingeh",
+    "name": "Claude Tomoh Ikfingeh — AI & Software Builder",
     "short_name": "Claude Tomoh",
-    "description": "African AI engineer building production systems with measurable impact. ML models achieving 87%+ accuracy, platforms serving 500+ users across 4 African countries.",
+    "description": "Computer Science student at Ashesi University and Mastercard Foundation Scholar. Software engineering, AI/ML and product work across web, mobile and machine learning.",
     "icons": [{
             "src": "/images/android-chrome-192x192.png",
             "sizes": "192x192",
@@ -13,8 +13,8 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#0a0f1e",
-    "background_color": "#0a0f1e",
+    "theme_color": "#FAF9F7",
+    "background_color": "#FAF9F7",
     "display": "standalone",
     "start_url": "/",
     "scope": "/"
