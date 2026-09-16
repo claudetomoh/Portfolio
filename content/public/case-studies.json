@@ -113,8 +113,8 @@
       "order": 3,
       "name": "AgriLink Ghana",
       "title": "AgriLink Ghana — Claude Tomoh Ikfingeh",
-      "metaDescription": "An agricultural marketplace on a PHP MVC framework written by hand rather than installed — front controller, routing layer, design patterns wired manually. Coursework for CS415, with a test suite.",
-      "ogDescription": "An agricultural marketplace built on a PHP MVC framework written from scratch: front controller, routing layer, design patterns wired by hand. Coursework, with a test suite that runs on a fresh clone.",
+      "metaDescription": "An agricultural marketplace on a PHP MVC framework written by hand rather than installed — front controller, routing layer, design patterns wired manually. Coursework for CS415, with a unit test suite in the repository.",
+      "ogDescription": "An agricultural marketplace built on a PHP MVC framework written from scratch: front controller, routing layer, design patterns wired by hand. Coursework, with a unit test suite in the repository.",
       "lede": "An agricultural marketplace on a PHP MVC framework I wrote rather than installed.",
       "status": { "label": "Coursework · CS415", "modifier": "" },
       "tags": ["PHP 8", "MySQL 8", "MVC", "Tailwind", "Apache"],
@@ -127,10 +127,10 @@
           "<p>Farmers, buyers and transport providers each hold one piece of a transaction none of them can complete alone. The farmer does not know what produce is worth this week, the buyer cannot see what is available, and neither can arrange delivery without a third conversation.</p>"
         ] },
         { "h": "Context", "body": [
-          "<p>Built for CS415, a software engineering course, with the full engineering process documented alongside the code. Coursework — which I would rather say plainly than dress up, because coursework with a passing test suite is a stronger signal than a production claim nobody can check.</p>"
+          "<p>Built for CS415, a software engineering course, with the engineering process documented alongside the code.</p>"
         ] },
         { "h": "My role", "body": [
-          "<p>[VERIFY WITH CLAUDE] — whether this was solo or a team project, and if a team, its size and which parts I owned. The record does not establish it, and I am not going to imply sole authorship of a course project by omission.</p>"
+          "<p>CS415 coursework. Individual contributions are not broken down here, so the sections below describe the codebase rather than claiming it as solely mine.</p>"
         ] },
         { "h": "What I built", "body": [
           "<p>Four role-based portals — produce listings, price bidding, delivery tracking, and an analytics view — over a normalised MySQL schema.</p>",
@@ -140,8 +140,7 @@
           "<ul><li><strong>Hand-rolled framework, on purpose.</strong> The course was about software engineering rather than about shipping fastest. Writing the front controller and router by hand is how the patterns stop being vocabulary and start being something you can debug.</li><li><strong>Role-based portals over one interface with permission checks.</strong> Four audiences with genuinely different tasks; a single interface gated by role flags would have collapsed under conditional logic.</li></ul>"
         ] },
         { "h": "How I tested it", "body": [
-          "<p>The repository carries a unit test suite that runs on a fresh clone, which is the point — a reviewer can verify it themselves rather than take my word for it.</p>",
-          "<p class=\"muted\" style=\"font-size: var(--t-sm)\">[VERIFY WITH CLAUDE] The exact test count is not stated here. An earlier version of this site claimed 43 of 43 passing; that number has never been independently confirmed, so it is deliberately not repeated until the suite is run and the output captured. This is the most checkable claim in the portfolio and it is worth verifying properly.</p>"
+          "<p>The repository includes a unit test suite alongside the framework, so a reviewer can read it and run it rather than take my word for it.</p>"
         ] },
         { "h": "Evidence", "body": [
           "<ul><li>Public repository, with the framework and the test suite both readable.</li><li>The engineering process documented alongside the code.</li></ul>"
