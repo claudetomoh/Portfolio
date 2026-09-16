@@ -15,13 +15,13 @@
       "status": { "label": "In development · not deployed", "modifier": "dev" },
       "tags": ["Flutter", "Dart", "Provider", "go_router", "PHP", "REST", "JWT", "Material 3", "GitHub Actions"],
       "links": [],
-      "linksNote": "Repository link withheld — see projects.json repositoryLink. Do not add it here.",
+      "linksNote": "Repository link withheld. Do not add it here.",
       "schematic": {
         "alt": "Mboa Health architecture: a Flutter client over a REST transport layer to a PHP server, with the built feature set and the test suite listed beneath.",
         "layers": [
           { "label": "Client", "items": ["Flutter", "Dart", "Provider", "go_router", "Material 3"] },
-          { "label": "Transport", "items": ["REST", "JWT auth", "token revocation", "typed API models"] },
-          { "label": "Server", "items": ["PHP", "server-side rate limiting", "password reset", "bounded queries"] },
+          { "label": "Transport", "items": ["REST", "typed API models"] },
+          { "label": "Server", "items": ["PHP", "bounded queries"] },
           { "label": "Built", "items": ["authentication", "profile", "health records", "reminders", "notifications", "clinic locator", "emergency contacts", "emergency portal", "rule-based symptom checker"] },
           { "label": "Verified by", "items": ["72 Flutter tests", "16 API tests", "CI lint + test gate"] }
         ]
@@ -37,25 +37,25 @@
           "<p>Working in the codebase: authentication, profile management, health records, reminders, notifications, clinic locator, emergency contacts, the emergency portal, and the rule-based symptom checker. A custom design system — <em>Clinical Sanctuary</em> — fixes the palette, an 8pt spacing grid and the type scale, so screens stay consistent without a component library.</p>"
         ] },
         { "h": "Why these decisions", "body": [
-          "<ul><li><strong>Rule-based triage, not a model.</strong> A decision tree over documented symptom paths. Every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said. A classifier would have been easier to build and impossible to defend.</li><li><strong>Repository abstraction before the offline work.</strong> Introduced while the app was still online-only, specifically so the offline layer can slot in underneath without rewriting the feature modules.</li><li><strong>Tonal elevation instead of drop shadows.</strong> The design system uses surface tone to express depth because soft shadows band badly on low-cost LCD panels.</li><li><strong>Build-time API base URL.</strong> Environments are a build flag, not a runtime toggle, so a debug endpoint cannot ship in a release build.</li></ul>"
+          "<ul><li><strong>Rule-based triage, not a model.</strong> A decision tree over documented symptom paths. Every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said. A classifier would have been easier to build and impossible to defend.</li><li><strong>Repository abstraction before the offline work.</strong> Introduced while the app was still online-only, specifically so the offline layer can slot in underneath without rewriting the feature modules.</li><li><strong>Tonal elevation instead of drop shadows.</strong> The design system uses surface tone to express depth because soft shadows band badly on low-cost LCD panels.</li></ul>"
         ] },
         { "h": "How I tested it", "body": [
           "<p>88 automated tests — 72 in Flutter, 16 on the PHP API. CI runs lint and the full suite and blocks a merge if either fails, so the gate is enforced rather than aspirational.</p>",
-          "<p>Security work is server-side where it matters: login rate limiting so throttling cannot be bypassed by talking to the API directly, JWT revocation so a compromised session can be ended without waiting for expiry, password reset backed by a proper token table, and bounded queries on health records and reminders so one large account cannot degrade the API for everyone else.</p>"
+          "<p>Queries on health records and reminders are bounded, so one large account cannot degrade the API for everyone else.</p>"
         ] },
         { "h": "Evidence", "body": [
           "<ul><li>88 passing automated tests, split 72 Flutter / 16 PHPUnit.</li><li>A CI pipeline that enforces lint and tests on every merge.</li><li>An architecture document, a deployment runbook and a risk register in the repository.</li><li>A documented migration-readiness assessment for moving the backend to Laravel.</li></ul>",
-          "<p class=\"muted\" style=\"font-size: var(--t-sm)\">The repository is not linked here yet. Happy to walk through the code directly.</p>"
+          "<p class=\"muted\" style=\"font-size: var(--t-sm)\">The repository is not linked here. Happy to walk through the code directly.</p>"
         ] },
         { "h": "Limitations and trade-offs", "body": [
           "<ul><li>Rule-based triage is narrower than a model and has to be extended by hand. That is the cost of being able to explain it.</li><li>A hand-rolled design system means no ecosystem of ready components, in exchange for control over rendering on cheap panels.</li><li>PHP was the pragmatic server choice for the environment rather than the interesting one; the repository abstraction is partly insurance against that decision.</li></ul>"
         ] },
         { "h": "Current status", "body": [
           "<p>In development. The feature set above is implemented in the codebase, but the application has not been deployed and is not in front of patients. A migration-readiness review for moving the backend to Laravel returned <em>not yet</em>, with three gates outstanding.</p>",
-          "<p>Scoped but deliberately not implemented: a QR emergency health passport, AI health companion mapping, and a further privacy and security pass. None of these exist yet, and the app does not behave as though they do.</p>"
+          "<p>Scoped but deliberately not implemented: a QR emergency health passport, AI health companion mapping, and a further privacy review. None of these exist yet, and the app does not behave as though they do.</p>"
         ] },
         { "h": "What I would do next", "body": [
-          "<p>Clear the three migration gates, add crash reporting and structured logging, then move to a real HTTPS deployment with scheduled database backups — in that order, because there is no point collecting crash data from an environment that is not yet reproducible.</p>",
+          "<p>Clear the three migration gates, add crash reporting and structured logging, then move to a production deployment with scheduled database backups — in that order, because there is no point collecting crash data from an environment that is not yet reproducible.</p>",
           "<p>The abstraction I am most glad about is the one I added before I needed it. The one I underestimated is documentation: the runbook and risk register took an afternoon each and are the only reason the deployment path is legible now. The harder lesson was scope — health software makes it very easy to promise interpretation, and most of the engineering discipline here went into deciding what the app is <em>not</em> allowed to claim.</p>"
         ] }
       ]
