@@ -12,10 +12,14 @@ package-lock.json
 .DS_Store
 Thumbs.db
 
-# Internal content source-of-truth and audit records.
-# Deliberately NOT published: this repository is public, and these files
-# are internal records. Kept local until reviewed.
-content/
+# Content layer (Phase 2B split).
+#
+# content/public/ IS tracked. It holds only publishable facts and is the
+# single source of truth for what the site renders.
+#
+# content/_private/ is NEVER tracked. It holds internal records that are
+# not publishable. This repository is public.
+content/_private/
 
 # Working documents and process artifacts
 COMPREHENSIVE-PORTFOLIO-AUDIT-REPORT.md
