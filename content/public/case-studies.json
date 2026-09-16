@@ -30,7 +30,7 @@
         { "h": "Problem", "body": ["<p>Getting to a clinic often means not knowing which one is open, how far it is, or what to do first. Paper records go missing between visits, so each consultation starts from nothing. In an emergency there is no fast path to the right contact.</p>"] },
         { "h": "Context", "body": ["<p>A mobile health application for Cameroon. The audience is general public rather than clinicians, which sets the bar for how much the app is allowed to assert about someone's health.</p>"] },
         { "h": "My role", "body": ["<p>Technical build across the Flutter client and the PHP API — architecture, implementation, the design system, the test suite, and the CI setup.</p>"] },
-        { "h": "Constraints", "body": ["<ul><li>Lower-end Android devices, so the minimum supported API level is 21 and payload weight is a real budget rather than a nice-to-have.</li><li>Intermittent connectivity, so anything that assumes a live request will fail in the field.</li><li>Health data, which changes what is acceptable to log, cache and retain.</li><li>A single engineer, so anything clever has to be maintainable by one person months later.</li></ul>"] },
+        { "h": "Constraints", "body": ["<ul><li>Lower-end Android devices, so the minimum supported API level is 21 and payload weight is a real budget rather than a nice-to-have.</li><li>Intermittent connectivity, so anything that assumes a live request will fail in the field.</li><li>Health data, which changes what is acceptable to log, cache and retain.</li></ul>"] },
         { "h": "What I built", "body": [
           "<p>Feature-first module layout rather than layer-first. Auth, profile, health records, reminders, notifications, clinic locator and emergency each own their own state through <code>Provider</code>, with <code>go_router</code> handling navigation between them.</p>",
           "<p>Behind that, three domains — auth, profile and health records — sit behind a repository abstraction with typed API models, so the call sites do not know or care whether data came from the network or a local store.</p>",
@@ -66,9 +66,9 @@
       "order": 2,
       "name": "Rise for Impact",
       "title": "Rise for Impact — Claude Tomoh Ikfingeh",
-      "metaDescription": "Founder and sole engineer of a youth initiative running programmes in four countries. Built the platform volunteers operate without a developer. TypeScript, React, Next.js, Vercel. Live.",
-      "ogDescription": "Founder and sole engineer of a youth initiative running programmes in four countries. Built the platform its volunteers operate without needing a developer.",
-      "lede": "Founder and Team Lead of a youth initiative — and the person who builds its software.",
+      "metaDescription": "Founder and Team Lead of a youth initiative running programmes in four countries, who also built the platform its volunteers operate without a developer. TypeScript, React, Next.js, Vercel. Live.",
+      "ogDescription": "Founder and Team Lead of a youth initiative running programmes in four countries, who also built the platform its volunteers operate without needing a developer.",
+      "lede": "Founder and Team Lead of a youth initiative — who also builds its software.",
       "status": { "label": "Live", "modifier": "live" },
       "tags": ["TypeScript", "React", "Next.js", "Vercel", "CI/CD"],
       "links": [
@@ -78,11 +78,11 @@
       "image": { "src": "/images/rise-for-impact-screenshot.webp", "alt": "The Rise for Impact platform home page", "w": 1878, "h": 935 },
       "blocks": [
         { "h": "Problem", "body": [
-          "<p>Programmes run in four countries, and the people running them day to day are volunteers, not operators. Every routine change — publishing an update, opening applications, tracking a cohort — was a request that had to reach the one person who could deploy.</p>",
+          "<p>Programmes run in four countries, and the people running them day to day are volunteers, not operators. Every routine change — publishing an update, opening applications, tracking a cohort — was a request that had to go through a developer.</p>",
           "<p>That is a bottleneck that gets worse as the organisation grows, and it is a technical problem dressed as an operations problem.</p>"
         ] },
         { "h": "My role", "body": [
-          "<p>I founded Rise for Impact in April 2025 and lead the team. I am also the only engineer on it, which means the roadmap and the implementation are decided by the same person — useful for speed, and something I have had to actively guard against when the convenient technical answer is not the right programme answer.</p>"
+          "<p>I founded Rise for Impact in April 2025 and lead the team. I also build the platform, which means the roadmap and much of the implementation are decided by the same person — useful for speed, and something I have had to actively guard against when the convenient technical answer is not the right programme answer.</p>"
         ] },
         { "h": "What I built", "body": [
           "<ul><li>The public site and the application behind it, from schema through API to interface.</li><li>A content area programme staff publish through directly, without a deploy.</li><li>Fellowship application handling, from submission through review.</li><li>Admin tooling for tracking programmes across the four countries.</li><li>The deployment pipeline — GitHub to Vercel, with a preview build per branch so changes are reviewable before they go live.</li></ul>"
@@ -93,14 +93,14 @@
         ] },
         { "h": "How I tested it", "body": [
           "<p>Honestly: there is no automated test suite on this project. Changes are verified through the per-branch preview deploy and manual checks before merge.</p>",
-          "<p>That is a real gap and I am naming it rather than implying coverage that does not exist. It is also the clearest difference between this project and Mboa Health, where the test gate came first — the contrast is mostly about what a solo founder chooses to spend the next hour on when a programme deadline is the binding constraint.</p>"
+          "<p>That is a real gap and I am naming it rather than implying coverage that does not exist. It is also the clearest difference between this project and Mboa Health, where the test gate came first — the contrast is mostly about what a founder chooses to spend the next hour on when a programme deadline is the binding constraint.</p>"
         ] },
         { "h": "Evidence", "body": [
           "<ul><li>The platform is live and publicly reachable at riseforimpact.org.</li><li>The stack is externally checkable: the live site serves images through Next.js image optimisation.</li><li>The repository is public, with 107 commits at last check.</li><li>The organisation publishes its own programme figures: 500+ young people engaged across programmes in 2025, four active countries, four university chapters, 600+ documented members.</li></ul>",
           "<p class=\"muted\" style=\"font-size: var(--t-sm)\">Those are <strong>programme reach</strong>, published by the organisation — not platform accounts, not monthly actives. I have kept the distinction because conflating the two is the most common way a number like this becomes untrue.</p>"
         ] },
         { "h": "Limitations and trade-offs", "body": [
-          "<ul><li>No automated tests, as above.</li><li>A bus factor of one. Every part of this system is understood by a single person, which is the largest risk the project carries and is not solved by documentation alone.</li><li>Founder and engineer being the same person removes the useful friction of having to justify a technical decision to someone else.</li><li>I have no platform analytics I am willing to publish, so I do not claim user numbers — only the programme figures the organisation itself publishes.</li></ul>"
+          "<ul><li>No automated tests, as above.</li><li>Knowledge concentration. Too much of how the platform works lives with the person who built it, which is the largest risk the project carries and is not solved by documentation alone.</li><li>Founder and engineer being the same person removes the useful friction of having to justify a technical decision to someone else.</li><li>I have no platform analytics I am willing to publish, so I do not claim user numbers — only the programme figures the organisation itself publishes.</li></ul>"
         ] },
         { "h": "Current status", "body": [
           "<p>Live and in use. Programmes continue in Cameroon, Ghana, Nigeria and Rwanda.</p>"

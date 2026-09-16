@@ -41,8 +41,5 @@ temp_docx_extract/
 # assets/Claude_Tomoh_Software_Engineer_CV.pdf
 Claude_Tomoh__CV_.pdf
 
-# Co-authored research manuscript. Held locally, NOT published: three other
-# authors hold rights and their permission to distribute is not confirmed.
-# Do not commit or host until either the SSRN URL is supplied (preferred, it is
-# the authoritative record) or written co-author consent is obtained.
+# Local research file. Not for publication.
 Claude_Tomoh_Research_Work_Sample_AI_Sustainability.pdf
