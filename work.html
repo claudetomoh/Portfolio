@@ -42,9 +42,11 @@
         })();
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Self-hosted fonts. Preload only the two faces used above the fold;
+         the italic and mono faces load with the stylesheet. -->
+    <link rel="preload" href="/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/instrument-serif-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/site.css">
 
     <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
@@ -111,274 +113,82 @@
             </div>
         </section>
 
-        <!-- ── MBOA HEALTH — full case study ─────────────────────────── -->
-        <section class="section" id="mboa-health">
+        <!-- ── FLAGSHIP INDEX ─────────────────────────────────────────
+             Replaced three full case studies inlined on this page. Each now
+             has its own route under /work/, generated from
+             content/public/case-studies.json by build.py. This section is a
+             curated index: problem, role, what was built, evidence — enough
+             to decide whether to read the case study, not a summary of it. -->
+        <section class="section" id="flagship">
             <div class="wrap">
                 <div class="s-head">
-                    <p class="mono s-head__eyebrow">Project 01</p>
-                    <h2 class="display s-head__title">Mboa Health</h2>
-                </div>
-
-                <div class="proj" data-reveal>
-                    <div class="proj__info">
-                        <div class="prose">
-                            <p class="lede">A health application for Cameroon, built for the phones and networks people actually have.</p>
-                        </div>
-
-                        <div class="proj__meta">
-                            <p class="mono"><span class="status status--dev">In development · not deployed</span></p>
-                            <div class="tag-row">
-                                <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Provider</span><span class="tag">go_router</span><span class="tag">PHP</span><span class="tag">REST</span><span class="tag">JWT</span><span class="tag">Material 3</span><span class="tag">GitHub Actions</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="proj__media">
-                        <div class="schematic" role="img" aria-label="Mboa Health architecture: a Flutter client over a REST transport layer to a PHP server, with the built feature set listed beneath.">
-                            <div class="schematic__layer"><b>Client</b><span>Flutter</span><span>Dart</span><span>Provider</span><span>go_router</span><span>Material 3</span></div>
-                            <p class="schematic__arrow" aria-hidden="true">↓</p>
-                            <div class="schematic__layer"><b>Transport</b><span>REST</span><span>JWT auth</span><span>token revocation</span><span>typed API models</span></div>
-                            <p class="schematic__arrow" aria-hidden="true">↓</p>
-                            <div class="schematic__layer"><b>Server</b><span>PHP</span><span>server-side rate limiting</span><span>password reset</span><span>bounded queries</span></div>
-                            <p class="schematic__arrow" aria-hidden="true">↓</p>
-                            <div class="schematic__layer"><b>Built</b><span>authentication</span><span>profile</span><span>health records</span><span>reminders</span><span>notifications</span><span>clinic locator</span><span>emergency contacts</span><span>emergency portal</span><span>rule-based symptom checker</span></div>
-                            <p class="schematic__arrow" aria-hidden="true">↓</p>
-                            <div class="schematic__layer"><b>Verified by</b><span>72 Flutter tests</span><span>16 API tests</span><span>CI lint + test gate</span></div>
-                        </div>
-
-                    </div>
+                    <p class="mono s-head__eyebrow">Selected work</p>
+                    <h2 class="display s-head__title">Three worth reading properly.</h2>
                 </div>
 
                 <div class="cs">
+                    <!-- 01 — Mboa Health -->
                     <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Problem</p>
+                        <p class="mono cs__h">01 — Mboa Health</p>
                         <div class="cs__body">
-                            <p>Getting to a clinic often means not knowing which one is open, how far it is, or what to do first. Paper records go missing between visits, so each consultation starts from nothing. In an emergency there is no fast path to the right contact.</p>
+                            <p class="lede">A health application for Cameroon, built for the phones and networks people actually have.</p>
+                            <dl class="about__facts" style="margin-top: var(--s-4)">
+                                <div class="about__fact"><dt>Problem</dt><dd>Paper records go missing between visits, so every consultation starts from nothing — and in an emergency there is no fast path to the right contact.</dd></div>
+                                <div class="about__fact"><dt>Role</dt><dd>Sole engineer — architecture, Flutter client, PHP API, design system, test suite, CI</dd></div>
+                                <div class="about__fact"><dt>Built</dt><dd>Auth, profile, health records, reminders, notifications, clinic locator, emergency portal, and a rule-based symptom checker</dd></div>
+                                <div class="about__fact"><dt>Evidence</dt><dd>88 automated tests · CI lint and test gate · architecture doc, deployment runbook and risk register</dd></div>
+                            </dl>
+                            <p class="mono" style="margin-top: var(--s-4)"><span class="status status--dev">In development · not deployed</span></p>
+                            <div class="tag-row" style="margin-top: var(--s-3)">
+                                <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">PHP</span><span class="tag">REST</span><span class="tag">JWT</span><span class="tag">GitHub Actions</span>
+                            </div>
+                            <div class="proj__actions">
+                                <a href="/work/mboa-health" class="btn btn--ghost">Read the case study <span class="btn__arrow" aria-hidden="true">→</span></a>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- 02 — Rise for Impact -->
                     <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Context</p>
+                        <p class="mono cs__h">02 — Rise for Impact</p>
                         <div class="cs__body">
-                            <p>A mobile health application for Cameroon. The audience is general public rather than clinicians, which sets the bar for how much the app is allowed to assert about someone's health.</p>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Constraints</p>
-                        <div class="cs__body">
-                            <ul>
-                                <li>Lower-end Android devices, so the minimum supported API level is 21 and payload weight is a real budget rather than a nice-to-have.</li>
-                                <li>Intermittent connectivity, so anything that assumes a live request will fail in the field.</li>
-                                <li>Health data, which changes what is acceptable to log, cache and retain.</li>
-                                <li>A single engineer, so anything clever has to be maintainable by one person months later.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">My role</p>
-                        <div class="cs__body">
-                            <p>Technical build across the Flutter client and the PHP API — architecture, implementation, the design system, the test suite, and the CI setup.</p>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Architecture</p>
-                        <div class="cs__body">
-                            <p>Feature-first module layout rather than layer-first. Auth, profile, health records, reminders, notifications, clinic locator and emergency each own their own state through <code>Provider</code>, with <code>go_router</code> handling navigation between them.</p>
-                            <p>Behind that, three domains — auth, profile and health records — sit behind a repository abstraction with typed API models, so the call sites do not know or care whether data came from the network or a local store.</p>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Key decisions</p>
-                        <div class="cs__body">
-                            <ul>
-                                <li><strong>Rule-based triage, not a model.</strong> A decision tree over documented symptom paths. Every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said. A classifier would have been easier to build and impossible to defend.</li>
-                                <li><strong>Repository abstraction before the offline work.</strong> Introduced while the app was still online-only, specifically so the offline layer can slot in underneath without rewriting the feature modules.</li>
-                                <li><strong>Tonal elevation instead of drop shadows.</strong> The design system uses surface tone to express depth because soft shadows band badly on low-cost LCD panels.</li>
-                                <li><strong>Build-time API base URL.</strong> Environments are a build flag, not a runtime toggle, so a debug endpoint cannot ship in a release build.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Implementation</p>
-                        <div class="cs__body">
-                            <p>Flutter and Dart on the client, PHP on the server, REST between them with JWT for session handling. A custom design system — <em>Clinical Sanctuary</em> — fixes the palette, an 8pt spacing grid, and the type scale, so screens stay consistent without a component library.</p>
-                            <p>Built and working in the codebase: authentication, profile management, health records, reminders, notifications, clinic locator, emergency contacts, the emergency portal, and the rule-based symptom checker.</p>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Testing</p>
-                        <div class="cs__body">
-                            <p>88 automated tests — 72 in Flutter, 16 on the PHP API. CI runs lint and the full suite and blocks a merge if either fails, so the gate is enforced rather than aspirational.</p>
-                            <p>The repository also carries an architecture document, a deployment runbook and a risk register, which matters more than it sounds: the runbook is what makes the deployment reproducible by someone who is not me.</p>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Security</p>
-                        <div class="cs__body">
-                            <ul>
-                                <li>Server-side login rate limiting, so throttling cannot be bypassed by talking to the API directly.</li>
-                                <li>JWT revocation, so a compromised session can be ended server-side rather than waiting for expiry.</li>
-                                <li>Password reset backed by a proper token table.</li>
-                                <li>Secrets moved out of source and into build configuration.</li>
-                                <li>Bounded queries — health records and reminders are capped rather than unbounded — so a large account cannot degrade the API for everyone else.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Trade-offs</p>
-                        <div class="cs__body">
-                            <ul>
-                                <li>Rule-based triage is narrower than a model and has to be extended by hand. That is the cost of being able to explain it.</li>
-                                <li>A hand-rolled design system means no ecosystem of ready components, in exchange for control over rendering on cheap panels.</li>
-                                <li>PHP was the pragmatic server choice for the environment rather than the interesting one; the repository abstraction is partly insurance against that decision.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Status</p>
-                        <div class="cs__body">
-                            <p>In development. The feature set above is implemented in the codebase, but the application has not been deployed and is not in front of patients. A migration-readiness review for moving the backend to Laravel returned <em>not yet</em>, with three gates still outstanding.</p>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Not built</p>
-                        <div class="cs__body">
-                            <p>Scoped but deliberately not implemented: a QR emergency health passport, AI health companion mapping, and a further privacy and security pass. None of these exist yet, and the app does not behave as though they do.</p>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Next</p>
-                        <div class="cs__body">
-                            <p>Clear the three migration gates, add crash reporting and structured logging, then move to a real HTTPS deployment with scheduled database backups — in that order, because there is no point collecting crash data from an environment that is not yet reproducible.</p>
-                        </div>
-                    </div>
-
-                    <div class="cs__block" data-reveal>
-                        <p class="mono cs__h">Lessons</p>
-                        <div class="cs__body">
-                            <p>The abstraction I am most glad about is the one I added before I needed it. The one I underestimated is documentation: the runbook and risk register took an afternoon each and are the only reason the deployment path is legible now.</p>
-                            <p>The harder lesson was scope. Health software makes it very easy to promise interpretation, and most of the engineering discipline here went into deciding what the app is <em>not</em> allowed to claim.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── RISE FOR IMPACT ───────────────────────────────────────── -->
-        <section class="section section--sunken" id="rise-for-impact">
-            <div class="wrap">
-                <div class="s-head">
-                    <p class="mono s-head__eyebrow">Project 02</p>
-                    <h2 class="display s-head__title">Rise for Impact</h2>
-                </div>
-
-                <div class="proj proj--flip" data-reveal>
-                    <div class="proj__info">
-                        <div class="prose">
                             <p class="lede">Founder and Team Lead of a youth initiative — and the person who builds its software.</p>
-                        </div>
-
-                        <div class="cs" style="margin-top: var(--s-5)">
-                            <div class="cs__block">
-                                <p class="mono cs__h">Dual role</p>
-                                <div class="cs__body">
-                                    <p>I founded Rise for Impact in April 2025 and lead the team. I am also the only engineer on it, which means the roadmap and the implementation are decided by the same person — useful for speed, and something I have had to actively guard against when the convenient technical answer is not the right programme answer.</p>
-                                </div>
+                            <dl class="about__facts" style="margin-top: var(--s-4)">
+                                <div class="about__fact"><dt>Problem</dt><dd>Volunteers run programmes in four countries, and every routine change had to reach the one person who could deploy.</dd></div>
+                                <div class="about__fact"><dt>Role</dt><dd>Founder, Team Lead, and sole engineer</dd></div>
+                                <div class="about__fact"><dt>Built</dt><dd>The platform and the application behind it, a content area staff publish through without a deploy, fellowship application handling, admin tooling, and the deployment pipeline</dd></div>
+                                <div class="about__fact"><dt>Evidence</dt><dd>Live and publicly reachable · stack externally checkable · 500+ young people engaged across 2025 programmes, published by the organisation</dd></div>
+                            </dl>
+                            <p class="mono" style="margin-top: var(--s-4)"><span class="status status--live">Live</span></p>
+                            <div class="tag-row" style="margin-top: var(--s-3)">
+                                <span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Vercel</span><span class="tag">CI/CD</span>
                             </div>
-
-                            <div class="cs__block">
-                                <p class="mono cs__h">Operations</p>
-                                <div class="cs__body">
-                                    <p>Programmes run in Cameroon, Ghana, Nigeria and Rwanda. The organisation publishes 500+ young people engaged across those programmes — programme reach, not platform accounts.</p>
-                                    <p>The people running it day to day are volunteers, not operators. That single fact drove most of the build: anything that required a developer to change was treated as a design failure.</p>
-                                </div>
+                            <div class="proj__actions">
+                                <a href="/work/rise-for-impact" class="btn btn--ghost">Read the case study <span class="btn__arrow" aria-hidden="true">→</span></a>
+                                <a class="link link--always mono" href="https://www.riseforimpact.org" target="_blank" rel="noopener noreferrer">riseforimpact.org ↗</a>
                             </div>
-
-                            <div class="cs__block">
-                                <p class="mono cs__h">Built</p>
-                                <div class="cs__body">
-                                    <ul>
-                                        <li>The public site and the application behind it, from schema through API to interface.</li>
-                                        <li>A content area programme staff publish through directly, without a deploy.</li>
-                                        <li>Fellowship application handling, from submission through review.</li>
-                                        <li>Admin tooling for tracking programmes across the four countries.</li>
-                                        <li>The deployment pipeline — GitHub to Vercel, with a preview build per branch so changes are reviewable before they are live.</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="cs__block">
-                                <p class="mono cs__h">Constraints</p>
-                                <div class="cs__body">
-                                    <p>Most people arrive on mid-range Android devices over mobile data. Page weight and round trips mattered more than framework choice, and the content model was kept flat specifically to avoid the request waterfalls a nested one would have created.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="proj__meta">
-                            <p class="mono"><span class="status status--live">Live</span></p>
-                            <div class="tag-row">
-                                <span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Vercel</span><span class="tag">CI/CD</span>
-                            </div>
-                        </div>
-
-                        <div class="proj__actions">
-                            <a class="link link--always mono" href="https://www.riseforimpact.org" target="_blank" rel="noopener noreferrer">riseforimpact.org ↗</a>
-                            <a class="link link--always mono" href="https://github.com/claudetomoh/rise_for_impact" target="_blank" rel="noopener noreferrer">Source ↗</a>
                         </div>
                     </div>
 
-                    <div class="proj__media">
-                        <div class="media" data-reveal>
-                            <img src="/images/rise-for-impact-screenshot.webp" alt="The Rise for Impact platform home page" width="1878" height="935" loading="lazy" decoding="async">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── AGRILINK ──────────────────────────────────────────────── -->
-        <section class="section" id="agrilink">
-            <div class="wrap">
-                <div class="s-head">
-                    <p class="mono s-head__eyebrow">Project 03</p>
-                    <h2 class="display s-head__title">AgriLink Ghana</h2>
-                </div>
-
-                <div class="proj" data-reveal>
-                    <div class="proj__info">
-                        <div class="prose">
+                    <!-- 03 — AgriLink Ghana -->
+                    <div class="cs__block" data-reveal>
+                        <p class="mono cs__h">03 — AgriLink Ghana</p>
+                        <div class="cs__body">
                             <p class="lede">An agricultural marketplace on a PHP MVC framework I wrote rather than installed.</p>
-                            <p>Connects farmers, buyers and transport providers across four role-based portals — produce listings, price bidding, delivery tracking and an analytics view. Built for CS415, a software engineering course, with the full engineering process documented alongside the code.</p>
-                            <p>The interesting part is the framework underneath: a front controller, a routing layer, and the design patterns wired by hand. Coursework, with a test suite that runs on a fresh clone.</p>
-                        </div>
-
-                        <div class="proj__meta">
-                            <p class="mono"><span class="status">Coursework · CS415</span></p>
-                            <div class="tag-row">
+                            <dl class="about__facts" style="margin-top: var(--s-4)">
+                                <div class="about__fact"><dt>Problem</dt><dd>Farmers, buyers and transport providers each hold one piece of a transaction none of them can complete alone.</dd></div>
+                                <div class="about__fact"><dt>Role</dt><dd>Course project — solo or team not yet stated, so not implied</dd></div>
+                                <div class="about__fact"><dt>Built</dt><dd>Four role-based portals over a normalised schema, on a hand-written front controller, router and pattern layer</dd></div>
+                                <div class="about__fact"><dt>Evidence</dt><dd>Public repository · a unit test suite that runs on a fresh clone</dd></div>
+                            </dl>
+                            <p class="mono" style="margin-top: var(--s-4)"><span class="status">Coursework · CS415</span></p>
+                            <div class="tag-row" style="margin-top: var(--s-3)">
                                 <span class="tag">PHP 8</span><span class="tag">MySQL 8</span><span class="tag">MVC</span><span class="tag">Tailwind</span><span class="tag">Apache</span>
                             </div>
-                        </div>
-
-                        <div class="proj__actions">
-                            <a class="link link--always mono" href="https://github.com/claudetomoh/agrilink" target="_blank" rel="noopener noreferrer">Source ↗</a>
-                        </div>
-                    </div>
-
-                    <div class="proj__media">
-                        <div class="media" data-reveal>
-                            <img src="/images/agrilink-screenshot.webp" alt="The AgriLink Ghana marketplace interface" width="1917" height="921" loading="lazy" decoding="async">
+                            <div class="proj__actions">
+                                <a href="/work/agrilink" class="btn btn--ghost">Read the case study <span class="btn__arrow" aria-hidden="true">→</span></a>
+                                <a class="link link--always mono" href="https://github.com/claudetomoh/agrilink" target="_blank" rel="noopener noreferrer">Source ↗</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -389,7 +199,7 @@
         <section class="section section--sunken" id="machine-learning">
             <div class="wrap">
                 <div class="s-head">
-                    <p class="mono s-head__eyebrow">Project 04</p>
+                    <p class="mono s-head__eyebrow">Machine learning</p>
                     <h2 class="display s-head__title">Machine learning</h2>
                 </div>
 

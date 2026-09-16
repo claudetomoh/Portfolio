@@ -1,0 +1,158 @@
+{
+  "_comment": "Long-form case study content for the three flagship routes. Rendered to work/<slug>.html by build.py. This file is the single source: edit here, re-run the build, never hand-edit the generated HTML.",
+
+  "blockOrderRule": "Every case study answers the same eight questions in the same order: problem, role, what was built, why those decisions, how it was tested, what evidence exists, limitations and trade-offs, current status. A block is omitted only when there is genuinely nothing evidenced to put in it — never filled with placeholder prose to make the page look complete.",
+
+  "cases": [
+    {
+      "slug": "mboa-health",
+      "order": 1,
+      "name": "Mboa Health",
+      "title": "Mboa Health — Claude Tomoh Ikfingeh",
+      "metaDescription": "A Flutter health application for Cameroon, built for low-end Android and intermittent networks. Rule-based triage, 88 automated tests, feature-first architecture. In development, not deployed.",
+      "ogDescription": "A Flutter health application for Cameroon. Rule-based triage, 88 automated tests, feature-first architecture behind a repository abstraction. In development, not deployed.",
+      "lede": "A health application for Cameroon, built for the phones and networks people actually have.",
+      "status": { "label": "In development · not deployed", "modifier": "dev" },
+      "tags": ["Flutter", "Dart", "Provider", "go_router", "PHP", "REST", "JWT", "Material 3", "GitHub Actions"],
+      "links": [],
+      "linksNote": "Repository link withheld — see projects.json repositoryLink. Do not add it here.",
+      "schematic": {
+        "alt": "Mboa Health architecture: a Flutter client over a REST transport layer to a PHP server, with the built feature set and the test suite listed beneath.",
+        "layers": [
+          { "label": "Client", "items": ["Flutter", "Dart", "Provider", "go_router", "Material 3"] },
+          { "label": "Transport", "items": ["REST", "JWT auth", "token revocation", "typed API models"] },
+          { "label": "Server", "items": ["PHP", "server-side rate limiting", "password reset", "bounded queries"] },
+          { "label": "Built", "items": ["authentication", "profile", "health records", "reminders", "notifications", "clinic locator", "emergency contacts", "emergency portal", "rule-based symptom checker"] },
+          { "label": "Verified by", "items": ["72 Flutter tests", "16 API tests", "CI lint + test gate"] }
+        ]
+      },
+      "blocks": [
+        { "h": "Problem", "body": ["<p>Getting to a clinic often means not knowing which one is open, how far it is, or what to do first. Paper records go missing between visits, so each consultation starts from nothing. In an emergency there is no fast path to the right contact.</p>"] },
+        { "h": "Context", "body": ["<p>A mobile health application for Cameroon. The audience is general public rather than clinicians, which sets the bar for how much the app is allowed to assert about someone's health.</p>"] },
+        { "h": "My role", "body": ["<p>Technical build across the Flutter client and the PHP API — architecture, implementation, the design system, the test suite, and the CI setup.</p>"] },
+        { "h": "Constraints", "body": ["<ul><li>Lower-end Android devices, so the minimum supported API level is 21 and payload weight is a real budget rather than a nice-to-have.</li><li>Intermittent connectivity, so anything that assumes a live request will fail in the field.</li><li>Health data, which changes what is acceptable to log, cache and retain.</li><li>A single engineer, so anything clever has to be maintainable by one person months later.</li></ul>"] },
+        { "h": "What I built", "body": [
+          "<p>Feature-first module layout rather than layer-first. Auth, profile, health records, reminders, notifications, clinic locator and emergency each own their own state through <code>Provider</code>, with <code>go_router</code> handling navigation between them.</p>",
+          "<p>Behind that, three domains — auth, profile and health records — sit behind a repository abstraction with typed API models, so the call sites do not know or care whether data came from the network or a local store.</p>",
+          "<p>Working in the codebase: authentication, profile management, health records, reminders, notifications, clinic locator, emergency contacts, the emergency portal, and the rule-based symptom checker. A custom design system — <em>Clinical Sanctuary</em> — fixes the palette, an 8pt spacing grid and the type scale, so screens stay consistent without a component library.</p>"
+        ] },
+        { "h": "Why these decisions", "body": [
+          "<ul><li><strong>Rule-based triage, not a model.</strong> A decision tree over documented symptom paths. Every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said. A classifier would have been easier to build and impossible to defend.</li><li><strong>Repository abstraction before the offline work.</strong> Introduced while the app was still online-only, specifically so the offline layer can slot in underneath without rewriting the feature modules.</li><li><strong>Tonal elevation instead of drop shadows.</strong> The design system uses surface tone to express depth because soft shadows band badly on low-cost LCD panels.</li><li><strong>Build-time API base URL.</strong> Environments are a build flag, not a runtime toggle, so a debug endpoint cannot ship in a release build.</li></ul>"
+        ] },
+        { "h": "How I tested it", "body": [
+          "<p>88 automated tests — 72 in Flutter, 16 on the PHP API. CI runs lint and the full suite and blocks a merge if either fails, so the gate is enforced rather than aspirational.</p>",
+          "<p>Security work is server-side where it matters: login rate limiting so throttling cannot be bypassed by talking to the API directly, JWT revocation so a compromised session can be ended without waiting for expiry, password reset backed by a proper token table, and bounded queries on health records and reminders so one large account cannot degrade the API for everyone else.</p>"
+        ] },
+        { "h": "Evidence", "body": [
+          "<ul><li>88 passing automated tests, split 72 Flutter / 16 PHPUnit.</li><li>A CI pipeline that enforces lint and tests on every merge.</li><li>An architecture document, a deployment runbook and a risk register in the repository.</li><li>A documented migration-readiness assessment for moving the backend to Laravel.</li></ul>",
+          "<p class=\"muted\" style=\"font-size: var(--t-sm)\">The repository is not linked here yet. Happy to walk through the code directly.</p>"
+        ] },
+        { "h": "Limitations and trade-offs", "body": [
+          "<ul><li>Rule-based triage is narrower than a model and has to be extended by hand. That is the cost of being able to explain it.</li><li>A hand-rolled design system means no ecosystem of ready components, in exchange for control over rendering on cheap panels.</li><li>PHP was the pragmatic server choice for the environment rather than the interesting one; the repository abstraction is partly insurance against that decision.</li></ul>"
+        ] },
+        { "h": "Current status", "body": [
+          "<p>In development. The feature set above is implemented in the codebase, but the application has not been deployed and is not in front of patients. A migration-readiness review for moving the backend to Laravel returned <em>not yet</em>, with three gates outstanding.</p>",
+          "<p>Scoped but deliberately not implemented: a QR emergency health passport, AI health companion mapping, and a further privacy and security pass. None of these exist yet, and the app does not behave as though they do.</p>"
+        ] },
+        { "h": "What I would do next", "body": [
+          "<p>Clear the three migration gates, add crash reporting and structured logging, then move to a real HTTPS deployment with scheduled database backups — in that order, because there is no point collecting crash data from an environment that is not yet reproducible.</p>",
+          "<p>The abstraction I am most glad about is the one I added before I needed it. The one I underestimated is documentation: the runbook and risk register took an afternoon each and are the only reason the deployment path is legible now. The harder lesson was scope — health software makes it very easy to promise interpretation, and most of the engineering discipline here went into deciding what the app is <em>not</em> allowed to claim.</p>"
+        ] }
+      ]
+    },
+
+    {
+      "slug": "rise-for-impact",
+      "order": 2,
+      "name": "Rise for Impact",
+      "title": "Rise for Impact — Claude Tomoh Ikfingeh",
+      "metaDescription": "Founder and sole engineer of a youth initiative running programmes in four countries. Built the platform volunteers operate without a developer. TypeScript, React, Next.js, Vercel. Live.",
+      "ogDescription": "Founder and sole engineer of a youth initiative running programmes in four countries. Built the platform its volunteers operate without needing a developer.",
+      "lede": "Founder and Team Lead of a youth initiative — and the person who builds its software.",
+      "status": { "label": "Live", "modifier": "live" },
+      "tags": ["TypeScript", "React", "Next.js", "Vercel", "CI/CD"],
+      "links": [
+        { "label": "riseforimpact.org", "url": "https://www.riseforimpact.org", "external": true },
+        { "label": "Source", "url": "https://github.com/claudetomoh/rise_for_impact", "external": true }
+      ],
+      "image": { "src": "/images/rise-for-impact-screenshot.webp", "alt": "The Rise for Impact platform home page", "w": 1878, "h": 935 },
+      "blocks": [
+        { "h": "Problem", "body": [
+          "<p>Programmes run in four countries, and the people running them day to day are volunteers, not operators. Every routine change — publishing an update, opening applications, tracking a cohort — was a request that had to reach the one person who could deploy.</p>",
+          "<p>That is a bottleneck that gets worse as the organisation grows, and it is a technical problem dressed as an operations problem.</p>"
+        ] },
+        { "h": "My role", "body": [
+          "<p>I founded Rise for Impact in April 2025 and lead the team. I am also the only engineer on it, which means the roadmap and the implementation are decided by the same person — useful for speed, and something I have had to actively guard against when the convenient technical answer is not the right programme answer.</p>"
+        ] },
+        { "h": "What I built", "body": [
+          "<ul><li>The public site and the application behind it, from schema through API to interface.</li><li>A content area programme staff publish through directly, without a deploy.</li><li>Fellowship application handling, from submission through review.</li><li>Admin tooling for tracking programmes across the four countries.</li><li>The deployment pipeline — GitHub to Vercel, with a preview build per branch so changes are reviewable before they go live.</li></ul>"
+        ] },
+        { "h": "Why these decisions", "body": [
+          "<ul><li><strong>Volunteer-operable or it does not ship.</strong> Anything that required a developer to change was treated as a design failure. That is the single constraint that shaped the build, and it is why the content area exists at all.</li><li><strong>A flat content model.</strong> Kept deliberately flat rather than nested, specifically to avoid the request waterfalls a nested model would have created on mobile data.</li><li><strong>Preview build per branch.</strong> With one engineer there is no reviewer, so the preview deploy is the review step — it is the only thing standing between a bad change and the live site.</li></ul>",
+          "<p>Most people arrive on mid-range Android devices over mobile data. Page weight and round trips mattered more than framework choice.</p>"
+        ] },
+        { "h": "How I tested it", "body": [
+          "<p>Honestly: there is no automated test suite on this project. Changes are verified through the per-branch preview deploy and manual checks before merge.</p>",
+          "<p>That is a real gap and I am naming it rather than implying coverage that does not exist. It is also the clearest difference between this project and Mboa Health, where the test gate came first — the contrast is mostly about what a solo founder chooses to spend the next hour on when a programme deadline is the binding constraint.</p>"
+        ] },
+        { "h": "Evidence", "body": [
+          "<ul><li>The platform is live and publicly reachable at riseforimpact.org.</li><li>The stack is externally checkable: the live site serves images through Next.js image optimisation.</li><li>The repository is public, with 107 commits at last check.</li><li>The organisation publishes its own programme figures: 500+ young people engaged across programmes in 2025, four active countries, four university chapters, 600+ documented members.</li></ul>",
+          "<p class=\"muted\" style=\"font-size: var(--t-sm)\">Those are <strong>programme reach</strong>, published by the organisation — not platform accounts, not monthly actives. I have kept the distinction because conflating the two is the most common way a number like this becomes untrue.</p>"
+        ] },
+        { "h": "Limitations and trade-offs", "body": [
+          "<ul><li>No automated tests, as above.</li><li>A bus factor of one. Every part of this system is understood by a single person, which is the largest risk the project carries and is not solved by documentation alone.</li><li>Founder and engineer being the same person removes the useful friction of having to justify a technical decision to someone else.</li><li>I have no platform analytics I am willing to publish, so I do not claim user numbers — only the programme figures the organisation itself publishes.</li></ul>"
+        ] },
+        { "h": "Current status", "body": [
+          "<p>Live and in use. Programmes continue in Cameroon, Ghana, Nigeria and Rwanda.</p>"
+        ] }
+      ]
+    },
+
+    {
+      "slug": "agrilink",
+      "order": 3,
+      "name": "AgriLink Ghana",
+      "title": "AgriLink Ghana — Claude Tomoh Ikfingeh",
+      "metaDescription": "An agricultural marketplace on a PHP MVC framework written by hand rather than installed — front controller, routing layer, design patterns wired manually. Coursework for CS415, with a test suite.",
+      "ogDescription": "An agricultural marketplace built on a PHP MVC framework written from scratch: front controller, routing layer, design patterns wired by hand. Coursework, with a test suite that runs on a fresh clone.",
+      "lede": "An agricultural marketplace on a PHP MVC framework I wrote rather than installed.",
+      "status": { "label": "Coursework · CS415", "modifier": "" },
+      "tags": ["PHP 8", "MySQL 8", "MVC", "Tailwind", "Apache"],
+      "links": [
+        { "label": "Source", "url": "https://github.com/claudetomoh/agrilink", "external": true }
+      ],
+      "image": { "src": "/images/agrilink-screenshot.webp", "alt": "The AgriLink Ghana marketplace interface", "w": 1917, "h": 921 },
+      "blocks": [
+        { "h": "Problem", "body": [
+          "<p>Farmers, buyers and transport providers each hold one piece of a transaction none of them can complete alone. The farmer does not know what produce is worth this week, the buyer cannot see what is available, and neither can arrange delivery without a third conversation.</p>"
+        ] },
+        { "h": "Context", "body": [
+          "<p>Built for CS415, a software engineering course, with the full engineering process documented alongside the code. Coursework — which I would rather say plainly than dress up, because coursework with a passing test suite is a stronger signal than a production claim nobody can check.</p>"
+        ] },
+        { "h": "My role", "body": [
+          "<p>[VERIFY WITH CLAUDE] — whether this was solo or a team project, and if a team, its size and which parts I owned. The record does not establish it, and I am not going to imply sole authorship of a course project by omission.</p>"
+        ] },
+        { "h": "What I built", "body": [
+          "<p>Four role-based portals — produce listings, price bidding, delivery tracking, and an analytics view — over a normalised MySQL schema.</p>",
+          "<p>The interesting part is underneath: the MVC framework is written by hand rather than installed. A front controller, a routing layer, and the design patterns wired manually rather than inherited from Laravel or Symfony.</p>"
+        ] },
+        { "h": "Why these decisions", "body": [
+          "<ul><li><strong>Hand-rolled framework, on purpose.</strong> The course was about software engineering rather than about shipping fastest. Writing the front controller and router by hand is how the patterns stop being vocabulary and start being something you can debug.</li><li><strong>Role-based portals over one interface with permission checks.</strong> Four audiences with genuinely different tasks; a single interface gated by role flags would have collapsed under conditional logic.</li></ul>"
+        ] },
+        { "h": "How I tested it", "body": [
+          "<p>The repository carries a unit test suite that runs on a fresh clone, which is the point — a reviewer can verify it themselves rather than take my word for it.</p>",
+          "<p class=\"muted\" style=\"font-size: var(--t-sm)\">[VERIFY WITH CLAUDE] The exact test count is not stated here. An earlier version of this site claimed 43 of 43 passing; that number has never been independently confirmed, so it is deliberately not repeated until the suite is run and the output captured. This is the most checkable claim in the portfolio and it is worth verifying properly.</p>"
+        ] },
+        { "h": "Evidence", "body": [
+          "<ul><li>Public repository, with the framework and the test suite both readable.</li><li>The engineering process documented alongside the code.</li></ul>"
+        ] },
+        { "h": "Limitations and trade-offs", "body": [
+          "<ul><li>A hand-written framework is a learning instrument, not a production one. It has no ecosystem, no security review, and no maintenance story beyond the course.</li><li>No live deployment. An earlier version of this site labelled it a live demo without linking one; that label has been removed rather than a URL invented.</li><li>Scope was set by a course brief, not by users.</li></ul>"
+        ] },
+        { "h": "Current status", "body": [
+          "<p>Complete as coursework, and not maintained. The repository stands as the artefact.</p>"
+        ] }
+      ]
+    }
+  ]
+}

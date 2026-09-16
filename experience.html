@@ -42,9 +42,11 @@
         })();
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Self-hosted fonts. Preload only the two faces used above the fold;
+         the italic and mono faces load with the stylesheet. -->
+    <link rel="preload" href="/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/instrument-serif-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/site.css">
 
     <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
@@ -128,7 +130,7 @@
                             <p>I am also the person who builds and maintains the platform it runs on — so the role is genuinely two jobs. On the operations side: programme design, a volunteer team, and delivery across four countries. On the engineering side: the public site, a content area programme staff use without a developer, fellowship application handling, admin tooling, and the deployment pipeline.</p>
                         </div>
                         <div class="proj__actions">
-                            <a class="link link--always mono" href="/work#rise-for-impact">Technical case study →</a>
+                            <a class="link link--always mono" href="/work/rise-for-impact">Technical case study →</a>
                             <a class="link link--always mono" href="https://www.riseforimpact.org" target="_blank" rel="noopener noreferrer">riseforimpact.org ↗</a>
                         </div>
                     </div>
