@@ -440,7 +440,9 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
 }
 
 /* Mobile menu — full-height sheet, staggered items. Not a dropdown. */
-.nav__burger { display: grid; }
+/* align-content keeps the three bars together; a stretched grid spreads
+   them across the full 44px target */
+.nav__burger { display: grid; align-content: center; justify-content: center; }
 .nav__burger span {
     display: block;
     width: 20px; height: 1.5px;
@@ -568,6 +570,16 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     letter-spacing: -0.025em;
 }
 .hero__title em { font-style: italic; color: var(--text-muted); }
+
+/* Split layout: size the headline to its column, not the viewport. The
+   widest designed line is ~6.94em, so 13.8cqi keeps all three lines intact.
+   Without this the headline wrapped to 4-6 lines between 1024 and 1920px and
+   pushed both CTAs below the fold. Browsers without container units drop the
+   declaration and keep the viewport-based size. */
+@media (min-width: 60rem) {
+    .hero__text { container-type: inline-size; }
+    .hero__title { font-size: min(var(--t-4xl), 13.8cqi); }
+}
 
 /* Discipline line — the three things, small, under the headline */
 .hero__disciplines {
@@ -880,11 +892,10 @@ a.tl__item:hover .tl__role { color: var(--accent); }
 
 /* ── 13. JOURNAL ───────────────────────────────────────────────────────────
    Four streams: field notes, writing, research, vlogs. Streams with no
-   publishable entries are omitted from the markup entirely — no empty states.
-   Source of truth: content/journal.json */
+   publishable entries are omitted from the markup entirely — no empty states. */
 
 /* Stream index. A stream with no entries shows a rule and a quiet state
-   rather than a "coming soon" card. Source of truth: content/journal.json */
+   rather than a "coming soon" card. */
 .streams { display: grid; margin-bottom: var(--s-8); }
 .stream {
     display: grid;

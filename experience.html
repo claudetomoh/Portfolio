@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Claude Tomoh's experience — founder and team lead at Rise for Impact, AI and machine learning intern at Future Interns, plus leadership and community roles at Ashesi University.">
-    <meta name="author" content="Claude Tomoh">
+    <meta name="author" content="Claude Tomoh Ikfingeh">
 
     <meta property="og:type" content="profile">
     <meta property="og:url" content="https://claudetomoh.vercel.app/experience">
@@ -42,9 +42,11 @@
         })();
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Self-hosted fonts. Preload only the two faces used above the fold;
+         the italic and mono faces load with the stylesheet. -->
+    <link rel="preload" href="/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/instrument-serif-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/site.css">
 
     <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
@@ -61,8 +63,8 @@
             <nav class="nav__links" aria-label="Sections">
                 <a href="/#about">About</a>
                 <a href="/work">Work</a>
+                <a href="/research">Research</a>
                 <a href="/experience" aria-current="page">Experience</a>
-                <a href="/#journal">Journal</a>
                 <a href="/#contact">Contact</a>
             </nav>
 
@@ -85,8 +87,8 @@
         <div class="nav__sheet" id="nav-sheet" data-sheet>
             <a href="/#about">About</a>
             <a href="/work">Work</a>
+            <a href="/research">Research</a>
             <a href="/experience">Experience</a>
-            <a href="/#journal">Journal</a>
             <a href="/#contact">Contact</a>
             <div class="nav__sheet-foot mono">
                 <a href="https://github.com/claudetomoh" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -106,14 +108,55 @@
                 </h1>
                 <div class="rule-draw"></div>
                 <p class="lede" style="margin-top: var(--s-6)">
-                    Founder work, an internship, and university leadership are different things and are
-                    labelled as such.
+                    Professional engineering, founder work, an internship, teaching and university leadership are
+                    different things and are labelled as such.
                 </p>
             </div>
         </section>
+        <!-- ── PROFESSIONAL ENGINEERING — LUMAVOK ─────────────────────
+             Framed by contribution, not by job title. -->
+        <section class="section" id="engineering">
+            <div class="wrap">
+                <div class="s-head">
+                    <p class="mono s-head__eyebrow">Professional engineering</p>
+                    <h2 class="display s-head__title">Lumavok</h2>
+                </div>
+
+                <div class="proj" data-reveal>
+                    <div class="proj__info">
+                        <p class="mono muted">Frontend engineering · property platform</p>
+                        <div class="prose" style="margin-top: var(--s-4)">
+                            <p class="lede">I own the frontend of a property platform built with a team.</p>
+                            <p>My part is everything the user touches: I set up the frontend architecture, the application shell and the design-token system, then built the product surfaces on top of them.</p>
+                            <p>That covers property listing and detail pages with filtering and search, developer discovery and profiles, the account and sign-in flows, and a developer dashboard for managing listings, appointments, notifications and analytics — all over a centralised API layer against a backend owned by others on the team.</p>
+                            <p>The part I would point a reviewer at is the testing and accessibility work. I set up unit, integration, end-to-end and automated accessibility coverage, and a CI pipeline that runs typecheck, formatting, tests and end-to-end tests on every pull request. Accessibility went in as I built: ARIA corrections, screen-reader announcements for loading and error states, and error boundaries, rather than a pass bolted on at the end.</p>
+                        </div>
+
+                        <div class="proj__meta">
+                            <div class="tag-row">
+                                <span class="tag">Next.js 16</span><span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">Tailwind CSS</span><span class="tag">TanStack Query</span><span class="tag">Zustand</span><span class="tag">React Hook Form</span><span class="tag">Zod</span><span class="tag">Playwright</span><span class="tag">Vitest</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="proj__media">
+                        <div class="schematic" role="img" aria-label="My frontend contribution to a team-built platform. It covers the application shell and design system, the product surfaces, a centralised API layer, and the testing and CI setup.">
+                                                        <div class="schematic__layer"><b>Mine — frontend</b><span>architecture</span><span>app shell</span><span>design tokens</span></div>
+                            <p class="schematic__arrow" aria-hidden="true">↓</p>
+                            <div class="schematic__layer"><b>Product surfaces</b><span>property listing &amp; detail</span><span>search &amp; filtering</span><span>developer discovery</span><span>accounts</span><span>dashboard</span></div>
+                            <p class="schematic__arrow" aria-hidden="true">↓</p>
+                            <div class="schematic__layer"><b>Data access</b><span>centralised API layer</span><span>server-state caching</span></div>
+                            <p class="schematic__arrow" aria-hidden="true">↓</p>
+                            <div class="schematic__layer"><b>Quality gate</b><span>unit</span><span>integration</span><span>end-to-end</span><span>automated accessibility</span><span>CI on every PR</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <!-- ── FOUNDER ───────────────────────────────────────────────── -->
-        <section class="section" id="founder">
+        <section class="section section--sunken" id="founder">
             <div class="wrap">
                 <div class="s-head">
                     <p class="mono s-head__eyebrow">Founder</p>
@@ -128,7 +171,7 @@
                             <p>I am also the person who builds and maintains the platform it runs on — so the role is genuinely two jobs. On the operations side: programme design, a volunteer team, and delivery across four countries. On the engineering side: the public site, a content area programme staff use without a developer, fellowship application handling, admin tooling, and the deployment pipeline.</p>
                         </div>
                         <div class="proj__actions">
-                            <a class="link link--always mono" href="/work#rise-for-impact">Technical case study →</a>
+                            <a class="link link--always mono" href="/work/rise-for-impact">Technical case study →</a>
                             <a class="link link--always mono" href="https://www.riseforimpact.org" target="_blank" rel="noopener noreferrer">riseforimpact.org ↗</a>
                         </div>
                     </div>
@@ -142,7 +185,7 @@
         </section>
 
         <!-- ── INTERNSHIP ────────────────────────────────────────────── -->
-        <section class="section section--sunken" id="internship">
+        <section class="section" id="internship">
             <div class="wrap">
                 <div class="s-head">
                     <p class="mono s-head__eyebrow">Internship</p>
@@ -220,7 +263,7 @@
 
         <!-- ── TEACHING ──────────────────────────────────────────────────
              Only engagements whose source material names Claude as a
-             facilitator appear here. See content/journal.json → teaching. -->
+             facilitator appear here. -->
         <section class="section" id="teaching">
             <div class="wrap">
                 <div class="s-head">
@@ -234,7 +277,7 @@
                         <div class="prose" style="margin-top: var(--s-4)">
                             <p class="lede">Women Techmakers Bambili × Gwarinpa Mentorship Programme</p>
                             <p>Co-facilitated a three-session practical track on LinkedIn optimisation and personal branding, for students, aspiring professionals and early-career women in technology. The sessions run about half hands-on: participants work on their own profiles rather than watching slides, with live demonstrations and direct feedback.</p>
-                            <p>The track moves from building a profile, through professional identity and networking, to using the platform to find and pursue opportunities. I co-designed and delivered it with Confidence Keming.</p>
+                            <p>The track moves from building a profile, through professional identity and networking, to using the platform to find and pursue opportunities. I delivered it with Confidence Keming.</p>
                         </div>
                     </div>
 
@@ -245,6 +288,31 @@
                             <div class="schematic__layer"><b>Session 2</b><span>Personal branding, networking &amp; engagement</span></div>
                             <p class="schematic__arrow" aria-hidden="true">↓</p>
                             <div class="schematic__layer"><b>Session 3</b><span>Finding &amp; pursuing opportunities</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Open Dreams — role, programmes and areas are owner-confirmed.
+                     Areas are deliberately not mapped to individual programmes. -->
+                <div class="proj" data-reveal style="margin-top: var(--s-8)">
+                    <div class="proj__info">
+                        <p class="mono muted">Mentor &amp; Program Facilitator · Open Dreams</p>
+                        <div class="prose" style="margin-top: var(--s-4)">
+                            <p class="lede">Facilitating applied technology and professional-skills learning</p>
+                            <p>Session facilitation and mentorship across Open Dreams programmes — the Tech Skills Academy, the Summer Academy and Project Moon. The sessions cover prompt engineering and generative AI, alongside email etiquette, professional skills and practical technology skills.</p>
+                            <p>Beyond the sessions, the role includes mentoring participants through college applications and giving feedback on their application materials, plus programme coordination, community engagement and technical support where needed.</p>
+                        </div>
+                    </div>
+
+                    <div class="proj__media">
+                        <div class="schematic" role="img" aria-label="Open Dreams role: facilitating sessions across three programmes, mentoring participants, and supporting the programmes.">
+                            <div class="schematic__layer"><b>Programmes</b><span>Tech Skills Academy</span><span>Summer Academy</span><span>Project Moon</span></div>
+                            <p class="schematic__arrow" aria-hidden="true">↓</p>
+                            <div class="schematic__layer"><b>Facilitation</b><span>prompt engineering</span><span>generative AI</span><span>email etiquette</span><span>professional skills</span><span>practical technology skills</span></div>
+                            <p class="schematic__arrow" aria-hidden="true">↓</p>
+                            <div class="schematic__layer"><b>Mentorship</b><span>college applications</span><span>application-material feedback</span></div>
+                            <p class="schematic__arrow" aria-hidden="true">↓</p>
+                            <div class="schematic__layer"><b>Support</b><span>programme coordination</span><span>community engagement</span><span>technical support</span></div>
                         </div>
                     </div>
                 </div>
@@ -292,7 +360,7 @@
 
                 <dl class="about__facts" data-reveal style="margin-top: 0">
                     <div class="about__fact"><dt>Degree</dt><dd>BSc Computer Science — expected June 2027</dd></div>
-                    <div class="about__fact"><dt>Scholarship</dt><dd>Mastercard Foundation Scholar Program</dd></div>
+                    <div class="about__fact"><dt>Scholarships</dt><dd>Mastercard Foundation Scholar Program<br>Open Dreams Scholar, class of 2021</dd></div>
                     <div class="about__fact"><dt>Awards</dt><dd>2nd Runner-Up, Xylem Global Student Innovation Challenge (2025)<br>Winner, Greenpeace Africa Mboa Hub Plastic Challenge (2023)</dd></div>
                     <div class="about__fact"><dt>Research</dt><dd>Policy research internship, African Leadership Academy (2024)</dd></div>
                 </dl>
@@ -313,7 +381,7 @@
     <footer class="foot">
         <div class="wrap foot__row">
             <div>
-                <p>Claude Tomoh — Software Engineer</p>
+                <p>Claude Tomoh Ikfingeh — AI &amp; Software Builder</p>
                 <p class="mono" style="color: var(--text-faint); margin-top: var(--s-2)">BSc Computer Science, Ashesi University · June 2027</p>
             </div>
             <nav class="foot__links" aria-label="Elsewhere">

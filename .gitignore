@@ -12,11 +12,13 @@ package-lock.json
 .DS_Store
 Thumbs.db
 
-# Internal content source-of-truth and audit records.
-# Deliberately NOT published: this repository is public, and these files
-# contain the credibility-audit narrative and a note about an unremediated
-# credential issue in another repository. Kept local until reviewed.
-content/
+# Content layer (Phase 2B split).
+#
+# content/public/ IS tracked. It holds only content the build renders.
+#
+# content/_private/ is NEVER tracked. It holds internal records that are
+# not publishable. This repository is public.
+content/_private/
 
 # Working documents and process artifacts
 COMPREHENSIVE-PORTFOLIO-AUDIT-REPORT.md
@@ -37,3 +39,6 @@ temp_docx_extract/
 # Source CV supplied for integration. The published copy lives at
 # assets/Claude_Tomoh_Software_Engineer_CV.pdf
 Claude_Tomoh__CV_.pdf
+
+# Local research file. Not for publication.
+Claude_Tomoh_Research_Work_Sample_AI_Sustainability.pdf

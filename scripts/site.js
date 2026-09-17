@@ -156,15 +156,15 @@
         });
         if (!targets.length) return;
 
+        // Track which spied sections are in the reading band. When none are
+        // (the hero, or an unspied section), no link is marked active, so a
+        // stale highlight never survives scrolling back up.
+        var inBand = {};
         var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                var a = map[entry.target.id];
-                if (!a) return;
-                if (entry.isIntersecting) {
-                    links.forEach(function (l) { l.classList.remove('is-active'); });
-                    a.classList.add('is-active');
-                }
-            });
+            entries.forEach(function (entry) { inBand[entry.target.id] = entry.isIntersecting; });
+            var current = null;
+            targets.forEach(function (t) { if (inBand[t.id]) current = t.id; });
+            links.forEach(function (l) { l.classList.toggle('is-active', !!current && l === map[current]); });
         }, { rootMargin: '-45% 0px -50% 0px' });
 
         targets.forEach(function (t) { io.observe(t); });
