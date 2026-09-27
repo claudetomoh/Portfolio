@@ -114,7 +114,9 @@
         var items = document.querySelectorAll('[data-reveal]');
         if (!items.length) return;
 
-        if (reduced.matches || !('IntersectionObserver' in window)) {
+        // Under reduced motion the CSS turns this into a short opacity fade
+        // with no movement, so the observer still sets reading order.
+        if (!('IntersectionObserver' in window)) {
             items.forEach(function (el) { el.classList.add('is-in'); });
             return;
         }
@@ -201,6 +203,8 @@
         if (reduced.matches || !fine.matches) return;   // CSS lattice stands in
 
         var hero = canvas.closest('[data-hero]');
+        if (canvas.dataset.ready) return;
+        canvas.dataset.ready = '1';
         var ctx = canvas.getContext('2d', { alpha: true });
         if (!ctx) return;
 
@@ -276,6 +280,7 @@
         }
 
         hero.addEventListener('pointermove', function (e) {
+            if (reduced.matches) return;
             var r = canvas.getBoundingClientRect();
             mx = e.clientX - r.left;
             my = e.clientY - r.top;
@@ -311,13 +316,15 @@
        is left to the compositor. Nothing here reads layout. */
     function initPortraitDrift() {
         var el = document.querySelector('[data-drift]');
-        if (!el || reduced.matches) return;
+        if (!el || reduced.matches || el.dataset.ready) return;
         if (!window.matchMedia('(pointer: fine)').matches) return;
+        el.dataset.ready = '1';
 
         var target = el.closest('[data-hero]') || el;
         var queued = false, px = 0, py = 0;
 
         target.addEventListener('pointermove', function (e) {
+            if (reduced.matches) return;
             var r = target.getBoundingClientRect();
             px = ((e.clientX - r.left) / r.width - 0.5) * 2;
             py = ((e.clientY - r.top) / r.height - 0.5) * 2;
@@ -336,6 +343,24 @@
         });
     }
 
+    /* ── Reduced motion, followed live ──────────────────────────────────────
+       The preference can change mid-visit. Turning it on stops the pointer
+       effects at once; turning it off starts the ones that never ran. */
+    function initMotionPreference() {
+        var onChange = function () {
+            if (reduced.matches) {
+                var drift = document.querySelector('[data-drift]');
+                if (drift) { drift.style.setProperty('--px', '0'); drift.style.setProperty('--py', '0'); }
+                document.querySelectorAll('[data-reveal]').forEach(function (el) { el.classList.add('is-in'); });
+            } else {
+                initField();
+                initPortraitDrift();
+            }
+        };
+        if (reduced.addEventListener) reduced.addEventListener('change', onChange);
+        else if (reduced.addListener) reduced.addListener(onChange);
+    }
+
     /* ── Init ──────────────────────────────────────────────────────────── */
     function init() {
         // site.js is alive — cancel the head script's un-hide safety net
@@ -349,6 +374,7 @@
         initTicker();
         initField();
         initPortraitDrift();
+        initMotionPreference();
     }
 
     if (document.readyState === 'loading') {

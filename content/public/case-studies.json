@@ -115,7 +115,7 @@
       "title": "AgriLink Ghana — Claude Tomoh Ikfingeh",
       "metaDescription": "An agricultural marketplace on a PHP MVC framework written by hand rather than installed — front controller, routing layer, design patterns wired manually. Coursework for CS415, with a unit test suite in the repository.",
       "ogDescription": "An agricultural marketplace built on a PHP MVC framework written from scratch: front controller, routing layer, design patterns wired by hand. Coursework, with a unit test suite in the repository.",
-      "lede": "An agricultural marketplace on a PHP MVC framework I wrote rather than installed.",
+      "lede": "An agricultural marketplace on a PHP MVC framework written by hand rather than installed.",
       "status": { "label": "Coursework · CS415", "modifier": "" },
       "tags": ["PHP 8", "MySQL 8", "MVC", "Tailwind", "Apache"],
       "links": [
