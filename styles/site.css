@@ -254,16 +254,58 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
 .js [data-reveal][data-delay="2"] { transition-delay: 140ms; }
 .js [data-reveal][data-delay="3"] { transition-delay: 210ms; }
 
-/* SIGNATURE: line mask. Used only in the hero. */
-.line-mask { display: block; overflow: hidden; }
-.line-mask > span {
-    display: block;
-    transform: translateY(105%);
-    transition: transform var(--dur-sig) var(--ease-out);
+/* HERO ENTRANCE. Structure first, then identity, then invitation:
+   label → headline → portrait → description → calls to action → rail.
+   Each element names its step with data-enter; timing lives here only.
+   Standard tier (420ms), 8px of travel, nothing at the significant tier.
+   The headline starts at 70% opacity, so it is legible from the first
+   frame and is never hidden behind the animation. */
+[data-enter="1"] { --enter-at: 350ms; }
+[data-enter="2"] { --enter-at: 550ms; }
+[data-enter="3"] { --enter-at: 720ms; }
+[data-enter="4"] { --enter-at: 800ms; }
+[data-enter="5"] { --enter-at: 1100ms; }
+[data-enter="6"] { --enter-at: 1500ms; }
+[data-enter="7"] { --enter-at: 1650ms; }
+/* Inner pages have a short hero: the same order, compressed */
+.hero--page [data-enter="1"] { --enter-at: 60ms; }
+.hero--page [data-enter="2"] { --enter-at: 180ms; }
+.hero--page [data-enter="3"] { --enter-at: 360ms; }
+
+.js [data-hero] [data-enter] {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--dur-std) var(--ease-out) var(--enter-at, 0ms),
+                transform var(--dur-std) var(--ease-out) var(--enter-at, 0ms);
 }
-.js .is-ready .line-mask > span { transform: none; }
-.line-mask:nth-of-type(2) > span { transition-delay: 90ms; }
-.line-mask:nth-of-type(3) > span { transition-delay: 180ms; }
+.js [data-hero] [data-enter="2"] { opacity: 0.7; }
+/* Calls to action arrive by opacity alone, 80ms apart. An animation rather
+   than a transition, so the buttons keep their own hover transitions. */
+.js [data-hero] [data-enter="6"] { opacity: 1; transform: none; }
+.js [data-hero] [data-enter="6"] > * { opacity: 0; }
+.js [data-hero].is-ready [data-enter="6"] > * {
+    animation: enter-fade var(--dur-std) var(--ease-out) var(--enter-at) both;
+}
+.js [data-hero].is-ready [data-enter="6"] > :nth-child(2) { animation-delay: calc(var(--enter-at) + 80ms); }
+@keyframes enter-fade { from { opacity: 0; } to { opacity: 1; } }
+.js [data-hero].is-ready [data-enter] { opacity: 1; transform: none; }
+
+/* Headline lines follow each other by 60ms, as one statement */
+.line-mask { display: block; }
+.line-mask > span { display: block; }
+.js [data-hero] .line-mask > span {
+    transform: translateY(8px);
+    transition: transform var(--dur-std) var(--ease-out) var(--enter-at, 0ms);
+}
+.js [data-hero] .line-mask:nth-of-type(2) > span { transition-delay: calc(var(--enter-at, 0ms) + 60ms); }
+.js [data-hero] .line-mask:nth-of-type(3) > span { transition-delay: calc(var(--enter-at, 0ms) + 120ms); }
+.js [data-hero].is-ready .line-mask > span { transform: none; }
+.js [data-hero] [data-enter="2"] { transform: none; }
+
+/* Navigation is structure: it fades in once, on arrival from outside the
+   site, and never animates on navigation within it. */
+.js.is-arriving .nav { animation: nav-in var(--dur-micro) var(--ease-out) 100ms both; }
+@keyframes nav-in { from { opacity: 0; } to { opacity: 1; } }
 
 /* SIGNATURE: image reveal mask */
 .js .media[data-reveal] img { transform: scale(1.06); transition: transform var(--dur-sig) var(--ease-out); }
@@ -284,6 +326,18 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     }
     .line-mask > span { transform: none; }
     .js .media[data-reveal] img { transform: none; }
+    /* Hero: everything present at once, no travel, no clip */
+    .js [data-hero] [data-enter],
+    .js [data-hero] [data-enter] > *,
+    .js [data-hero] .line-mask > span {
+        opacity: 1 !important;
+        transform: none !important;
+        transition-delay: 0s !important;
+    }
+    .js .hero__portrait__inner { clip-path: none !important; }
+    .js .hero__portrait figcaption { opacity: 1 !important; transition-delay: 0s !important; }
+    .rule-draw, .js .rule-draw { transform: none !important; transition-delay: 0s !important; }
+    .js.is-arriving .nav { animation: none; }
     .ticker__track { animation: none !important; transform: none !important; }
 }
 
@@ -611,9 +665,9 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     margin: 0;
     overflow: hidden;
     border-radius: var(--r-sm) var(--r-sm) 4rem var(--r-sm);
-    background: var(--bg-sunken);
+    /* The solid mid-tone the photograph opens from */
+    background: var(--text-muted);
     aspect-ratio: 5 / 4;
-    will-change: transform;
 }
 @media (min-width: 60rem) {
     .hero__portrait {
@@ -630,19 +684,27 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     /* Square source, cropped high so the face sits on the upper third */
     object-position: 50% 22%;
     filter: saturate(0.9) contrast(1.03);
-    transform: scale(1.08);
-    transition: transform var(--dur-sig) var(--ease-out);
 }
-.js .is-ready .hero__portrait img { transform: scale(1); }
 
 /* Cursor-responsive drift. Values are written by JS as custom properties so
    the compositor does the work and no layout is ever read on a pointer move. */
 .hero__portrait__inner {
     position: absolute;
     inset: -2%;
-    transform: translate3d(calc(var(--px, 0) * 10px), calc(var(--py, 0) * 10px), 0);
+    transform: translate3d(calc(var(--px, 0) * 4px), calc(var(--py, 0) * 4px), 0);
     transition: transform 600ms var(--ease);
 }
+
+/* The portrait is presented, not loaded: it opens left to right from the
+   solid rectangle behind it, 600ms, starting at step 4. */
+.js [data-hero] .hero__portrait__inner {
+    clip-path: inset(0 100% 0 0);
+    transition: transform 600ms var(--ease),
+                clip-path 600ms cubic-bezier(0.65, 0, 0.35, 1) 800ms;
+}
+.js [data-hero].is-ready .hero__portrait__inner { clip-path: inset(0 0 0 0); }
+.js [data-hero] .hero__portrait figcaption { opacity: 0; transition: opacity var(--dur-std) var(--ease-out) 1400ms; }
+.js [data-hero].is-ready .hero__portrait figcaption { opacity: 1; }
 
 /* Hairline caption pinned to the frame */
 .hero__portrait figcaption {
@@ -677,9 +739,12 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     background: var(--rule);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform var(--dur-sig) var(--ease-out) 200ms;
+    transition: transform var(--dur-std) var(--ease-out) 720ms;
 }
 .js .is-ready .rule-draw { transform: scaleX(1); }
+.rule-draw { transform: none; }
+.js .rule-draw { transform: scaleX(0); }
+.hero--page .rule-draw { transition-delay: 240ms; }
 
 /* ── 9. ABOUT ──────────────────────────────────────────────────────────── */
 

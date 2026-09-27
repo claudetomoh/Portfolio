@@ -69,17 +69,7 @@ def head(case):
 
     <title>{esc(case['title'])}</title>
 
-    <script>
-        (function () {{
-            var r = document.documentElement;
-            try {{
-                var t = localStorage.getItem('theme');
-                if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
-            }} catch (e) {{}}
-            r.classList.add('js');
-            window.__jsFallback = setTimeout(function () {{ r.classList.remove('js'); }}, 2500);
-        }})();
-    </script>
+    <script src="/scripts/theme-init.js"></script>
 
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/site.css">
@@ -152,7 +142,7 @@ def nav():
 
 def hero(case):
     crumb = (
-        '<p class="mono hero__label">'
+        '<p class="mono hero__label" data-enter="1">'
         '<a class="link" href="/work">Work</a> '
         '<span aria-hidden="true">/</span> '
         f"{esc(case['name'])}</p>"
@@ -161,15 +151,15 @@ def hero(case):
     return f"""
     <main id="main">
 
-        <section class="hero" data-hero>
+        <section class="hero hero--page" data-hero>
             <div class="wrap">
                 {crumb}
-                <h1 class="display hero__title" style="font-size: var(--t-3xl)">
+                <h1 class="display hero__title" style="font-size: var(--t-3xl)" data-enter="2">
                     <span class="line-mask"><span>{esc(case['name'])}</span></span>
                 </h1>
                 <div class="rule-draw"></div>
-                <p class="lede" style="margin-top: var(--s-6)">{case['lede']}</p>
-                <p class="mono" style="margin-top: var(--s-5)"><span class="status{mod}">{esc(case['status']['label'])}</span></p>
+                <p class="lede" style="margin-top: var(--s-6)" data-enter="3">{case['lede']}</p>
+                <p class="mono" style="margin-top: var(--s-5)" data-enter="3"><span class="status{mod}">{esc(case['status']['label'])}</span></p>
             </div>
         </section>
 """

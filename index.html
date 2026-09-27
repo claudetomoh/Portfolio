@@ -31,20 +31,7 @@
 
     <title>Claude Tomoh Ikfingeh — AI &amp; Software Builder</title>
 
-    <!-- Theme + progressive-enhancement flag applied before first paint.
-         The timeout is a safety net: if site.js never runs, the `js` class is
-         dropped so nothing stays hidden behind a reveal animation. -->
-    <script>
-        (function () {
-            var r = document.documentElement;
-            try {
-                var t = localStorage.getItem('theme');
-                if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
-            } catch (e) {}
-            r.classList.add('js');
-            window.__jsFallback = setTimeout(function () { r.classList.remove('js'); }, 2500);
-        })();
-    </script>
+    <script src="/scripts/theme-init.js"></script>
 
     <!-- Self-hosted fonts. Preload only the two faces used above the fold;
          the italic and mono faces load with the stylesheet. -->
@@ -130,15 +117,15 @@
 
             <div class="wrap hero__grid">
                 <div class="hero__text">
-                    <p class="mono hero__label">AI &amp; Software Builder</p>
+                    <p class="mono hero__label" data-enter="1">AI &amp; Software Builder</p>
 
-                    <h1 class="display hero__title">
+                    <h1 class="display hero__title" data-enter="2">
                         <span class="line-mask"><span>I build software</span></span>
                         <span class="line-mask"><span>products and the</span></span>
                         <span class="line-mask"><span><em>systems</em> behind them.</span></span>
                     </h1>
 
-                    <p class="mono hero__disciplines">
+                    <p class="mono hero__disciplines" data-enter="3">
                         <span>Software</span>
                         <span class="sep" aria-hidden="true">·</span>
                         <span>Product</span>
@@ -148,21 +135,21 @@
 
                     <div class="rule-draw"></div>
 
-                    <p class="lede" style="margin-top: var(--s-5)">
+                    <p class="lede" style="margin-top: var(--s-5)" data-enter="5">
                         Software engineer and Computer Science student at Ashesi University, and a Mastercard Foundation Scholar.
                         I work across full-stack web, mobile, and machine learning — most recently on
                         <strong>Mboa Health</strong>, a Flutter health platform for Cameroon, and the
                         <strong>Rise for Impact</strong> platform.
                     </p>
 
-                    <div class="hero__actions">
+                    <div class="hero__actions" data-enter="6">
                         <a href="#work" class="btn btn--primary">
                             See the work <span class="btn__arrow" aria-hidden="true">→</span>
                         </a>
                         <a href="/assets/Claude_Tomoh_Software_Engineer_CV.pdf" class="btn btn--ghost" download>Download CV</a>
                     </div>
 
-                    <dl class="hero__rail">
+                    <dl class="hero__rail" data-enter="7">
                         <div class="hero__stat">
                             <dt>Status</dt>
                             <dd><span class="status status--live">Open to opportunities</span></dd>

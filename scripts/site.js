@@ -9,6 +9,23 @@
     var root = document.documentElement;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+    // The pointer effects wait until the hero entrance has settled, so the
+    // eye is not pulled two ways while the page introduces itself.
+    var FIELD_AFTER = 1800, DRIFT_AFTER = 2000;
+    var start = (window.performance && performance.now) ? performance.now() : 0;
+    function since() { return ((window.performance && performance.now) ? performance.now() : 0) - start; }
+
+    // Bounding boxes are read at most every 250ms rather than on every
+    // pointer move, which keeps pointer handling free of layout work.
+    function rectCache(el) {
+        var rect = null, at = -1e9;
+        return function () {
+            var now = since();
+            if (!rect || now - at > 250) { rect = el.getBoundingClientRect(); at = now; }
+            return rect;
+        };
+    }
+
     /* ── Theme ─────────────────────────────────────────────────────────────
        The initial theme is applied by a tiny inline script in <head> so there
        is no flash. This only wires up the toggle and keeps it in sync. */
@@ -199,8 +216,11 @@
         var canvas = document.querySelector('[data-field]');
         if (!canvas) return;
 
+        // Touch, narrow viewports and reduced motion keep the static CSS
+        // lattice: the pointer response is worth nothing there.
         var fine = window.matchMedia('(pointer: fine)');
-        if (reduced.matches || !fine.matches) return;   // CSS lattice stands in
+        var wide = window.matchMedia('(min-width: 48rem)');
+        if (reduced.matches || !fine.matches || !wide.matches) return;
 
         var hero = canvas.closest('[data-hero]');
         if (canvas.dataset.ready) return;
@@ -279,9 +299,10 @@
             requestAnimationFrame(frame);
         }
 
+        var canvasRect = rectCache(canvas);
         hero.addEventListener('pointermove', function (e) {
-            if (reduced.matches) return;
-            var r = canvas.getBoundingClientRect();
+            if (reduced.matches || since() < FIELD_AFTER) return;
+            var r = canvasRect();
             mx = e.clientX - r.left;
             my = e.clientY - r.top;
             kick();
@@ -322,10 +343,11 @@
 
         var target = el.closest('[data-hero]') || el;
         var queued = false, px = 0, py = 0;
+        var targetRect = rectCache(target);
 
         target.addEventListener('pointermove', function (e) {
-            if (reduced.matches) return;
-            var r = target.getBoundingClientRect();
+            if (reduced.matches || since() < DRIFT_AFTER) return;
+            var r = targetRect();
             px = ((e.clientX - r.left) / r.width - 0.5) * 2;
             py = ((e.clientY - r.top) / r.height - 0.5) * 2;
             if (queued) return;

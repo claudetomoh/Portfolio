@@ -30,17 +30,7 @@
 
     <title>Work — Claude Tomoh</title>
 
-    <script>
-        (function () {
-            var r = document.documentElement;
-            try {
-                var t = localStorage.getItem('theme');
-                if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
-            } catch (e) {}
-            r.classList.add('js');
-            window.__jsFallback = setTimeout(function () { r.classList.remove('js'); }, 2500);
-        })();
-    </script>
+    <script src="/scripts/theme-init.js"></script>
 
     <!-- Self-hosted fonts. Preload only the two faces used above the fold;
          the italic and mono faces load with the stylesheet. -->
@@ -99,15 +89,15 @@
     </header>
 
     <main id="main">
-        <section class="hero" data-hero>
+        <section class="hero hero--page" data-hero>
             <div class="wrap">
-                <p class="mono hero__label">Work</p>
-                <h1 class="display hero__title" style="font-size: var(--t-3xl)">
+                <p class="mono hero__label" data-enter="1">Work</p>
+                <h1 class="display hero__title" style="font-size: var(--t-3xl)" data-enter="2">
                     <span class="line-mask"><span>Things I have built,</span></span>
                     <span class="line-mask"><span>with their <em>actual</em> status.</span></span>
                 </h1>
                 <div class="rule-draw"></div>
-                <p class="lede" style="margin-top: var(--s-6)">
+                <p class="lede" style="margin-top: var(--s-6)" data-enter="3">
                     Each project carries its real status — what is deployed, what is in development, and what was built for a course.
                 </p>
             </div>

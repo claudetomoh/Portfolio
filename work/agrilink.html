@@ -34,17 +34,7 @@
 
     <title>AgriLink Ghana — Claude Tomoh Ikfingeh</title>
 
-    <script>
-        (function () {
-            var r = document.documentElement;
-            try {
-                var t = localStorage.getItem('theme');
-                if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
-            } catch (e) {}
-            r.classList.add('js');
-            window.__jsFallback = setTimeout(function () { r.classList.remove('js'); }, 2500);
-        })();
-    </script>
+    <script src="/scripts/theme-init.js"></script>
 
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/site.css">
@@ -111,15 +101,15 @@
 
     <main id="main">
 
-        <section class="hero" data-hero>
+        <section class="hero hero--page" data-hero>
             <div class="wrap">
-                <p class="mono hero__label"><a class="link" href="/work">Work</a> <span aria-hidden="true">/</span> AgriLink Ghana</p>
-                <h1 class="display hero__title" style="font-size: var(--t-3xl)">
+                <p class="mono hero__label" data-enter="1"><a class="link" href="/work">Work</a> <span aria-hidden="true">/</span> AgriLink Ghana</p>
+                <h1 class="display hero__title" style="font-size: var(--t-3xl)" data-enter="2">
                     <span class="line-mask"><span>AgriLink Ghana</span></span>
                 </h1>
                 <div class="rule-draw"></div>
-                <p class="lede" style="margin-top: var(--s-6)">An agricultural marketplace on a PHP MVC framework written by hand rather than installed.</p>
-                <p class="mono" style="margin-top: var(--s-5)"><span class="status">Coursework · CS415</span></p>
+                <p class="lede" style="margin-top: var(--s-6)" data-enter="3">An agricultural marketplace on a PHP MVC framework written by hand rather than installed.</p>
+                <p class="mono" style="margin-top: var(--s-5)" data-enter="3"><span class="status">Coursework · CS415</span></p>
             </div>
         </section>
 
