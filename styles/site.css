@@ -10,24 +10,54 @@
 /* ── 1. TOKENS ─────────────────────────────────────────────────────────── */
 
 :root {
-    /* Neutrals — light theme is the default definition */
-    --bg:            #FAF9F7;
-    --bg-sunken:     #F2F0EC;
-    --surface:       #FFFFFF;
-    --text:          #14130F;
-    --text-muted:    #6A665E;
-    --text-faint:    #6E6A61;
-    --rule:          #E3DFD8;
-    --rule-strong:   #CFC9C0;
+    /* THEME. Every colour token is defined once, with its light and its
+       dark value side by side. Two switches decide which one resolves:
 
-    /* Single accent */
-    --accent:        #B4441F;
-    --accent-hover:  #93341440;
-    --accent-wash:   #B4441F14;
+         --L  is `initial` in light and empty in dark
+         --D  is empty in light and `initial` in dark
+
+       var(--L, a) var(--D, b) therefore yields `a` in light and `b` in dark
+       (a custom property set to `initial` falls back; an empty one
+       substitutes nothing). Only the switches change between themes, so
+       the explicit dark theme and the system preference cannot drift
+       apart. Plain custom properties: no light-dark(), no newer syntax. */
+    --L: initial;
+    --D: ;
+
+    /* Neutrals */
+    --bg:            var(--L, #FAF9F7) var(--D, #0E0E0D);
+    --bg-sunken:     var(--L, #F2F0EC) var(--D, #000000);
+    --surface:       var(--L, #FFFFFF) var(--D, #161615);
+    --text:          var(--L, #14130F) var(--D, #F1EFEA);
+    --text-muted:    var(--L, #6A665E) var(--D, #8E8A81);
+    --text-faint:    var(--L, #6E6A61) var(--D, #8A857B);
+    --rule:          var(--L, #E3DFD8) var(--D, #262523);
+    --rule-strong:   var(--L, #CFC9C0) var(--D, #35332F);
+
+    /* Single accent, retuned per theme for contrast */
+    --accent:        var(--L, #B4441F) var(--D, #F0784A);
+    --accent-hover:  var(--L, #93341440) var(--D, #FF8C5C);
+    --accent-wash:   var(--L, #B4441F14) var(--D, #F0784A1A);
 
     /* Selection */
-    --select-bg:     #14130F;
-    --select-fg:     #FAF9F7;
+    --select-bg:     var(--L, #14130F) var(--D, #F1EFEA);
+    --select-fg:     var(--L, #FAF9F7) var(--D, #0E0E0D);
+
+    /* Canvas ink for the hero field (an r, g, b triplet read by site.js) */
+    --field-ink:     var(--L, 20, 19, 15) var(--D, 241, 239, 234);
+
+    /* Text set directly on a photograph, and the live-status dot */
+    --on-img:        #FFFFFF;
+    --on-img-shadow: rgba(0, 0, 0, 0.6);
+    --status-live:   var(--L, #3F9142) var(--D, #5CC062);
+
+    /* Theme toggle icon state */
+    --sun-opacity:   var(--L, 0) var(--D, 1);
+    --sun-turn:      var(--L, rotate(-60deg) scale(0.7)) var(--D, none);
+    --moon-opacity:  var(--L, 1) var(--D, 0);
+    --moon-turn:     var(--L, none) var(--D, rotate(60deg) scale(0.7));
+
+    color-scheme: var(--L, light) var(--D, dark);
 
     /* Type */
     --font-display:  'Instrument Serif', 'Iowan Old Style', Georgia, serif;
@@ -63,69 +93,22 @@
     --r-sm: 2px;
     --r-md: 5px;
 
-    /* Canvas ink for the hero field, read by scripts/site.js */
-    --field-ink: 20, 19, 15;
-
-    /* Text set directly on a photograph, and the live-status dot */
-    --on-img:        #FFFFFF;
-    --on-img-shadow: rgba(0, 0, 0, 0.6);
-    --status-live:   #3F9142;
 
     /* Motion — three tiers, consistent easing */
     --dur-micro: 160ms;
     --dur-std:   420ms;
     --dur-sig:   900ms;
+    --dur-theme: 300ms;
     --ease:      cubic-bezier(0.22, 0.61, 0.24, 1);
     --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
-
-    color-scheme: light;
 }
 
-:root[data-theme="dark"] {
-    --bg:            #0E0E0D;
-    --bg-sunken:     #000000;
-    --surface:       #161615;
-    --text:          #F1EFEA;
-    --text-muted:    #8E8A81;
-    --text-faint:    #8A857B;
-    --rule:          #262523;
-    --rule-strong:   #35332F;
+:root[data-theme="dark"] { --L: ; --D: initial; }
 
-    --accent:        #F0784A;
-    --accent-hover:  #FF8C5C;
-    --accent-wash:   #F0784A1A;
-
-    --select-bg:     #F1EFEA;
-    --select-fg:     #0E0E0D;
-    --field-ink: 241, 239, 234;
-    --status-live:   #5CC062;
-
-    color-scheme: dark;
-}
-
-/* System preference on first visit, before any explicit choice */
+/* System preference while no explicit choice has been made. Works without
+   JavaScript: an explicit data-theme only ever narrows this. */
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-        --bg:            #0E0E0D;
-        --bg-sunken:     #000000;
-        --surface:       #161615;
-        --text:          #F1EFEA;
-        --text-muted:    #8E8A81;
-        --text-faint:    #8A857B;
-        --rule:          #262523;
-        --rule-strong:   #35332F;
-
-        --accent:        #F0784A;
-        --accent-hover:  #FF8C5C;
-        --accent-wash:   #F0784A1A;
-
-        --select-bg:     #F1EFEA;
-        --select-fg:     #0E0E0D;
-        --field-ink: 241, 239, 234;
-        --status-live:   #5CC062;
-
-        color-scheme: dark;
-    }
+    :root:not([data-theme="light"]) { --L: ; --D: initial; }
 }
 
 /* ── 2. RESET ──────────────────────────────────────────────────────────── */
@@ -150,8 +133,61 @@ body {
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     /* Theme crossfade. Kept off transform/opacity so it never fights motion. */
-    transition: background-color var(--dur-std) var(--ease),
-                color var(--dur-std) var(--ease);
+    transition: background-color var(--dur-theme) var(--ease),
+                color var(--dur-theme) var(--ease);
+}
+
+/* THEME CHANGE. For the 300ms after the toggle, every colour property
+   eases to its new value together (background, text, borders, rules, focus
+   rings, underlines), so the change reads as one deliberate shift rather
+   than a flash. The class is only added when motion is allowed, and only
+   for the length of the change, so it never slows hover feedback. */
+.theme-changing,
+.theme-changing *,
+.theme-changing *::before,
+.theme-changing *::after {
+    transition: color var(--dur-theme) var(--ease),
+                background-color var(--dur-theme) var(--ease),
+                border-color var(--dur-theme) var(--ease),
+                outline-color var(--dur-theme) var(--ease),
+                text-decoration-color var(--dur-theme) var(--ease),
+                fill var(--dur-theme) var(--ease),
+                stroke var(--dur-theme) var(--ease) !important;
+}
+
+/* PAGE TRANSITIONS. Same-origin navigations cross-fade in 200ms where the
+   browser supports cross-document View Transitions; elsewhere navigation is
+   the browser's normal instant load. The navigation bar is its own layer,
+   so it holds still while the content changes beneath it. Off entirely
+   under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition { navigation: auto; }
+}
+.nav { view-transition-name: site-nav; }
+::view-transition-old(root) { animation-duration: 200ms; animation-timing-function: ease-in; }
+::view-transition-new(root) { animation-duration: 200ms; animation-timing-function: ease-out; }
+::view-transition-group(site-nav) { animation-duration: 200ms; }
+
+/* READING PROGRESS on long case studies: a 2px accent line under the top
+   edge, driven by the scroll position itself (CSS scroll-driven animation,
+   no script, no scroll listener). Browsers without scroll timelines simply
+   do not show it. Decorative, so hidden from assistive technology. */
+.reading-progress { display: none; }
+@supports (animation-timeline: scroll()) {
+    .reading-progress {
+        display: block;
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 101;
+        height: 2px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        pointer-events: none;
+        animation: reading-progress linear both;
+        animation-timeline: scroll(root block);
+    }
+    @keyframes reading-progress { to { transform: scaleX(1); } }
 }
 
 img, svg, video { display: block; max-width: 100%; }
@@ -522,14 +558,8 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     position: absolute; inset: 0;
     transition: opacity var(--dur-std) var(--ease), transform var(--dur-std) var(--ease);
 }
-.theme-t__sun  { opacity: 0; transform: rotate(-60deg) scale(0.7); }
-.theme-t__moon { opacity: 1; transform: none; }
-:root[data-theme="dark"] .theme-t__sun  { opacity: 1; transform: none; }
-:root[data-theme="dark"] .theme-t__moon { opacity: 0; transform: rotate(60deg) scale(0.7); }
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .theme-t__sun  { opacity: 1; transform: none; }
-    :root:not([data-theme="light"]) .theme-t__moon { opacity: 0; transform: rotate(60deg) scale(0.7); }
-}
+.theme-t__sun  { opacity: var(--sun-opacity);  transform: var(--sun-turn); }
+.theme-t__moon { opacity: var(--moon-opacity); transform: var(--moon-turn); }
 
 /* Mobile menu — full-height sheet, staggered items. Not a dropdown. */
 /* align-content keeps the three bars together; a stretched grid spreads

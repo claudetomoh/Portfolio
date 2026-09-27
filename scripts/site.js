@@ -46,8 +46,16 @@
 
         label();
 
+        var settle;
         btn.addEventListener('click', function () {
             var next = current() === 'dark' ? 'light' : 'dark';
+            // Ease every colour together for the length of the change;
+            // under reduced motion the swap is instant.
+            if (!reduced.matches) {
+                root.classList.add('theme-changing');
+                clearTimeout(settle);
+                settle = setTimeout(function () { root.classList.remove('theme-changing'); }, 350);
+            }
             root.setAttribute('data-theme', next);
             try { localStorage.setItem('theme', next); } catch (e) {}
             label();
