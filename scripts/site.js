@@ -131,6 +131,15 @@
         var items = document.querySelectorAll('[data-reveal]');
         if (!items.length) return;
 
+        // Reading-order indices for staggered children: card contents and
+        // diagram layers. Set here so that without JS no delay exists.
+        document.querySelectorAll('[data-stagger]').forEach(function (el) {
+            Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); });
+        });
+        document.querySelectorAll('.schematic').forEach(function (el) {
+            el.querySelectorAll('.schematic__layer').forEach(function (c, i) { c.style.setProperty('--i', i); });
+        });
+
         // Under reduced motion the CSS turns this into a short opacity fade
         // with no movement, so the observer still sets reading order.
         if (!('IntersectionObserver' in window)) {

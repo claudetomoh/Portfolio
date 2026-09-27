@@ -12,6 +12,8 @@
       "metaDescription": "A Flutter health application for Cameroon, built for low-end Android and intermittent networks. Rule-based triage, 88 automated tests, feature-first architecture. In development, not deployed.",
       "ogDescription": "A Flutter health application for Cameroon. Rule-based triage, 88 automated tests, feature-first architecture behind a repository abstraction. In development, not deployed.",
       "lede": "A health application for Cameroon, built for the phones and networks people actually have.",
+      "category": "Product engineering · Health",
+      "opening": { "problem": "Paper records go missing between visits, so each consultation starts from nothing — and in an emergency there is no fast path to the right contact.", "decision": "Rule-based triage, not a model: every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said." },
       "status": { "label": "In development · not deployed", "modifier": "dev" },
       "tags": ["Flutter", "Dart", "Provider", "go_router", "PHP", "REST", "JWT", "Material 3", "GitHub Actions"],
       "links": [],
@@ -69,11 +71,13 @@
       "metaDescription": "Founder and Team Lead of a youth initiative running programmes in four countries, who also built the platform its volunteers operate without a developer. TypeScript, React, Next.js, Vercel. Live.",
       "ogDescription": "Founder and Team Lead of a youth initiative running programmes in four countries, who also built the platform its volunteers operate without needing a developer.",
       "lede": "Founder and Team Lead of a youth initiative — who also builds its software.",
+      "category": "Product engineering · Founder",
+      "opening": { "problem": "Volunteers run programmes in four countries, and every routine change had to go through a developer.", "decision": "Volunteer-operable or it does not ship: anything that required a developer to change was treated as a design failure." },
       "status": { "label": "Live", "modifier": "live" },
       "tags": ["TypeScript", "React", "Next.js", "Vercel", "CI/CD"],
       "links": [
         { "label": "riseforimpact.org", "url": "https://www.riseforimpact.org", "external": true },
-        { "label": "Source", "url": "https://github.com/claudetomoh/rise_for_impact", "external": true }
+        { "label": "GitHub", "url": "https://github.com/claudetomoh/rise_for_impact", "external": true }
       ],
       "image": { "src": "/images/rise-for-impact-screenshot.webp", "alt": "The Rise for Impact platform home page", "w": 1878, "h": 935 },
       "blocks": [
@@ -88,7 +92,7 @@
           "<ul><li>The public site and the application behind it, from schema through API to interface.</li><li>A content area programme staff publish through directly, without a deploy.</li><li>Fellowship application handling, from submission through review.</li><li>Admin tooling for tracking programmes across the four countries.</li><li>The deployment pipeline — GitHub to Vercel, with a preview build per branch so changes are reviewable before they go live.</li></ul>"
         ] },
         { "h": "Why these decisions", "body": [
-          "<ul><li><strong>Volunteer-operable or it does not ship.</strong> Anything that required a developer to change was treated as a design failure. That is the single constraint that shaped the build, and it is why the content area exists at all.</li><li><strong>A flat content model.</strong> Kept deliberately flat rather than nested, specifically to avoid the request waterfalls a nested model would have created on mobile data.</li><li><strong>Preview build per branch.</strong> With one engineer there is no reviewer, so the preview deploy is the review step — it is the only thing standing between a bad change and the live site.</li></ul>",
+          "<ul><li><strong>Volunteer-operable or it does not ship.</strong> Anything that required a developer to change was treated as a design failure. That is the single constraint that shaped the build, and it is why the content area exists at all.</li><li><strong>A flat content model.</strong> Kept deliberately flat rather than nested, specifically to avoid the request waterfalls a nested model would have created on mobile data.</li><li><strong>Preview build per branch.</strong> Every change is built and reviewable on its own preview deploy before it reaches the live site.</li></ul>",
           "<p>Most people arrive on mid-range Android devices over mobile data. Page weight and round trips mattered more than framework choice.</p>"
         ] },
         { "h": "How I tested it", "body": [
@@ -116,10 +120,12 @@
       "metaDescription": "An agricultural marketplace on a PHP MVC framework written by hand rather than installed — front controller, routing layer, design patterns wired manually. Coursework for CS415, with a unit test suite in the repository.",
       "ogDescription": "An agricultural marketplace built on a PHP MVC framework written from scratch: front controller, routing layer, design patterns wired by hand. Coursework, with a unit test suite in the repository.",
       "lede": "An agricultural marketplace on a PHP MVC framework written by hand rather than installed.",
+      "category": "Software engineering · Coursework",
+      "opening": { "problem": "Farmers, buyers and transport providers each hold one piece of a transaction none of them can complete alone.", "decision": "A hand-written framework, on purpose: writing the front controller and router by hand is how the patterns stop being vocabulary and start being something you can debug." },
       "status": { "label": "Coursework · CS415", "modifier": "" },
       "tags": ["PHP 8", "MySQL 8", "MVC", "Tailwind", "Apache"],
       "links": [
-        { "label": "Source", "url": "https://github.com/claudetomoh/agrilink", "external": true }
+        { "label": "GitHub", "url": "https://github.com/claudetomoh/agrilink", "external": true }
       ],
       "image": { "src": "/images/agrilink-screenshot.webp", "alt": "The AgriLink Ghana marketplace interface", "w": 1917, "h": 921 },
       "blocks": [

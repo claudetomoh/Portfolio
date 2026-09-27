@@ -250,9 +250,29 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
                 transform var(--dur-std) var(--ease-out);
 }
 .js [data-reveal].is-in { opacity: 1; transform: none; }
-.js [data-reveal][data-delay="1"] { transition-delay: 70ms; }
-.js [data-reveal][data-delay="2"] { transition-delay: 140ms; }
-.js [data-reveal][data-delay="3"] { transition-delay: 210ms; }
+/* A section establishes itself first: the heading travels 12px, and the
+   content that follows it waits 80ms. */
+.js .s-head[data-reveal] { transform: translateY(12px); }
+.js [data-reveal][data-delay="1"] { transition-delay: 80ms; }
+.js [data-reveal][data-delay="2"] { transition-delay: 160ms; }
+.js [data-reveal][data-delay="3"] { transition-delay: 240ms; }
+
+/* In-card reading order: category, name, problem, then the rest, 70ms
+   apart. The container stays put; its children arrive. --i is set by
+   site.js, so without JS nothing here applies. */
+.js [data-reveal][data-stagger] { opacity: 1; transform: none; }
+.js [data-stagger] > * {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--dur-std) var(--ease-out) calc(var(--i, 0) * 70ms),
+                transform var(--dur-std) var(--ease-out) calc(var(--i, 0) * 70ms);
+}
+.js [data-stagger] > :first-child { transform: none; transition-duration: var(--dur-micro); }
+.js [data-stagger].is-in > * { opacity: 1; transform: none; }
+
+/* Diagram layers assemble top to bottom, as their block enters */
+.js [data-reveal] .schematic > .schematic__layer { opacity: 0; transition: opacity var(--dur-std) var(--ease-out) calc(var(--i, 0) * 90ms); }
+.js [data-reveal].is-in .schematic > .schematic__layer { opacity: 1; }
 
 /* HERO ENTRANCE. Structure first, then identity, then invitation:
    label → headline → portrait → description → calls to action → rail.
@@ -307,9 +327,14 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
 .js.is-arriving .nav { animation: nav-in var(--dur-micro) var(--ease-out) 100ms both; }
 @keyframes nav-in { from { opacity: 0; } to { opacity: 1; } }
 
-/* SIGNATURE: image reveal mask */
-.js .media[data-reveal] img { transform: scale(1.06); transition: transform var(--dur-sig) var(--ease-out); }
-.js .media[data-reveal].is-in img { transform: none; }
+/* Images are evidence: they are uncovered top to bottom from the sunken
+   surface behind them, 500ms, once, when they enter. */
+.js .media[data-reveal] { opacity: 1; transform: none; }
+.js .media[data-reveal] img {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 500ms cubic-bezier(0.65, 0, 0.35, 1) 120ms;
+}
+.js .media[data-reveal].is-in img { clip-path: inset(0 0 0 0); }
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -325,7 +350,11 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
         transition: opacity 200ms var(--ease-out) !important;
     }
     .line-mask > span { transform: none; }
-    .js .media[data-reveal] img { transform: none; }
+    .js .media[data-reveal] img { clip-path: none !important; }
+    .js [data-stagger] > * { opacity: 1 !important; transform: none !important; transition-delay: 0s !important; }
+    .js .schematic > .schematic__layer { opacity: 1 !important; transition-delay: 0s !important; }
+    .card, .card:hover, .card:active,
+    .js .card[data-reveal].is-in:hover, .js .card[data-reveal].is-in:active { transform: none !important; }
     /* Hero: everything present at once, no travel, no clip */
     .js [data-hero] [data-enter],
     .js [data-hero] [data-enter] > *,
@@ -930,6 +959,96 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     padding: 0.1em 0.35em;
     border-radius: var(--r-sm);
 }
+
+/* ── 11b. WORK CARDS ──────────────────────────────────────────────────────
+   Category / name / problem / what was built / status / technology with
+   purpose. The whole card is one link target (the case-study link is
+   stretched over it); other links in the card sit above it. Hover lifts
+   4px and draws a 2px accent edge; touch gets a brief press instead. */
+.cards { display: grid; gap: var(--s-5); }
+.card {
+    position: relative;
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-md);
+    transition: transform var(--dur-micro) var(--ease-out),
+                border-color var(--dur-micro) var(--ease);
+}
+.card > * { min-width: 0; max-width: var(--measure); }
+.card::before {
+    content: '';
+    position: absolute;
+    left: -1px; top: -1px; bottom: -1px;
+    width: 2px;
+    background: var(--accent);
+    border-radius: var(--r-md) 0 0 var(--r-md);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-micro) var(--ease-out);
+}
+.card__cat { color: var(--text-faint); }
+.card__title { font-size: var(--t-2xl); }
+.card__problem {
+    font-size: var(--t-base);
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 200ms var(--ease-out);
+}
+.card__facts { margin-top: var(--s-2); }
+/* Wide screens: the identity column on the left, the evidence beside it */
+@media (min-width: 64rem) {
+    .card {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        column-gap: var(--s-8);
+        align-content: start;
+        padding: var(--s-7);
+    }
+    .card > * { grid-column: 1; }
+    .card > .card__facts { grid-column: 2; grid-row: 1 / span 6; margin-top: 0; align-self: start; }
+}
+.card__status { margin-top: var(--s-2); }
+.card__actions { margin-top: var(--s-2); }
+.card__actions a:not(.card__link) { position: relative; z-index: 1; }
+.card__link {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+}
+.card__link:hover { color: var(--accent); }
+.card__link::before { content: ''; position: absolute; inset: 0; z-index: 0; border-radius: var(--r-md); }
+.card:has(.card__link:focus-visible) { border-color: var(--accent); }
+
+@media (hover: hover) and (pointer: fine) {
+    /* Stated with the reveal classes so the entrance's transform:none
+       does not cancel the lift once a card has entered */
+    .card:hover,
+    .js .card[data-reveal].is-in:hover { transform: translateY(-4px); border-color: var(--rule-strong); }
+    .card:hover::before { transform: scaleX(1); }
+    .card:hover .card__problem { text-decoration-color: var(--rule-strong); }
+}
+@media (hover: none) {
+    .card { transition: transform 100ms var(--ease-out); }
+    .card:active,
+    .js .card[data-reveal].is-in:active { transform: scale(0.98); }
+}
+
+/* Technology with its purpose in the project, where the project says it */
+.tech-list { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-2); }
+.tech { display: inline-flex; align-items: baseline; gap: var(--s-2); }
+.tech__why { color: var(--text-faint); font-size: var(--t-xs); }
+
+/* Case-study opening: category, name, summary, then problem, key
+   decision and status, before any image or detail. */
+.cs-open__title { font-size: var(--t-3xl); }
+.cs-open__lede { margin-top: var(--s-6); }
+.cs-open__facts { margin-top: var(--s-6); max-width: 52rem; }
 
 /* ── 12. TIMELINE ──────────────────────────────────────────────────────── */
 

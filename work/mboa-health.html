@@ -103,13 +103,17 @@
 
         <section class="hero hero--page" data-hero>
             <div class="wrap">
-                <p class="mono hero__label" data-enter="1"><a class="link" href="/work">Work</a> <span aria-hidden="true">/</span> Mboa Health</p>
-                <h1 class="display hero__title" style="font-size: var(--t-3xl)" data-enter="2">
+                <p class="mono hero__label" data-enter="1"><a class="link" href="/work">Work</a> <span aria-hidden="true">/</span> Product engineering · Health</p>
+                <h1 class="display hero__title cs-open__title" data-enter="2">
                     <span class="line-mask"><span>Mboa Health</span></span>
                 </h1>
                 <div class="rule-draw"></div>
-                <p class="lede" style="margin-top: var(--s-6)" data-enter="3">A health application for Cameroon, built for the phones and networks people actually have.</p>
-                <p class="mono" style="margin-top: var(--s-5)" data-enter="3"><span class="status status--dev">In development · not deployed</span></p>
+                <p class="lede cs-open__lede" data-enter="3">A health application for Cameroon, built for the phones and networks people actually have.</p>
+                <dl class="about__facts cs-open__facts" data-enter="3">
+                    <div class="about__fact"><dt>Problem</dt><dd>Paper records go missing between visits, so each consultation starts from nothing — and in an emergency there is no fast path to the right contact.</dd></div>
+                    <div class="about__fact"><dt>Key decision</dt><dd>Rule-based triage, not a model: every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said.</dd></div>
+                    <div class="about__fact"><dt>Status</dt><dd><span class="status status--dev">In development · not deployed</span></dd></div>
+                </dl>
             </div>
         </section>
 
@@ -213,13 +217,14 @@
         </section>
         <section class="section section--sunken">
             <div class="wrap">
-                <div class="s-head">
+                <div class="s-head" data-reveal>
                     <p class="mono s-head__eyebrow">More work</p>
                 </div>
                 <div class="tl">
-                    <a class="tl__item" href="/work/rise-for-impact">
+                    <a class="tl__item" href="/work/rise-for-impact" data-reveal>
                         <p class="mono tl__when">Next</p>
-                        <div><p class="tl__role">Rise for Impact</p></div>
+                        <div><p class="tl__role">Rise for Impact</p><p class="tl__org">Founder and Team Lead of a youth initiative — who also builds its software.</p></div>
+                        <p class="mono muted">Product engineering · Founder</p>
                     </a>
                 </div>
                 <div class="hero__actions" style="margin-top: var(--s-6)">
