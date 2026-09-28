@@ -143,7 +143,8 @@ def nav():
 
 def hero(case):
     """The case-study opening: where the work sits, what it is, the problem,
-    the decision that mattered most, and its real status. Every value comes
+    the decision that mattered most, what was built, and its real status with
+    the evidence behind it. Every value comes
     from content/public/case-studies.json, copied from the case study body."""
     crumb = (
         '<p class="mono hero__label" data-enter="1">'
@@ -156,7 +157,7 @@ def hero(case):
     return f"""
     <main id="main">
 
-        <section class="hero hero--page" data-hero>
+        <section class="hero hero--page hero--case" data-hero>
             <div class="wrap">
                 {crumb}
                 <h1 class="display hero__title cs-open__title" data-enter="2">
@@ -167,7 +168,8 @@ def hero(case):
                 <dl class="about__facts cs-open__facts" data-enter="3">
                     <div class="about__fact"><dt>Problem</dt><dd>{esc(op['problem'])}</dd></div>
                     <div class="about__fact"><dt>Key decision</dt><dd>{esc(op['decision'])}</dd></div>
-                    <div class="about__fact"><dt>Status</dt><dd><span class="status{mod}">{esc(case['status']['label'])}</span></dd></div>
+                    <div class="about__fact"><dt>What I built</dt><dd>{esc(op['built'])}</dd></div>
+                    <div class="about__fact"><dt>Status &amp; evidence</dt><dd><span class="status{mod}">{esc(case['status']['label'])}</span><span class="cs-open__evidence">{esc(op['evidence'])}</span></dd></div>
                 </dl>
             </div>
         </section>

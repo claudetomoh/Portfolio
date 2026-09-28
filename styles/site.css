@@ -1081,6 +1081,13 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
 .cs-open__title { font-size: var(--t-3xl); }
 .cs-open__lede { margin-top: var(--s-6); }
 .cs-open__facts { margin-top: var(--s-6); max-width: 52rem; }
+/* Evidence sits on its own line under the status indicator */
+.cs-open__evidence { display: block; margin-top: var(--s-1); }
+/* The opening hands straight on to the visual evidence: its bottom
+   padding, and the top padding of the section after it, are reduced
+   from the full section rhythm so the visual starts near the fold. */
+.hero--case { padding-bottom: var(--s-7); }
+.hero--case + .section { padding-top: var(--s-5); }
 
 /* ── 12. TIMELINE ──────────────────────────────────────────────────────── */
 

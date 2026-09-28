@@ -13,7 +13,7 @@
       "ogDescription": "A Flutter health application for Cameroon. Rule-based triage, 88 automated tests, feature-first architecture behind a repository abstraction. In development, not deployed.",
       "lede": "A health application for Cameroon, built for the phones and networks people actually have.",
       "category": "Product engineering · Health",
-      "opening": { "problem": "Paper records go missing between visits, so each consultation starts from nothing — and in an emergency there is no fast path to the right contact.", "decision": "Rule-based triage, not a model: every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said." },
+      "opening": { "problem": "Paper records go missing between visits, so each consultation starts from nothing — and in an emergency there is no fast path to the right contact.", "decision": "Rule-based triage, not a model: every branch is reviewable by someone who is not an engineer, and the app can explain exactly why it said what it said.", "built": "Auth, profile, health records, reminders, notifications, clinic locator, emergency portal, and a rule-based symptom checker", "evidence": "88 automated tests — 72 Flutter, 16 PHPUnit · CI lint and test gate" },
       "status": { "label": "In development · not deployed", "modifier": "dev" },
       "tags": ["Flutter", "Dart", "Provider", "go_router", "PHP", "REST", "JWT", "Material 3", "GitHub Actions"],
       "links": [],
@@ -72,7 +72,7 @@
       "ogDescription": "Founder and Team Lead of a youth initiative running programmes in four countries, who also built the platform its volunteers operate without needing a developer.",
       "lede": "Founder and Team Lead of a youth initiative — who also builds its software.",
       "category": "Product engineering · Founder",
-      "opening": { "problem": "Volunteers run programmes in four countries, and every routine change had to go through a developer.", "decision": "Volunteer-operable or it does not ship: anything that required a developer to change was treated as a design failure." },
+      "opening": { "problem": "Volunteers run programmes in four countries, and every routine change had to go through a developer.", "decision": "Volunteer-operable or it does not ship: anything that required a developer to change was treated as a design failure.", "built": "The platform and the application behind it, a content area staff publish through without a deploy, fellowship application handling, admin tooling, and the deployment pipeline", "evidence": "Publicly reachable at riseforimpact.org · 500+ young people engaged across its 2025 programmes — programme reach published by the organisation, not platform accounts" },
       "status": { "label": "Live", "modifier": "live" },
       "tags": ["TypeScript", "React", "Next.js", "Vercel", "CI/CD"],
       "links": [
@@ -121,7 +121,7 @@
       "ogDescription": "An agricultural marketplace built on a PHP MVC framework written from scratch: front controller, routing layer, design patterns wired by hand. Coursework, with a unit test suite in the repository.",
       "lede": "An agricultural marketplace on a PHP MVC framework written by hand rather than installed.",
       "category": "Software engineering · Coursework",
-      "opening": { "problem": "Farmers, buyers and transport providers each hold one piece of a transaction none of them can complete alone.", "decision": "A hand-written framework, on purpose: writing the front controller and router by hand is how the patterns stop being vocabulary and start being something you can debug." },
+      "opening": { "problem": "Farmers, buyers and transport providers each hold one piece of a transaction none of them can complete alone.", "decision": "A hand-written framework, on purpose: writing the front controller and router by hand is how the patterns stop being vocabulary and start being something you can debug.", "built": "Four role-based portals over a normalised schema, on a hand-written front controller, router and pattern layer", "evidence": "Public repository, with the framework and a unit test suite both readable" },
       "status": { "label": "Coursework · CS415", "modifier": "" },
       "tags": ["PHP 8", "MySQL 8", "MVC", "Tailwind", "Apache"],
       "links": [
