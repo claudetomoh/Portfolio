@@ -390,7 +390,8 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     .js [data-stagger] > * { opacity: 1 !important; transform: none !important; transition-delay: 0s !important; }
     .js .schematic > .schematic__layer { opacity: 1 !important; transition-delay: 0s !important; }
     .card, .card:hover, .card:active,
-    .js .card[data-reveal].is-in:hover, .js .card[data-reveal].is-in:active { transform: none !important; }
+    .js .card[data-reveal].is-in:hover, .js .card[data-reveal].is-in:active,
+    .js .card[data-reveal].is-in.is-pressed { transform: none !important; }
     /* Hero: everything present at once, no travel, no clip */
     .js [data-hero] [data-enter],
     .js [data-hero] [data-enter] > *,
@@ -1065,8 +1066,9 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
 }
 @media (hover: none) {
     .card { transition: transform 100ms var(--ease-out); }
-    .card:active,
-    .js .card[data-reveal].is-in:active { transform: scale(0.98); }
+    .card:active, .card.is-pressed,
+    .js .card[data-reveal].is-in:active,
+    .js .card[data-reveal].is-in.is-pressed { transform: scale(0.98); }
 }
 
 /* Technology with its purpose in the project, where the project says it */

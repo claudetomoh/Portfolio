@@ -81,13 +81,15 @@
         var sheet = nav.querySelector('[data-sheet]');
 
         // Compact state on scroll — a class flip, not per-frame style writes
-        var sentinel = document.createElement('div');
-        sentinel.setAttribute('aria-hidden', 'true');
-        sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
-        document.body.prepend(sentinel);
-        new IntersectionObserver(function (entries) {
-            nav.classList.toggle('is-stuck', !entries[0].isIntersecting);
-        }).observe(sentinel);
+        if ('IntersectionObserver' in window) {
+            var sentinel = document.createElement('div');
+            sentinel.setAttribute('aria-hidden', 'true');
+            sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
+            document.body.prepend(sentinel);
+            new IntersectionObserver(function (entries) {
+                nav.classList.toggle('is-stuck', !entries[0].isIntersecting);
+            }).observe(sentinel);
+        }
 
         if (!burger || !sheet) return;
 
@@ -155,15 +157,24 @@
             return;
         }
 
+        // Anything before a revealed block in reading order is revealed with
+        // it, so a fast fling or an anchor jump that carries a block past the
+        // viewport between two observer checks never leaves it hidden.
+        var list = Array.prototype.slice.call(items);
+        var done = 0;
         var io = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (!entry.isIntersecting) return;
-                entry.target.classList.add('is-in');
-                io.unobserve(entry.target);
+                var at = list.indexOf(entry.target);
+                for (var i = done; i <= at; i++) {
+                    list[i].classList.add('is-in');
+                    io.unobserve(list[i]);
+                }
+                if (at + 1 > done) done = at + 1;
             });
         }, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
 
-        items.forEach(function (el) { io.observe(el); });
+        list.forEach(function (el) { io.observe(el); });
     }
 
     /* ── Hero signature reveal ─────────────────────────────────────────── */
@@ -329,10 +340,14 @@
             kick();
         });
 
-        new IntersectionObserver(function (entries) {
-            visible = entries[0].isIntersecting;
-            if (visible) kick();
-        }, { threshold: 0 }).observe(hero);
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) {
+                visible = entries[0].isIntersecting;
+                if (visible) kick();
+            }, { threshold: 0 }).observe(hero);
+        } else {
+            visible = true;
+        }
 
         var rt;
         window.addEventListener('resize', function () {
@@ -382,6 +397,22 @@
         });
     }
 
+    /* ── Work cards: press feedback on touch ─────────────────────────────
+       :active is unreliable for touch (iOS needs a listener, Android holds
+       it back while deciding whether the touch is a scroll), so the press
+       state is driven from pointer events. Mouse input is left to :hover. */
+    function initCards() {
+        document.querySelectorAll('.card').forEach(function (card) {
+            var release = function () { card.classList.remove('is-pressed'); };
+            card.addEventListener('pointerdown', function (e) {
+                if (e.pointerType !== 'mouse') card.classList.add('is-pressed');
+            });
+            ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) {
+                card.addEventListener(t, release);
+            });
+        });
+    }
+
     /* ── Reduced motion, followed live ──────────────────────────────────────
        The preference can change mid-visit. Turning it on stops the pointer
        effects at once; turning it off starts the ones that never ran. */
@@ -405,15 +436,17 @@
         // site.js is alive — cancel the head script's un-hide safety net
         if (window.__jsFallback) { clearTimeout(window.__jsFallback); window.__jsFallback = null; }
         root.classList.add('js');
-        initTheme();
-        initNav();
-        initHero();
-        initReveal();
-        initSpy();
-        initTicker();
-        initField();
-        initPortraitDrift();
-        initMotionPreference();
+        // Each enhancement is independent: one failing must never leave
+        // content hidden or stop the others from running.
+        [initTheme, initNav, initHero, initReveal, initSpy, initTicker,
+         initField, initPortraitDrift, initCards, initMotionPreference].forEach(function (fn) {
+            try { fn(); } catch (e) {
+                document.querySelectorAll('[data-reveal]').forEach(function (el) { el.classList.add('is-in'); });
+                var hero = document.querySelector('[data-hero]');
+                if (hero) hero.classList.add('is-ready');
+                if (window.console && console.error) console.error(e);
+            }
+        });
     }
 
     if (document.readyState === 'loading') {
