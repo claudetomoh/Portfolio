@@ -103,7 +103,7 @@ def nav():
 
             <nav class="nav__links" aria-label="Sections">
                 <a href="/#about">About</a>
-                <a href="/work" aria-current="page">Work</a>
+                <a href="/work" aria-current="true">Work</a>
                 <a href="/research">Research</a>
                 <a href="/experience">Experience</a>
                 <a href="/#contact">Contact</a>

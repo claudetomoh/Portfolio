@@ -72,7 +72,7 @@
       "ogDescription": "Founder and Team Lead of a youth initiative running programmes in four countries, who also built the platform its volunteers operate without needing a developer.",
       "lede": "Founder and Team Lead of a youth initiative — who also builds its software.",
       "category": "Product engineering · Founder",
-      "opening": { "problem": "Volunteers run programmes in four countries, and every routine change had to go through a developer.", "decision": "Volunteer-operable or it does not ship: anything that required a developer to change was treated as a design failure.", "built": "The platform and the application behind it, a content area staff publish through without a deploy, fellowship application handling, admin tooling, and the deployment pipeline", "evidence": "Publicly reachable at riseforimpact.org · 500+ young people engaged across its 2025 programmes — programme reach published by the organisation, not platform accounts" },
+      "opening": { "problem": "Volunteers run programmes in four countries, and every routine change had to go through a developer.", "decision": "Volunteer-operable or it does not ship: anything that required a developer to change was treated as a design failure.", "built": "The platform and the application behind it, a content area staff publish through without a deploy, fellowship application handling, admin tooling, and the deployment pipeline", "evidence": "Publicly reachable at riseforimpact.org · Programme reach, as published by the organisation, not platform accounts: 500+ young people engaged across its 2025 programmes" },
       "status": { "label": "Live", "modifier": "live" },
       "tags": ["TypeScript", "React", "Next.js", "Vercel", "CI/CD"],
       "links": [
