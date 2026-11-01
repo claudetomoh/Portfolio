@@ -30,17 +30,7 @@
 
     <title>Research — Claude Tomoh Ikfingeh</title>
 
-    <script>
-        (function () {
-            var r = document.documentElement;
-            try {
-                var t = localStorage.getItem('theme');
-                if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
-            } catch (e) {}
-            r.classList.add('js');
-            window.__jsFallback = setTimeout(function () { r.classList.remove('js'); }, 2500);
-        })();
-    </script>
+    <script src="/scripts/theme-init.js"></script>
 
     <!-- Self-hosted fonts. Preload only the two faces used above the fold;
          the italic and mono faces load with the stylesheet. -->
@@ -110,17 +100,17 @@
         </div>
     </header>
 
-    <main id="main">
+    <main id="main" tabindex="-1">
 
-        <section class="hero" data-hero>
+        <section class="hero hero--page" data-hero>
             <div class="wrap">
-                <p class="mono hero__label">Research</p>
-                <h1 class="display hero__title" style="font-size: var(--t-3xl)">
+                <p class="mono hero__label" data-enter="1">Research</p>
+                <h1 class="display hero__title" style="font-size: var(--t-3xl)" data-enter="2">
                     <span class="line-mask"><span>Where intelligent systems</span></span>
                     <span class="line-mask"><span>meet <em>institutional</em> reality.</span></span>
                 </h1>
                 <div class="rule-draw"></div>
-                <p class="lede" style="margin-top: var(--s-6)">
+                <p class="lede" style="margin-top: var(--s-6)" data-enter="3">
                     Two pieces of work, in different fields, with the same underlying question: what has to
                     be true of a country, an institution or a programme before a technology is any use to it?
                     
@@ -130,7 +120,7 @@
 
         <section class="section" id="satellite-sustainability">
             <div class="wrap">
-                <div class="s-head">
+                <div class="s-head" data-reveal>
                     <p class="mono s-head__eyebrow">01 — AI &amp; space sustainability</p>
                     <h2 class="display s-head__title">Sustainability readiness for small satellite programmes.</h2>
                 </div>
@@ -163,7 +153,7 @@
         <!-- ── ALA POLICY RESEARCH ─────────────────────────────────── -->
         <section class="section section--sunken" id="youth-policy">
             <div class="wrap">
-                <div class="s-head">
+                <div class="s-head" data-reveal>
                     <p class="mono s-head__eyebrow">Paper 02 — Policy research</p>
                     <h2 class="display s-head__title">Youth empowerment in West &amp; Central Africa.</h2>
                 </div>

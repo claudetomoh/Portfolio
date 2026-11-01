@@ -34,17 +34,7 @@
 
     <title>Rise for Impact — Claude Tomoh Ikfingeh</title>
 
-    <script>
-        (function () {
-            var r = document.documentElement;
-            try {
-                var t = localStorage.getItem('theme');
-                if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
-            } catch (e) {}
-            r.classList.add('js');
-            window.__jsFallback = setTimeout(function () { r.classList.remove('js'); }, 2500);
-        })();
-    </script>
+    <script src="/scripts/theme-init.js"></script>
 
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/site.css">
@@ -66,6 +56,7 @@
 
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
+    <div class="reading-progress" aria-hidden="true"></div>
 
     <header class="nav" data-nav>
         <div class="wrap nav__inner">
@@ -73,7 +64,7 @@
 
             <nav class="nav__links" aria-label="Sections">
                 <a href="/#about">About</a>
-                <a href="/work" aria-current="page">Work</a>
+                <a href="/work" aria-current="true">Work</a>
                 <a href="/research">Research</a>
                 <a href="/experience">Experience</a>
                 <a href="/#contact">Contact</a>
@@ -109,17 +100,22 @@
         </div>
     </header>
 
-    <main id="main">
+    <main id="main" tabindex="-1">
 
-        <section class="hero" data-hero>
+        <section class="hero hero--page hero--case" data-hero>
             <div class="wrap">
-                <p class="mono hero__label"><a class="link" href="/work">Work</a> <span aria-hidden="true">/</span> Rise for Impact</p>
-                <h1 class="display hero__title" style="font-size: var(--t-3xl)">
+                <p class="mono hero__label" data-enter="1"><a class="link" href="/work">Work</a> <span aria-hidden="true">/</span> Product engineering · Founder</p>
+                <h1 class="display hero__title cs-open__title" data-enter="2">
                     <span class="line-mask"><span>Rise for Impact</span></span>
                 </h1>
                 <div class="rule-draw"></div>
-                <p class="lede" style="margin-top: var(--s-6)">Founder and Team Lead of a youth initiative — who also builds its software.</p>
-                <p class="mono" style="margin-top: var(--s-5)"><span class="status status--live">Live</span></p>
+                <p class="lede cs-open__lede" data-enter="3">Founder and Team Lead of a youth initiative — who also builds its software.</p>
+                <dl class="about__facts cs-open__facts" data-enter="3">
+                    <div class="about__fact"><dt>Problem</dt><dd>Volunteers run programmes in four countries, and every routine change had to go through a developer.</dd></div>
+                    <div class="about__fact"><dt>Key decision</dt><dd>Volunteer-operable or it does not ship: anything that required a developer to change was treated as a design failure.</dd></div>
+                    <div class="about__fact"><dt>What I built</dt><dd>The platform and the application behind it, a content area staff publish through without a deploy, fellowship application handling, admin tooling, and the deployment pipeline</dd></div>
+                    <div class="about__fact"><dt>Status &amp; evidence</dt><dd><span class="status status--live">Live</span><span class="cs-open__evidence">Publicly reachable at riseforimpact.org · Programme reach, as published by the organisation, not platform accounts: 500+ young people engaged across its 2025 programmes</span></dd></div>
+                </dl>
             </div>
         </section>
 
@@ -130,10 +126,10 @@
                         <div class="proj__meta">
                             <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Vercel</span><span class="tag">CI/CD</span></div>
                         </div>
-                        <div class="proj__actions"><a class="link link--always mono" href="https://www.riseforimpact.org" target="_blank" rel="noopener noreferrer">riseforimpact.org ↗</a><a class="link link--always mono" href="https://github.com/claudetomoh/rise_for_impact" target="_blank" rel="noopener noreferrer">Source ↗</a></div>
+                        <div class="proj__actions"><a class="link link--always mono" href="https://www.riseforimpact.org" target="_blank" rel="noopener noreferrer">riseforimpact.org ↗</a><a class="link link--always mono" href="https://github.com/claudetomoh/rise_for_impact" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
                     </div>
                     <div class="proj__media">
-                        <div class="media">
+                        <div class="media" data-reveal>
                             <img src="/images/rise-for-impact-screenshot.webp" alt="The Rise for Impact platform home page" width="1878" height="935" loading="lazy" decoding="async">
                         </div>
                     </div>
@@ -161,7 +157,7 @@
                     <div class="cs__block" data-reveal>
                         <p class="mono cs__h">Why these decisions</p>
                         <div class="cs__body">
-                            <ul><li><strong>Volunteer-operable or it does not ship.</strong> Anything that required a developer to change was treated as a design failure. That is the single constraint that shaped the build, and it is why the content area exists at all.</li><li><strong>A flat content model.</strong> Kept deliberately flat rather than nested, specifically to avoid the request waterfalls a nested model would have created on mobile data.</li><li><strong>Preview build per branch.</strong> With one engineer there is no reviewer, so the preview deploy is the review step — it is the only thing standing between a bad change and the live site.</li></ul>
+                            <ul><li><strong>Volunteer-operable or it does not ship.</strong> Anything that required a developer to change was treated as a design failure. That is the single constraint that shaped the build, and it is why the content area exists at all.</li><li><strong>A flat content model.</strong> Kept deliberately flat rather than nested, specifically to avoid the request waterfalls a nested model would have created on mobile data.</li><li><strong>Preview build per branch.</strong> Every change is built and reviewable on its own preview deploy before it reaches the live site.</li></ul>
                             <p>Most people arrive on mid-range Android devices over mobile data. Page weight and round trips mattered more than framework choice.</p>
                         </div>
                     </div>
@@ -196,17 +192,19 @@
         </section>
         <section class="section section--sunken">
             <div class="wrap">
-                <div class="s-head">
+                <div class="s-head" data-reveal>
                     <p class="mono s-head__eyebrow">More work</p>
                 </div>
                 <div class="tl">
-                    <a class="tl__item" href="/work/mboa-health">
+                    <a class="tl__item" href="/work/mboa-health" data-reveal>
                         <p class="mono tl__when">Previous</p>
-                        <div><p class="tl__role">Mboa Health</p></div>
+                        <div><p class="tl__role">Mboa Health</p><p class="tl__org">A health application for Cameroon, built for the phones and networks people actually have.</p></div>
+                        <p class="mono muted">Product engineering · Health</p>
                     </a>
-                    <a class="tl__item" href="/work/agrilink">
+                    <a class="tl__item" href="/work/agrilink" data-reveal>
                         <p class="mono tl__when">Next</p>
-                        <div><p class="tl__role">AgriLink Ghana</p></div>
+                        <div><p class="tl__role">AgriLink Ghana</p><p class="tl__org">An agricultural marketplace on a PHP MVC framework written by hand rather than installed.</p></div>
+                        <p class="mono muted">Software engineering · Coursework</p>
                     </a>
                 </div>
                 <div class="hero__actions" style="margin-top: var(--s-6)">

@@ -10,24 +10,54 @@
 /* ── 1. TOKENS ─────────────────────────────────────────────────────────── */
 
 :root {
-    /* Neutrals — light theme is the default definition */
-    --bg:            #FAF9F7;
-    --bg-sunken:     #F2F0EC;
-    --surface:       #FFFFFF;
-    --text:          #14130F;
-    --text-muted:    #6A665E;
-    --text-faint:    #6E6A61;
-    --rule:          #E3DFD8;
-    --rule-strong:   #CFC9C0;
+    /* THEME. Every colour token is defined once, with its light and its
+       dark value side by side. Two switches decide which one resolves:
 
-    /* Single accent */
-    --accent:        #B4441F;
-    --accent-hover:  #93341440;
-    --accent-wash:   #B4441F14;
+         --L  is `initial` in light and empty in dark
+         --D  is empty in light and `initial` in dark
+
+       var(--L, a) var(--D, b) therefore yields `a` in light and `b` in dark
+       (a custom property set to `initial` falls back; an empty one
+       substitutes nothing). Only the switches change between themes, so
+       the explicit dark theme and the system preference cannot drift
+       apart. Plain custom properties: no light-dark(), no newer syntax. */
+    --L: initial;
+    --D: ;
+
+    /* Neutrals */
+    --bg:            var(--L, #FAF9F7) var(--D, #0E0E0D);
+    --bg-sunken:     var(--L, #F2F0EC) var(--D, #000000);
+    --surface:       var(--L, #FFFFFF) var(--D, #161615);
+    --text:          var(--L, #14130F) var(--D, #F1EFEA);
+    --text-muted:    var(--L, #6A665E) var(--D, #8E8A81);
+    --text-faint:    var(--L, #6E6A61) var(--D, #8A857B);
+    --rule:          var(--L, #E3DFD8) var(--D, #262523);
+    --rule-strong:   var(--L, #CFC9C0) var(--D, #35332F);
+
+    /* Single accent, retuned per theme for contrast */
+    --accent:        var(--L, #B4441F) var(--D, #F0784A);
+    --accent-hover:  var(--L, #93341440) var(--D, #FF8C5C);
+    --accent-wash:   var(--L, #B4441F14) var(--D, #F0784A1A);
 
     /* Selection */
-    --select-bg:     #14130F;
-    --select-fg:     #FAF9F7;
+    --select-bg:     var(--L, #14130F) var(--D, #F1EFEA);
+    --select-fg:     var(--L, #FAF9F7) var(--D, #0E0E0D);
+
+    /* Canvas ink for the hero field (an r, g, b triplet read by site.js) */
+    --field-ink:     var(--L, 20, 19, 15) var(--D, 241, 239, 234);
+
+    /* Text set directly on a photograph, and the live-status dot */
+    --on-img:        #FFFFFF;
+    --on-img-shadow: rgba(0, 0, 0, 0.6);
+    --status-live:   var(--L, #3F9142) var(--D, #5CC062);
+
+    /* Theme toggle icon state */
+    --sun-opacity:   var(--L, 0) var(--D, 1);
+    --sun-turn:      var(--L, rotate(-60deg) scale(0.7)) var(--D, none);
+    --moon-opacity:  var(--L, 1) var(--D, 0);
+    --moon-turn:     var(--L, none) var(--D, rotate(60deg) scale(0.7));
+
+    color-scheme: var(--L, light) var(--D, dark);
 
     /* Type */
     --font-display:  'Instrument Serif', 'Iowan Old Style', Georgia, serif;
@@ -63,62 +93,22 @@
     --r-sm: 2px;
     --r-md: 5px;
 
-    /* Canvas ink for the hero field, read by scripts/site.js */
-    --field-ink: 20, 19, 15;
 
     /* Motion — three tiers, consistent easing */
     --dur-micro: 160ms;
     --dur-std:   420ms;
     --dur-sig:   900ms;
+    --dur-theme: 300ms;
     --ease:      cubic-bezier(0.22, 0.61, 0.24, 1);
     --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
-
-    color-scheme: light;
 }
 
-:root[data-theme="dark"] {
-    --bg:            #0E0E0D;
-    --bg-sunken:     #000000;
-    --surface:       #161615;
-    --text:          #F1EFEA;
-    --text-muted:    #8E8A81;
-    --text-faint:    #8A857B;
-    --rule:          #262523;
-    --rule-strong:   #35332F;
+:root[data-theme="dark"] { --L: ; --D: initial; }
 
-    --accent:        #F0784A;
-    --accent-hover:  #FF8C5C;
-    --accent-wash:   #F0784A1A;
-
-    --select-bg:     #F1EFEA;
-    --select-fg:     #0E0E0D;
-    --field-ink: 241, 239, 234;
-
-    color-scheme: dark;
-}
-
-/* System preference on first visit, before any explicit choice */
+/* System preference while no explicit choice has been made. Works without
+   JavaScript: an explicit data-theme only ever narrows this. */
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-        --bg:            #0E0E0D;
-        --bg-sunken:     #000000;
-        --surface:       #161615;
-        --text:          #F1EFEA;
-        --text-muted:    #8E8A81;
-        --text-faint:    #8A857B;
-        --rule:          #262523;
-        --rule-strong:   #35332F;
-
-        --accent:        #F0784A;
-        --accent-hover:  #FF8C5C;
-        --accent-wash:   #F0784A1A;
-
-        --select-bg:     #F1EFEA;
-        --select-fg:     #0E0E0D;
-        --field-ink: 241, 239, 234;
-
-        color-scheme: dark;
-    }
+    :root:not([data-theme="light"]) { --L: ; --D: initial; }
 }
 
 /* ── 2. RESET ──────────────────────────────────────────────────────────── */
@@ -143,8 +133,61 @@ body {
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     /* Theme crossfade. Kept off transform/opacity so it never fights motion. */
-    transition: background-color var(--dur-std) var(--ease),
-                color var(--dur-std) var(--ease);
+    transition: background-color var(--dur-theme) var(--ease),
+                color var(--dur-theme) var(--ease);
+}
+
+/* THEME CHANGE. For the 300ms after the toggle, every colour property
+   eases to its new value together (background, text, borders, rules, focus
+   rings, underlines), so the change reads as one deliberate shift rather
+   than a flash. The class is only added when motion is allowed, and only
+   for the length of the change, so it never slows hover feedback. */
+.theme-changing,
+.theme-changing *,
+.theme-changing *::before,
+.theme-changing *::after {
+    transition: color var(--dur-theme) var(--ease),
+                background-color var(--dur-theme) var(--ease),
+                border-color var(--dur-theme) var(--ease),
+                outline-color var(--dur-theme) var(--ease),
+                text-decoration-color var(--dur-theme) var(--ease),
+                fill var(--dur-theme) var(--ease),
+                stroke var(--dur-theme) var(--ease) !important;
+}
+
+/* PAGE TRANSITIONS. Same-origin navigations cross-fade in 200ms where the
+   browser supports cross-document View Transitions; elsewhere navigation is
+   the browser's normal instant load. The navigation bar is its own layer,
+   so it holds still while the content changes beneath it. Off entirely
+   under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition { navigation: auto; }
+}
+.nav { view-transition-name: site-nav; }
+::view-transition-old(root) { animation-duration: 200ms; animation-timing-function: ease-in; }
+::view-transition-new(root) { animation-duration: 200ms; animation-timing-function: ease-out; }
+::view-transition-group(site-nav) { animation-duration: 200ms; }
+
+/* READING PROGRESS on long case studies: a 2px accent line under the top
+   edge, driven by the scroll position itself (CSS scroll-driven animation,
+   no script, no scroll listener). Browsers without scroll timelines simply
+   do not show it. Decorative, so hidden from assistive technology. */
+.reading-progress { display: none; }
+@supports (animation-timeline: scroll()) {
+    .reading-progress {
+        display: block;
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 101;
+        height: 2px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        pointer-events: none;
+        animation: reading-progress linear both;
+        animation-timeline: scroll(root block);
+    }
+    @keyframes reading-progress { to { transform: scaleX(1); } }
 }
 
 img, svg, video { display: block; max-width: 100%; }
@@ -160,6 +203,11 @@ ul, ol { list-style: none; padding: 0; }
     outline: 2px solid var(--accent);
     outline-offset: 3px;
     border-radius: var(--r-sm);
+}
+/* <main> takes focus only as the skip link's target; a ring around the
+   whole content area says nothing. Controls inside keep their own ring. */
+#main:focus-visible {
+    outline: none;
 }
 
 /* ── 3. TYPE ───────────────────────────────────────────────────────────── */
@@ -243,24 +291,91 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
                 transform var(--dur-std) var(--ease-out);
 }
 .js [data-reveal].is-in { opacity: 1; transform: none; }
-.js [data-reveal][data-delay="1"] { transition-delay: 70ms; }
-.js [data-reveal][data-delay="2"] { transition-delay: 140ms; }
-.js [data-reveal][data-delay="3"] { transition-delay: 210ms; }
+/* A section establishes itself first: the heading travels 12px, and the
+   content that follows it waits 80ms. */
+.js .s-head[data-reveal] { transform: translateY(12px); }
+.js [data-reveal][data-delay="1"] { transition-delay: 80ms; }
+.js [data-reveal][data-delay="2"] { transition-delay: 160ms; }
+.js [data-reveal][data-delay="3"] { transition-delay: 240ms; }
 
-/* SIGNATURE: line mask. Used only in the hero. */
-.line-mask { display: block; overflow: hidden; }
-.line-mask > span {
-    display: block;
-    transform: translateY(105%);
-    transition: transform var(--dur-sig) var(--ease-out);
+/* In-card reading order: category, name, problem, then the rest, 70ms
+   apart. The container stays put; its children arrive. --i is set by
+   site.js, so without JS nothing here applies. */
+.js [data-reveal][data-stagger] { opacity: 1; transform: none; }
+.js [data-stagger] > * {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--dur-std) var(--ease-out) calc(var(--i, 0) * 70ms),
+                transform var(--dur-std) var(--ease-out) calc(var(--i, 0) * 70ms);
 }
-.js .is-ready .line-mask > span { transform: none; }
-.line-mask:nth-of-type(2) > span { transition-delay: 90ms; }
-.line-mask:nth-of-type(3) > span { transition-delay: 180ms; }
+.js [data-stagger] > :first-child { transform: none; transition-duration: var(--dur-micro); }
+.js [data-stagger].is-in > * { opacity: 1; transform: none; }
 
-/* SIGNATURE: image reveal mask */
-.js .media[data-reveal] img { transform: scale(1.06); transition: transform var(--dur-sig) var(--ease-out); }
-.js .media[data-reveal].is-in img { transform: none; }
+/* Diagram layers assemble top to bottom, as their block enters */
+.js [data-reveal] .schematic > .schematic__layer { opacity: 0; transition: opacity var(--dur-std) var(--ease-out) calc(var(--i, 0) * 90ms); }
+.js [data-reveal].is-in .schematic > .schematic__layer { opacity: 1; }
+
+/* HERO ENTRANCE. Structure first, then identity, then invitation:
+   label → headline → portrait → description → calls to action → rail.
+   Each element names its step with data-enter; timing lives here only.
+   Standard tier (420ms), 8px of travel, nothing at the significant tier.
+   The headline starts at 70% opacity, so it is legible from the first
+   frame and is never hidden behind the animation. */
+[data-enter="1"] { --enter-at: 350ms; }
+[data-enter="2"] { --enter-at: 550ms; }
+[data-enter="3"] { --enter-at: 720ms; }
+[data-enter="4"] { --enter-at: 800ms; }
+[data-enter="5"] { --enter-at: 1100ms; }
+[data-enter="6"] { --enter-at: 1500ms; }
+[data-enter="7"] { --enter-at: 1650ms; }
+/* Inner pages have a short hero: the same order, compressed */
+.hero--page [data-enter="1"] { --enter-at: 60ms; }
+.hero--page [data-enter="2"] { --enter-at: 180ms; }
+.hero--page [data-enter="3"] { --enter-at: 360ms; }
+
+.js [data-hero] [data-enter] {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--dur-std) var(--ease-out) var(--enter-at, 0ms),
+                transform var(--dur-std) var(--ease-out) var(--enter-at, 0ms);
+}
+.js [data-hero] [data-enter="2"] { opacity: 0.7; }
+/* Calls to action arrive by opacity alone, 80ms apart. An animation rather
+   than a transition, so the buttons keep their own hover transitions. */
+.js [data-hero] [data-enter="6"] { opacity: 1; transform: none; }
+.js [data-hero] [data-enter="6"] > * { opacity: 0; }
+.js [data-hero].is-ready [data-enter="6"] > * {
+    animation: enter-fade var(--dur-std) var(--ease-out) var(--enter-at) both;
+}
+.js [data-hero].is-ready [data-enter="6"] > :nth-child(2) { animation-delay: calc(var(--enter-at) + 80ms); }
+@keyframes enter-fade { from { opacity: 0; } to { opacity: 1; } }
+.js [data-hero].is-ready [data-enter] { opacity: 1; transform: none; }
+
+/* Headline lines follow each other by 60ms, as one statement */
+.line-mask { display: block; }
+.line-mask > span { display: block; }
+.js [data-hero] .line-mask > span {
+    transform: translateY(8px);
+    transition: transform var(--dur-std) var(--ease-out) var(--enter-at, 0ms);
+}
+.js [data-hero] .line-mask:nth-of-type(2) > span { transition-delay: calc(var(--enter-at, 0ms) + 60ms); }
+.js [data-hero] .line-mask:nth-of-type(3) > span { transition-delay: calc(var(--enter-at, 0ms) + 120ms); }
+.js [data-hero].is-ready .line-mask > span { transform: none; }
+.js [data-hero] [data-enter="2"] { transform: none; }
+
+/* Navigation is structure: it fades in once, on arrival from outside the
+   site, and never animates on navigation within it. */
+.js.is-arriving .nav { animation: nav-in var(--dur-micro) var(--ease-out) 100ms both; }
+@keyframes nav-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Images are evidence: they are uncovered top to bottom from the sunken
+   surface behind them, 500ms, once, when they enter. */
+.js .media[data-reveal] { opacity: 1; transform: none; }
+.js .media[data-reveal] img {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 500ms cubic-bezier(0.65, 0, 0.35, 1) 120ms;
+}
+.js .media[data-reveal].is-in img { clip-path: inset(0 0 0 0); }
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -269,9 +384,31 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
         animation-iteration-count: 1 !important;
         transition-duration: 1ms !important;
     }
-    .js [data-reveal] { opacity: 1; transform: none; }
+    /* Reveals keep a short opacity fade (no movement) so content still reads
+       in order; everything else is effectively instant. */
+    .js [data-reveal] {
+        transform: none !important;
+        transition: opacity 200ms var(--ease-out) !important;
+    }
     .line-mask > span { transform: none; }
-    .js .media[data-reveal] img { transform: none; }
+    .js .media[data-reveal] img { clip-path: none !important; }
+    .js [data-stagger] > * { opacity: 1 !important; transform: none !important; transition-delay: 0s !important; }
+    .js .schematic > .schematic__layer { opacity: 1 !important; transition-delay: 0s !important; }
+    .card, .card:hover, .card:active,
+    .js .card[data-reveal].is-in:hover, .js .card[data-reveal].is-in:active,
+    .js .card[data-reveal].is-in.is-pressed { transform: none !important; }
+    /* Hero: everything present at once, no travel, no clip */
+    .js [data-hero] [data-enter],
+    .js [data-hero] [data-enter] > *,
+    .js [data-hero] .line-mask > span {
+        opacity: 1 !important;
+        transform: none !important;
+        transition-delay: 0s !important;
+    }
+    .js .hero__portrait__inner { clip-path: none !important; }
+    .js .hero__portrait figcaption { opacity: 1 !important; transition-delay: 0s !important; }
+    .rule-draw, .js .rule-draw { transform: none !important; transition-delay: 0s !important; }
+    .js.is-arriving .nav { animation: none; }
     .ticker__track { animation: none !important; transform: none !important; }
 }
 
@@ -336,8 +473,7 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     background: var(--text-faint);
     flex: none;
 }
-.status--live::before { background: #3F9142; }
-:root[data-theme="dark"] .status--live::before { background: #5CC062; }
+.status--live::before { background: var(--status-live); }
 .status--dev::before { background: var(--accent); }
 
 /* Tag — one chip style, technologies only */
@@ -350,11 +486,9 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     border-radius: var(--r-sm);
     padding: 0.28rem 0.5rem;
     white-space: nowrap;
-    transition: border-color var(--dur-micro) var(--ease), color var(--dur-micro) var(--ease);
 }
+/* Tags are labels, not controls, so they carry no hover state. */
 .tag-row { display: flex; flex-wrap: wrap; gap: var(--s-2); }
-.tag-row:hover .tag { color: var(--text-faint); }
-.tag-row .tag:hover { color: var(--text); border-color: var(--rule-strong); }
 
 /* ── 7. NAV ────────────────────────────────────────────────────────────── */
 
@@ -406,9 +540,9 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     transform-origin: left;
     transition: transform var(--dur-micro) var(--ease);
 }
-.nav__links a[aria-current="page"],
+.nav__links a[aria-current],
 .nav__links a.is-active { color: var(--text); }
-.nav__links a[aria-current="page"]::after,
+.nav__links a[aria-current]::after,
 .nav__links a.is-active::after { transform: scaleX(1); }
 
 .nav__end { display: flex; align-items: center; gap: var(--s-2); }
@@ -430,14 +564,8 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     position: absolute; inset: 0;
     transition: opacity var(--dur-std) var(--ease), transform var(--dur-std) var(--ease);
 }
-.theme-t__sun  { opacity: 0; transform: rotate(-60deg) scale(0.7); }
-.theme-t__moon { opacity: 1; transform: none; }
-:root[data-theme="dark"] .theme-t__sun  { opacity: 1; transform: none; }
-:root[data-theme="dark"] .theme-t__moon { opacity: 0; transform: rotate(60deg) scale(0.7); }
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .theme-t__sun  { opacity: 1; transform: none; }
-    :root:not([data-theme="light"]) .theme-t__moon { opacity: 0; transform: rotate(60deg) scale(0.7); }
-}
+.theme-t__sun  { opacity: var(--sun-opacity);  transform: var(--sun-turn); }
+.theme-t__moon { opacity: var(--moon-opacity); transform: var(--moon-turn); }
 
 /* Mobile menu — full-height sheet, staggered items. Not a dropdown. */
 /* align-content keeps the three bars together; a stretched grid spreads
@@ -602,9 +730,9 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     margin: 0;
     overflow: hidden;
     border-radius: var(--r-sm) var(--r-sm) 4rem var(--r-sm);
-    background: var(--bg-sunken);
+    /* The solid mid-tone the photograph opens from */
+    background: var(--text-muted);
     aspect-ratio: 5 / 4;
-    will-change: transform;
 }
 @media (min-width: 60rem) {
     .hero__portrait {
@@ -621,28 +749,35 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     /* Square source, cropped high so the face sits on the upper third */
     object-position: 50% 22%;
     filter: saturate(0.9) contrast(1.03);
-    transform: scale(1.08);
-    transition: transform var(--dur-sig) var(--ease-out), filter var(--dur-std) var(--ease);
 }
-.js .is-ready .hero__portrait img { transform: scale(1); }
-.hero__portrait:hover img { filter: saturate(1); }
 
 /* Cursor-responsive drift. Values are written by JS as custom properties so
    the compositor does the work and no layout is ever read on a pointer move. */
 .hero__portrait__inner {
     position: absolute;
     inset: -2%;
-    transform: translate3d(calc(var(--px, 0) * 10px), calc(var(--py, 0) * 10px), 0);
+    transform: translate3d(calc(var(--px, 0) * 4px), calc(var(--py, 0) * 4px), 0);
     transition: transform 600ms var(--ease);
 }
+
+/* The portrait is presented, not loaded: it opens left to right from the
+   solid rectangle behind it, 600ms, starting at step 4. */
+.js [data-hero] .hero__portrait__inner {
+    clip-path: inset(0 100% 0 0);
+    transition: transform 600ms var(--ease),
+                clip-path 600ms cubic-bezier(0.65, 0, 0.35, 1) 800ms;
+}
+.js [data-hero].is-ready .hero__portrait__inner { clip-path: inset(0 0 0 0); }
+.js [data-hero] .hero__portrait figcaption { opacity: 0; transition: opacity var(--dur-std) var(--ease-out) 1400ms; }
+.js [data-hero].is-ready .hero__portrait figcaption { opacity: 1; }
 
 /* Hairline caption pinned to the frame */
 .hero__portrait figcaption {
     position: absolute;
     left: var(--s-4);
     bottom: var(--s-4);
-    color: #fff;
-    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+    color: var(--on-img);
+    text-shadow: 0 1px 12px var(--on-img-shadow);
     mix-blend-mode: normal;
 }
 
@@ -669,9 +804,12 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     background: var(--rule);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform var(--dur-sig) var(--ease-out) 200ms;
+    transition: transform var(--dur-std) var(--ease-out) 720ms;
 }
 .js .is-ready .rule-draw { transform: scaleX(1); }
+.rule-draw { transform: none; }
+.js .rule-draw { transform: scaleX(0); }
+.hero--page .rule-draw { transition-delay: 240ms; }
 
 /* ── 9. ABOUT ──────────────────────────────────────────────────────────── */
 
@@ -757,9 +895,6 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     to   { transform: translateX(-50%); }
 }
 
-/* Items dim as a group on hover so the hovered one reads as selected */
-.ticker:hover .tag { color: var(--text-faint); border-color: var(--rule); }
-.ticker .tag:hover { color: var(--accent); border-color: var(--accent); }
 
 /* ── 11. WORK ──────────────────────────────────────────────────────────── */
 
@@ -795,8 +930,22 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     border: 1px solid var(--rule);
     background: var(--bg-sunken);
 }
-.media img { width: 100%; transition: transform var(--dur-sig) var(--ease-out); }
-.media:hover img { transform: scale(1.02); }
+.media img { width: 100%; }
+
+/* Photographs from facilitated sessions, set under the role they evidence */
+.evidence {
+    display: grid;
+    gap: var(--s-5);
+    margin-top: var(--s-6);
+}
+@media (min-width: 48rem) {
+    .evidence { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.evidence__item figcaption {
+    margin-top: var(--s-2);
+    font-size: var(--t-xs);
+    color: var(--text-muted);
+}
 
 /* Fallback visual for projects with no screenshot — built from real data,
    never a fabricated UI mock. */
@@ -819,9 +968,7 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     flex-wrap: wrap;
     align-items: center;
     gap: var(--s-2) var(--s-3);
-    transition: border-color var(--dur-micro) var(--ease), transform var(--dur-micro) var(--ease);
 }
-.schematic__layer:hover { border-color: var(--accent); transform: translateX(3px); }
 .schematic__layer b { font-weight: 500; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: var(--t-micro); width: 100%; }
 .schematic__layer span { color: var(--text-muted); }
 .schematic__arrow { color: var(--text-faint); text-align: center; line-height: 1; }
@@ -864,6 +1011,104 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
     border-radius: var(--r-sm);
 }
 
+/* ── 11b. WORK CARDS ──────────────────────────────────────────────────────
+   Category / name / problem / what was built / status / technology with
+   purpose. The whole card is one link target (the case-study link is
+   stretched over it); other links in the card sit above it. Hover lifts
+   4px and draws a 2px accent edge; touch gets a brief press instead. */
+.cards { display: grid; gap: var(--s-5); }
+.card {
+    position: relative;
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-md);
+    transition: transform var(--dur-micro) var(--ease-out),
+                border-color var(--dur-micro) var(--ease);
+}
+.card > * { min-width: 0; max-width: var(--measure); }
+.card::before {
+    content: '';
+    position: absolute;
+    left: -1px; top: -1px; bottom: -1px;
+    width: 2px;
+    background: var(--accent);
+    border-radius: var(--r-md) 0 0 var(--r-md);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-micro) var(--ease-out);
+}
+.card__cat { color: var(--text-faint); }
+.card__title { font-size: var(--t-2xl); }
+.card__problem {
+    font-size: var(--t-base);
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 200ms var(--ease-out);
+}
+.card__facts { margin-top: var(--s-2); }
+/* Wide screens: the identity column on the left, the evidence beside it */
+@media (min-width: 64rem) {
+    .card {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        column-gap: var(--s-8);
+        align-content: start;
+        padding: var(--s-7);
+    }
+    .card > * { grid-column: 1; }
+    .card > .card__facts { grid-column: 2; grid-row: 1 / span 6; margin-top: 0; align-self: start; }
+}
+.card__status { margin-top: var(--s-2); }
+.card__actions { margin-top: var(--s-2); }
+.card__actions a:not(.card__link) { position: relative; z-index: 1; }
+.card__link {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+}
+.card__link:hover { color: var(--accent); }
+.card__link::before { content: ''; position: absolute; inset: 0; z-index: 0; border-radius: var(--r-md); }
+.card:has(.card__link:focus-visible) { border-color: var(--accent); }
+
+@media (hover: hover) and (pointer: fine) {
+    /* Stated with the reveal classes so the entrance's transform:none
+       does not cancel the lift once a card has entered */
+    .card:hover,
+    .js .card[data-reveal].is-in:hover { transform: translateY(-4px); border-color: var(--rule-strong); }
+    .card:hover::before { transform: scaleX(1); }
+    .card:hover .card__problem { text-decoration-color: var(--rule-strong); }
+}
+@media (hover: none) {
+    .card { transition: transform 100ms var(--ease-out); }
+    .card:active, .card.is-pressed,
+    .js .card[data-reveal].is-in:active,
+    .js .card[data-reveal].is-in.is-pressed { transform: scale(0.98); }
+}
+
+/* Technology with its purpose in the project, where the project says it */
+.tech-list { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-2); }
+.tech { display: inline-flex; align-items: baseline; gap: var(--s-2); }
+.tech__why { color: var(--text-faint); font-size: var(--t-xs); }
+
+/* Case-study opening: category, name, summary, then problem, key
+   decision and status, before any image or detail. */
+.cs-open__title { font-size: var(--t-3xl); }
+.cs-open__lede { margin-top: var(--s-6); }
+.cs-open__facts { margin-top: var(--s-6); max-width: 52rem; }
+/* Evidence sits on its own line under the status indicator */
+.cs-open__evidence { display: block; margin-top: var(--s-1); }
+/* The opening hands straight on to the visual evidence: its bottom
+   padding, and the top padding of the section after it, are reduced
+   from the full section rhythm so the visual starts near the fold. */
+.hero--case { padding-bottom: var(--s-7); }
+.hero--case + .section { padding-top: var(--s-5); }
+
 /* ── 12. TIMELINE ──────────────────────────────────────────────────────── */
 
 .tl { display: grid; }
@@ -884,7 +1129,7 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
 .tl__item > * { min-width: 0; }
 /* Timeline rows are links on the work page; keep the hover affordance honest */
 a.tl__item:hover .tl__role { color: var(--accent); }
-.tl__item:hover { background: var(--accent-wash); }
+a.tl__item:hover { background: var(--accent-wash); }
 .tl__when { color: var(--text-faint); }
 .tl__role { font-size: var(--t-lg); }
 .tl__org { color: var(--text-muted); font-size: var(--t-sm); }
@@ -961,9 +1206,11 @@ a.tl__item:hover .tl__role { color: var(--accent); }
     gap: var(--s-4);
     padding-block: var(--s-4);
     border-bottom: 1px solid var(--rule);
-    transition: padding-left var(--dur-std) var(--ease), color var(--dur-micro) var(--ease);
+    transition: color var(--dur-micro) var(--ease);
 }
-.contact__ch:hover { padding-left: var(--s-3); color: var(--accent); }
+.contact__ch span:first-child { transition: transform var(--dur-micro) var(--ease); }
+.contact__ch:hover { color: var(--accent); }
+.contact__ch:hover span:first-child { transform: translateX(var(--s-3)); }
 .contact__ch span:last-child { color: var(--text-faint); font-family: var(--font-mono); font-size: var(--t-xs); }
 .contact__ch:hover span:last-child { color: var(--accent); }
 

@@ -9,6 +9,23 @@
     var root = document.documentElement;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+    // The pointer effects wait until the hero entrance has settled, so the
+    // eye is not pulled two ways while the page introduces itself.
+    var FIELD_AFTER = 1800, DRIFT_AFTER = 2000;
+    var start = (window.performance && performance.now) ? performance.now() : 0;
+    function since() { return ((window.performance && performance.now) ? performance.now() : 0) - start; }
+
+    // Bounding boxes are read at most every 250ms rather than on every
+    // pointer move, which keeps pointer handling free of layout work.
+    function rectCache(el) {
+        var rect = null, at = -1e9;
+        return function () {
+            var now = since();
+            if (!rect || now - at > 250) { rect = el.getBoundingClientRect(); at = now; }
+            return rect;
+        };
+    }
+
     /* ── Theme ─────────────────────────────────────────────────────────────
        The initial theme is applied by a tiny inline script in <head> so there
        is no flash. This only wires up the toggle and keeps it in sync. */
@@ -29,8 +46,16 @@
 
         label();
 
+        var settle;
         btn.addEventListener('click', function () {
             var next = current() === 'dark' ? 'light' : 'dark';
+            // Ease every colour together for the length of the change;
+            // under reduced motion the swap is instant.
+            if (!reduced.matches) {
+                root.classList.add('theme-changing');
+                clearTimeout(settle);
+                settle = setTimeout(function () { root.classList.remove('theme-changing'); }, 350);
+            }
             root.setAttribute('data-theme', next);
             try { localStorage.setItem('theme', next); } catch (e) {}
             label();
@@ -56,13 +81,15 @@
         var sheet = nav.querySelector('[data-sheet]');
 
         // Compact state on scroll — a class flip, not per-frame style writes
-        var sentinel = document.createElement('div');
-        sentinel.setAttribute('aria-hidden', 'true');
-        sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
-        document.body.prepend(sentinel);
-        new IntersectionObserver(function (entries) {
-            nav.classList.toggle('is-stuck', !entries[0].isIntersecting);
-        }).observe(sentinel);
+        if ('IntersectionObserver' in window) {
+            var sentinel = document.createElement('div');
+            sentinel.setAttribute('aria-hidden', 'true');
+            sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;';
+            document.body.prepend(sentinel);
+            new IntersectionObserver(function (entries) {
+                nav.classList.toggle('is-stuck', !entries[0].isIntersecting);
+            }).observe(sentinel);
+        }
 
         if (!burger || !sheet) return;
 
@@ -114,20 +141,40 @@
         var items = document.querySelectorAll('[data-reveal]');
         if (!items.length) return;
 
-        if (reduced.matches || !('IntersectionObserver' in window)) {
+        // Reading-order indices for staggered children: card contents and
+        // diagram layers. Set here so that without JS no delay exists.
+        document.querySelectorAll('[data-stagger]').forEach(function (el) {
+            Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); });
+        });
+        document.querySelectorAll('.schematic').forEach(function (el) {
+            el.querySelectorAll('.schematic__layer').forEach(function (c, i) { c.style.setProperty('--i', i); });
+        });
+
+        // Under reduced motion the CSS turns this into a short opacity fade
+        // with no movement, so the observer still sets reading order.
+        if (!('IntersectionObserver' in window)) {
             items.forEach(function (el) { el.classList.add('is-in'); });
             return;
         }
 
+        // Anything before a revealed block in reading order is revealed with
+        // it, so a fast fling or an anchor jump that carries a block past the
+        // viewport between two observer checks never leaves it hidden.
+        var list = Array.prototype.slice.call(items);
+        var done = 0;
         var io = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (!entry.isIntersecting) return;
-                entry.target.classList.add('is-in');
-                io.unobserve(entry.target);
+                var at = list.indexOf(entry.target);
+                for (var i = done; i <= at; i++) {
+                    list[i].classList.add('is-in');
+                    io.unobserve(list[i]);
+                }
+                if (at + 1 > done) done = at + 1;
             });
         }, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
 
-        items.forEach(function (el) { io.observe(el); });
+        list.forEach(function (el) { io.observe(el); });
     }
 
     /* ── Hero signature reveal ─────────────────────────────────────────── */
@@ -197,10 +244,15 @@
         var canvas = document.querySelector('[data-field]');
         if (!canvas) return;
 
+        // Touch, narrow viewports and reduced motion keep the static CSS
+        // lattice: the pointer response is worth nothing there.
         var fine = window.matchMedia('(pointer: fine)');
-        if (reduced.matches || !fine.matches) return;   // CSS lattice stands in
+        var wide = window.matchMedia('(min-width: 48rem)');
+        if (reduced.matches || !fine.matches || !wide.matches) return;
 
         var hero = canvas.closest('[data-hero]');
+        if (canvas.dataset.ready) return;
+        canvas.dataset.ready = '1';
         var ctx = canvas.getContext('2d', { alpha: true });
         if (!ctx) return;
 
@@ -275,8 +327,10 @@
             requestAnimationFrame(frame);
         }
 
+        var canvasRect = rectCache(canvas);
         hero.addEventListener('pointermove', function (e) {
-            var r = canvas.getBoundingClientRect();
+            if (reduced.matches || since() < FIELD_AFTER) return;
+            var r = canvasRect();
             mx = e.clientX - r.left;
             my = e.clientY - r.top;
             kick();
@@ -286,10 +340,14 @@
             kick();
         });
 
-        new IntersectionObserver(function (entries) {
-            visible = entries[0].isIntersecting;
-            if (visible) kick();
-        }, { threshold: 0 }).observe(hero);
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) {
+                visible = entries[0].isIntersecting;
+                if (visible) kick();
+            }, { threshold: 0 }).observe(hero);
+        } else {
+            visible = true;
+        }
 
         var rt;
         window.addEventListener('resize', function () {
@@ -311,14 +369,17 @@
        is left to the compositor. Nothing here reads layout. */
     function initPortraitDrift() {
         var el = document.querySelector('[data-drift]');
-        if (!el || reduced.matches) return;
+        if (!el || reduced.matches || el.dataset.ready) return;
         if (!window.matchMedia('(pointer: fine)').matches) return;
+        el.dataset.ready = '1';
 
         var target = el.closest('[data-hero]') || el;
         var queued = false, px = 0, py = 0;
+        var targetRect = rectCache(target);
 
         target.addEventListener('pointermove', function (e) {
-            var r = target.getBoundingClientRect();
+            if (reduced.matches || since() < DRIFT_AFTER) return;
+            var r = targetRect();
             px = ((e.clientX - r.left) / r.width - 0.5) * 2;
             py = ((e.clientY - r.top) / r.height - 0.5) * 2;
             if (queued) return;
@@ -336,19 +397,56 @@
         });
     }
 
+    /* ── Work cards: press feedback on touch ─────────────────────────────
+       :active is unreliable for touch (iOS needs a listener, Android holds
+       it back while deciding whether the touch is a scroll), so the press
+       state is driven from pointer events. Mouse input is left to :hover. */
+    function initCards() {
+        document.querySelectorAll('.card').forEach(function (card) {
+            var release = function () { card.classList.remove('is-pressed'); };
+            card.addEventListener('pointerdown', function (e) {
+                if (e.pointerType !== 'mouse') card.classList.add('is-pressed');
+            });
+            ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) {
+                card.addEventListener(t, release);
+            });
+        });
+    }
+
+    /* ── Reduced motion, followed live ──────────────────────────────────────
+       The preference can change mid-visit. Turning it on stops the pointer
+       effects at once; turning it off starts the ones that never ran. */
+    function initMotionPreference() {
+        var onChange = function () {
+            if (reduced.matches) {
+                var drift = document.querySelector('[data-drift]');
+                if (drift) { drift.style.setProperty('--px', '0'); drift.style.setProperty('--py', '0'); }
+                document.querySelectorAll('[data-reveal]').forEach(function (el) { el.classList.add('is-in'); });
+            } else {
+                initField();
+                initPortraitDrift();
+            }
+        };
+        if (reduced.addEventListener) reduced.addEventListener('change', onChange);
+        else if (reduced.addListener) reduced.addListener(onChange);
+    }
+
     /* ── Init ──────────────────────────────────────────────────────────── */
     function init() {
         // site.js is alive — cancel the head script's un-hide safety net
         if (window.__jsFallback) { clearTimeout(window.__jsFallback); window.__jsFallback = null; }
         root.classList.add('js');
-        initTheme();
-        initNav();
-        initHero();
-        initReveal();
-        initSpy();
-        initTicker();
-        initField();
-        initPortraitDrift();
+        // Each enhancement is independent: one failing must never leave
+        // content hidden or stop the others from running.
+        [initTheme, initNav, initHero, initReveal, initSpy, initTicker,
+         initField, initPortraitDrift, initCards, initMotionPreference].forEach(function (fn) {
+            try { fn(); } catch (e) {
+                document.querySelectorAll('[data-reveal]').forEach(function (el) { el.classList.add('is-in'); });
+                var hero = document.querySelector('[data-hero]');
+                if (hero) hero.classList.add('is-ready');
+                if (window.console && console.error) console.error(e);
+            }
+        });
     }
 
     if (document.readyState === 'loading') {

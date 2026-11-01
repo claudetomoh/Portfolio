@@ -34,17 +34,7 @@
 
     <title>AgriLink Ghana — Claude Tomoh Ikfingeh</title>
 
-    <script>
-        (function () {
-            var r = document.documentElement;
-            try {
-                var t = localStorage.getItem('theme');
-                if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
-            } catch (e) {}
-            r.classList.add('js');
-            window.__jsFallback = setTimeout(function () { r.classList.remove('js'); }, 2500);
-        })();
-    </script>
+    <script src="/scripts/theme-init.js"></script>
 
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/site.css">
@@ -66,6 +56,7 @@
 
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
+    <div class="reading-progress" aria-hidden="true"></div>
 
     <header class="nav" data-nav>
         <div class="wrap nav__inner">
@@ -73,7 +64,7 @@
 
             <nav class="nav__links" aria-label="Sections">
                 <a href="/#about">About</a>
-                <a href="/work" aria-current="page">Work</a>
+                <a href="/work" aria-current="true">Work</a>
                 <a href="/research">Research</a>
                 <a href="/experience">Experience</a>
                 <a href="/#contact">Contact</a>
@@ -109,17 +100,22 @@
         </div>
     </header>
 
-    <main id="main">
+    <main id="main" tabindex="-1">
 
-        <section class="hero" data-hero>
+        <section class="hero hero--page hero--case" data-hero>
             <div class="wrap">
-                <p class="mono hero__label"><a class="link" href="/work">Work</a> <span aria-hidden="true">/</span> AgriLink Ghana</p>
-                <h1 class="display hero__title" style="font-size: var(--t-3xl)">
+                <p class="mono hero__label" data-enter="1"><a class="link" href="/work">Work</a> <span aria-hidden="true">/</span> Software engineering · Coursework</p>
+                <h1 class="display hero__title cs-open__title" data-enter="2">
                     <span class="line-mask"><span>AgriLink Ghana</span></span>
                 </h1>
                 <div class="rule-draw"></div>
-                <p class="lede" style="margin-top: var(--s-6)">An agricultural marketplace on a PHP MVC framework I wrote rather than installed.</p>
-                <p class="mono" style="margin-top: var(--s-5)"><span class="status">Coursework · CS415</span></p>
+                <p class="lede cs-open__lede" data-enter="3">An agricultural marketplace on a PHP MVC framework written by hand rather than installed.</p>
+                <dl class="about__facts cs-open__facts" data-enter="3">
+                    <div class="about__fact"><dt>Problem</dt><dd>Farmers, buyers and transport providers each hold one piece of a transaction none of them can complete alone.</dd></div>
+                    <div class="about__fact"><dt>Key decision</dt><dd>A hand-written framework, on purpose: writing the front controller and router by hand is how the patterns stop being vocabulary and start being something you can debug.</dd></div>
+                    <div class="about__fact"><dt>What I built</dt><dd>Four role-based portals over a normalised schema, on a hand-written front controller, router and pattern layer</dd></div>
+                    <div class="about__fact"><dt>Status &amp; evidence</dt><dd><span class="status">Coursework · CS415</span><span class="cs-open__evidence">Public repository, with the framework and a unit test suite both readable</span></dd></div>
+                </dl>
             </div>
         </section>
 
@@ -130,10 +126,10 @@
                         <div class="proj__meta">
                             <div class="tag-row"><span class="tag">PHP 8</span><span class="tag">MySQL 8</span><span class="tag">MVC</span><span class="tag">Tailwind</span><span class="tag">Apache</span></div>
                         </div>
-                        <div class="proj__actions"><a class="link link--always mono" href="https://github.com/claudetomoh/agrilink" target="_blank" rel="noopener noreferrer">Source ↗</a></div>
+                        <div class="proj__actions"><a class="link link--always mono" href="https://github.com/claudetomoh/agrilink" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
                     </div>
                     <div class="proj__media">
-                        <div class="media">
+                        <div class="media" data-reveal>
                             <img src="/images/agrilink-screenshot.webp" alt="The AgriLink Ghana marketplace interface" width="1917" height="921" loading="lazy" decoding="async">
                         </div>
                     </div>
@@ -199,13 +195,14 @@
         </section>
         <section class="section section--sunken">
             <div class="wrap">
-                <div class="s-head">
+                <div class="s-head" data-reveal>
                     <p class="mono s-head__eyebrow">More work</p>
                 </div>
                 <div class="tl">
-                    <a class="tl__item" href="/work/rise-for-impact">
+                    <a class="tl__item" href="/work/rise-for-impact" data-reveal>
                         <p class="mono tl__when">Previous</p>
-                        <div><p class="tl__role">Rise for Impact</p></div>
+                        <div><p class="tl__role">Rise for Impact</p><p class="tl__org">Founder and Team Lead of a youth initiative — who also builds its software.</p></div>
+                        <p class="mono muted">Product engineering · Founder</p>
                     </a>
                 </div>
                 <div class="hero__actions" style="margin-top: var(--s-6)">

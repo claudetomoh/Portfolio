@@ -69,17 +69,7 @@ def head(case):
 
     <title>{esc(case['title'])}</title>
 
-    <script>
-        (function () {{
-            var r = document.documentElement;
-            try {{
-                var t = localStorage.getItem('theme');
-                if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
-            }} catch (e) {{}}
-            r.classList.add('js');
-            window.__jsFallback = setTimeout(function () {{ r.classList.remove('js'); }}, 2500);
-        }})();
-    </script>
+    <script src="/scripts/theme-init.js"></script>
 
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/site.css">
@@ -105,6 +95,7 @@ def nav():
     return f"""
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
+    <div class="reading-progress" aria-hidden="true"></div>
 
     <header class="nav" data-nav>
         <div class="wrap nav__inner">
@@ -112,7 +103,7 @@ def nav():
 
             <nav class="nav__links" aria-label="Sections">
                 <a href="/#about">About</a>
-                <a href="/work" aria-current="page">Work</a>
+                <a href="/work" aria-current="true">Work</a>
                 <a href="/research">Research</a>
                 <a href="/experience">Experience</a>
                 <a href="/#contact">Contact</a>
@@ -151,25 +142,35 @@ def nav():
 
 
 def hero(case):
+    """The case-study opening: where the work sits, what it is, the problem,
+    the decision that mattered most, what was built, and its real status with
+    the evidence behind it. Every value comes
+    from content/public/case-studies.json, copied from the case study body."""
     crumb = (
-        '<p class="mono hero__label">'
+        '<p class="mono hero__label" data-enter="1">'
         '<a class="link" href="/work">Work</a> '
         '<span aria-hidden="true">/</span> '
-        f"{esc(case['name'])}</p>"
+        f"{esc(case['category'])}</p>"
     )
     mod = f" status--{case['status']['modifier']}" if case["status"]["modifier"] else ""
+    op = case["opening"]
     return f"""
-    <main id="main">
+    <main id="main" tabindex="-1">
 
-        <section class="hero" data-hero>
+        <section class="hero hero--page hero--case" data-hero>
             <div class="wrap">
                 {crumb}
-                <h1 class="display hero__title" style="font-size: var(--t-3xl)">
+                <h1 class="display hero__title cs-open__title" data-enter="2">
                     <span class="line-mask"><span>{esc(case['name'])}</span></span>
                 </h1>
                 <div class="rule-draw"></div>
-                <p class="lede" style="margin-top: var(--s-6)">{case['lede']}</p>
-                <p class="mono" style="margin-top: var(--s-5)"><span class="status{mod}">{esc(case['status']['label'])}</span></p>
+                <p class="lede cs-open__lede" data-enter="3">{case['lede']}</p>
+                <dl class="about__facts cs-open__facts" data-enter="3">
+                    <div class="about__fact"><dt>Problem</dt><dd>{esc(op['problem'])}</dd></div>
+                    <div class="about__fact"><dt>Key decision</dt><dd>{esc(op['decision'])}</dd></div>
+                    <div class="about__fact"><dt>What I built</dt><dd>{esc(op['built'])}</dd></div>
+                    <div class="about__fact"><dt>Status &amp; evidence</dt><dd><span class="status{mod}">{esc(case['status']['label'])}</span><span class="cs-open__evidence">{esc(op['evidence'])}</span></dd></div>
+                </dl>
             </div>
         </section>
 """
@@ -195,7 +196,7 @@ def summary(case):
     elif "image" in case:
         im = case["image"]
         media = (
-            f'<div class="media">\n'
+            f'<div class="media" data-reveal>\n'
             f'                            <img src="{im["src"]}" alt="{esc(im["alt"])}" '
             f'width="{im["w"]}" height="{im["h"]}" loading="lazy" decoding="async">\n'
             f"                        </div>"
@@ -244,29 +245,28 @@ def blocks(case):
 
 
 def pager(case, cases):
+    """Previous / next case study, carrying the same category and summary
+    line the reader saw on the work page."""
     idx = next(i for i, c in enumerate(cases) if c["slug"] == case["slug"])
     prev_c = cases[idx - 1] if idx > 0 else None
     next_c = cases[idx + 1] if idx < len(cases) - 1 else None
     items = []
-    if prev_c:
+    for label, c in (("Previous", prev_c), ("Next", next_c)):
+        if not c:
+            continue
         items.append(
-            f'                    <a class="tl__item" href="/work/{prev_c["slug"]}">\n'
-            f'                        <p class="mono tl__when">Previous</p>\n'
-            f'                        <div><p class="tl__role">{esc(prev_c["name"])}</p></div>\n'
+            f'                    <a class="tl__item" href="/work/{c["slug"]}" data-reveal>\n'
+            f'                        <p class="mono tl__when">{label}</p>\n'
+            f'                        <div><p class="tl__role">{esc(c["name"])}</p>'
+            f'<p class="tl__org">{c["lede"]}</p></div>\n'
+            f'                        <p class="mono muted">{esc(c["category"])}</p>\n'
             f"                    </a>"
         )
-    if next_c:
-        items.append(
-            f'                    <a class="tl__item" href="/work/{next_c["slug"]}">\n'
-            f'                        <p class="mono tl__when">Next</p>\n'
-            f'                        <div><p class="tl__role">{esc(next_c["name"])}</p></div>\n'
-            f"                    </a>"
-        )
-    body = "\n".join(items) if items else ""
+    body = "\n".join(items)
     return f"""
         <section class="section section--sunken">
             <div class="wrap">
-                <div class="s-head">
+                <div class="s-head" data-reveal>
                     <p class="mono s-head__eyebrow">More work</p>
                 </div>
                 <div class="tl">
