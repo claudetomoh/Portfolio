@@ -204,6 +204,11 @@ ul, ol { list-style: none; padding: 0; }
     outline-offset: 3px;
     border-radius: var(--r-sm);
 }
+/* <main> takes focus only as the skip link's target; a ring around the
+   whole content area says nothing. Controls inside keep their own ring. */
+#main:focus-visible {
+    outline: none;
+}
 
 /* ── 3. TYPE ───────────────────────────────────────────────────────────── */
 

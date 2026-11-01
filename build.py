@@ -155,7 +155,7 @@ def hero(case):
     mod = f" status--{case['status']['modifier']}" if case["status"]["modifier"] else ""
     op = case["opening"]
     return f"""
-    <main id="main">
+    <main id="main" tabindex="-1">
 
         <section class="hero hero--page hero--case" data-hero>
             <div class="wrap">
