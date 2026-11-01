@@ -932,6 +932,21 @@ h1, h2, h3, h4 { font-weight: 400; line-height: 1.1; text-wrap: balance; }
 }
 .media img { width: 100%; }
 
+/* Photographs from facilitated sessions, set under the role they evidence */
+.evidence {
+    display: grid;
+    gap: var(--s-5);
+    margin-top: var(--s-6);
+}
+@media (min-width: 48rem) {
+    .evidence { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.evidence__item figcaption {
+    margin-top: var(--s-2);
+    font-size: var(--t-xs);
+    color: var(--text-muted);
+}
+
 /* Fallback visual for projects with no screenshot — built from real data,
    never a fabricated UI mock. */
 .schematic {
